@@ -11,10 +11,12 @@ import {environment} from "@environments/environment";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appInitializer} from "@app/_helpers/app.initializer";
 import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
+import {NotFoundComponent} from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

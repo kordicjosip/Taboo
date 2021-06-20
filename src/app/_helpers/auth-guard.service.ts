@@ -16,9 +16,15 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-    const isValid = this.authService.jwtSubject.getValue().isValid()
-    this.logger.debug(`User logged in? ${isValid}`)
-    return isValid
+    const jwt = this.authService.jwtSubject.getValue();
+    if (jwt == null) {
+      this.logger.debug(`User not logged in`);
+      return false;
+    }
+
+    const isValid = jwt.isValid();
+    this.logger.debug(`User logged in? ${isValid}`);
+    return isValid;
   }
 
 }
