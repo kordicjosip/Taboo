@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.logger.debug('Intercepting HTTP Request: ', request);
 
-    const user: AuthJWTToken = this.authService.korisnikLoginSubject.getValue();
+    const user: AuthJWTToken = this.authService.jwtSubject.getValue();
 
     const isLoggedIn = user != null;
     const isApiUrl = request.url.startsWith(environment.apiURL);

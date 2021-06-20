@@ -1,5 +1,3 @@
-import jwt_decode from 'jwt-decode';
-
 interface JWTToken {
   access_token: string;
   refresh_token: string;
@@ -14,14 +12,18 @@ export class AuthJWTToken {
     this.refresh_token = json.refresh_token;
   }
 
+  getExpiration(jwt: string): Date {
+    return new Date(JSON.parse(atob(jwt.split('.')[1])).exp * 1000);
+  }
+
   accessTokenIsValid(): boolean {
-    console.log(jwt_decode(this.access_token))
+    this.getExpiration(this.access_token)
     // TODO provjeriti valjanost, ključ exp sadrži timestamp do kada je valjan token
     return true
   }
 
   refreshTokenIsValid(): boolean {
-    console.log(jwt_decode(this.refresh_token))
+    this.getExpiration(this.refresh_token)
     // TODO provjeriti valjanost, ključ exp sadrži timestamp do kada je valjan token
     return true
   }

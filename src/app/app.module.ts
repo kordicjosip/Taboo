@@ -10,6 +10,7 @@ import {LoggerModule, NGXLogger, NgxLoggerLevel} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appInitializer} from "@app/_helpers/app.initializer";
+import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {appInitializer} from "@app/_helpers/app.initializer";
   providers: [
     {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService, NGXLogger]},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })
