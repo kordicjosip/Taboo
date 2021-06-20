@@ -31,6 +31,11 @@ export class AuthService {
     } else {
       logger.debug('User needs to be validated')
       this.jwtSubject = new BehaviorSubject((JSON.parse(token)));
+      if (this.jwtSubject.getValue().accessTokenIsValid()) {
+        this.startRefreshTokenTimer();
+      } else {
+        this.refreshToken();
+      }
     }
   }
 

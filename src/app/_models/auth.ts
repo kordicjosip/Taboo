@@ -17,14 +17,16 @@ export class AuthJWTToken {
   }
 
   accessTokenIsValid(): boolean {
-    this.getExpiration(this.access_token)
-    // TODO provjeriti valjanost, ključ exp sadrži timestamp do kada je valjan token
-    return true
+    const expiration = this.getExpiration(this.access_token)
+    const current_date = new Date()
+    return expiration >= current_date;
+
   }
 
   refreshTokenIsValid(): boolean {
-    this.getExpiration(this.refresh_token)
-    // TODO provjeriti valjanost, ključ exp sadrži timestamp do kada je valjan token
-    return true
+    const expiration = this.getExpiration(this.refresh_token)
+    const current_date = new Date()
+    return expiration >= current_date;
+
   }
 }

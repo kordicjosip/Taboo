@@ -10,11 +10,11 @@ export function appInitializer(authService: AuthService, logger: NGXLogger) {
       (token: AuthJWTToken) => {
         if (token != null && !token.accessTokenIsValid()) {
           logger.debug('JWT expired');
-          // TODO refresh
-          // this.korisnikLoginSubject.next()
+          authService.refreshToken();
         }
+        logger.debug('Initialized app');
+        return EMPTY.subscribe().add(resolve);
       }
     )
-    EMPTY.subscribe().add(resolve);
   });
 }
