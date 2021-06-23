@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
+import {Table, TableReference} from "@app/_models/table";
+import {TableService} from "@app/_services/table.service";
 
 @Component({
   selector: 'app-tables',
@@ -8,11 +10,20 @@ import {NGXLogger} from "ngx-logger";
   styleUrls: ['./tables.component.sass']
 })
 export class TablesComponent implements OnInit {
-  private g: any;
+  private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
+
+  private tableReferences = new Map<bigint, TableReference>();
 
   constructor(
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private tableService: TableService
   ) {
+    tableService.tablesSubject.subscribe(
+      () => {
+        logger.debug("Nove informacije o stolovima");
+        // TODO refresh stolove koji su drugačiji
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -29,13 +40,13 @@ export class TablesComponent implements OnInit {
       .attr('cy', 20)
       .attr('r', 15)
       .attr('fill', '#000')
-      .on('mouseover', function (d, i) {
+      .on('mouseover', function (d, _) {
         d3.select(this).transition()
           .duration(500)
           .attr('opacity', '.1');
         console.log(d)
       })
-      .on('mouseout', function (d, i) {
+      .on('mouseout', function (d, _) {
         d3.select(this).transition()
           .duration(500)
           .attr('opacity', '1');
@@ -54,7 +65,7 @@ export class TablesComponent implements OnInit {
 
 
     const g = svg.append("g");
-    this.g = g;
+    this.tablesHolder = g;
 
     svg.call(d3.zoom<any, any>()
       .extent([[0, 0], [1200, 800]])
@@ -66,9 +77,9 @@ export class TablesComponent implements OnInit {
     this.logger.debug("Initialized tables");
   }
 
-  append() {
-    this.logger.debug("Appending circle")
-    const g = this.g.append("g");
+  addTable(table: Table) {
+    this.logger.debug("Appending circle");
+    const g = this.tablesHolder!.append("g");
     const circle = g.append('circle')
       .attr('cx', Math.floor(Math.random() * 1200))
       .attr('cy', Math.floor(Math.random() * 800))
@@ -76,7 +87,14 @@ export class TablesComponent implements OnInit {
       .attr('fill', '#69a3b2');
     g.append('text')
       .text('Text')
-      .attr('x', circle.node().getBBox().x + 35)
-      .attr('y', circle.node().getBBox().y + 55);
+      .attr('x', circle.node()!.getBBox().x + 35)
+      .attr('y', circle.node()!.getBBox().y + 55);
+
+    this.tableReferences.set(table.id, new TableReference({g, table}));
+  }
+
+  removeTable(table: Table) {
+    const reference = this.tableReferences.get(table.id)!;
+    reference.g.remove();
   }
 }
