@@ -5,6 +5,7 @@ import {NGXLogger} from "ngx-logger";
 import {AuthService} from "@app/_services/auth.service";
 import {AuthJWTToken} from "@app/_models/auth";
 import {Notification} from "@app/_models/notification";
+import {TableService} from "@app/_services/table.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class NotificationService implements OnDestroy {
 
   constructor(
     private logger: NGXLogger,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private tableService: TableService) {
     this.connect();
 
     authService.jwtSubject.subscribe(
@@ -30,8 +32,23 @@ export class NotificationService implements OnDestroy {
     this.socket$.subscribe((dataFromServer: any) => {
         const message = new Notification(dataFromServer);
         this.logger.debug(JSON.stringify(message, null, 2));
-        if (message.message_type == 'auth_request') {
-          this.authenticate();
+        switch (message.message_type) {
+          case 'auth_request': {
+            this.authenticate();
+            break;
+          }
+          case 'table_reservation': {
+            this.tableService.loadTables(message.message.event_id);
+            break;
+          }
+          case 'table_new_layout': {
+            this.tableService.loadTables(message.message.event_id);
+            break;
+          }
+          default: {
+            this.logger.error("websocket message unknown");
+            break;
+          }
         }
 
       },

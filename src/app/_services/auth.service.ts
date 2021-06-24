@@ -11,7 +11,7 @@ import {map} from "rxjs/operators";
   providedIn: 'root'
 })
 export class AuthService {
-  jwt_token_key = 'jwt'
+  jwt_token_key = 'jwt';
   jwtSubject: BehaviorSubject<AuthJWTToken | any>;
 
   // TODO podatci o korisniku
