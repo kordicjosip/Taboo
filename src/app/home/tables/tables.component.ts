@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
 import {Table, TableEventHolder, TableReference} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-tables',
@@ -20,10 +21,14 @@ export class TablesComponent implements OnInit {
   @Output('selectedTable')
   selectedTable: Table | null = null;
 
+  selectedTableSubject = new BehaviorSubject<Table | null>(null);
+
   constructor(
     private logger: NGXLogger,
     private tableService: TableService
   ) {
+    this.selectedTableSubject.subscribe(table => this.selectedTable = table);
+
     tableService.loadTables(this.eventId).subscribe();
     tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
@@ -97,16 +102,26 @@ export class TablesComponent implements OnInit {
 
   addTable(table: Table) {
     this.logger.debug("Adding table: " + JSON.stringify(table));
+    const logger = this.logger;
+    const selectedTableSubject = this.selectedTableSubject;
+
     const g = this.tablesHolder!.append("g");
+
     const circle = g.append('circle')
       .attr('cx', table.x)
       .attr('cy', table.y)
       .attr('r', 50)
       .attr('fill', '#69a3b2');
+
     g.append('text')
       .text('Text')
       .attr('x', circle.node()!.getBBox().x + 35)
       .attr('y', circle.node()!.getBBox().y + 55);
+
+    g.on('click', function () {
+      logger.debug("Odabran stol: " + table.id);
+      selectedTableSubject.next(table);
+    });
 
     this.tableReferences.set(table.id, new TableReference({g, table}));
   }
