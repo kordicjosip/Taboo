@@ -1,1 +1,92 @@
-<p>home works!</p>
+<div id="wrapper">
+  <div id="lijevo">
+    <div *ngIf="!prijavljen" id="forma">
+      <div style="color: white">Unesite svoje podatke</div>
+      <div class="p-field p-grid">
+
+
+        <div class="p-col">
+          <input [(ngModel)]="ime" id="firstname3" pInputText placeholder="Ime" type="text">
+        </div>
+
+      </div>
+      <div class="p-field p-grid">
+
+        <div class="p-col">
+          <input [(ngModel)]="prezime" id="lastname3" pInputText placeholder="Prezime" type="text">
+        </div>
+      </div>
+      <div class="p-field p-grid">
+
+        <div class="p-col">
+          <p-inputMask [(ngModel)]="brojtelefona" id="phonenumber" mask="+387 99 999 999"
+                       placeholder="Broj telefona"></p-inputMask>
+        </div>
+      </div>
+
+    </div>
+    <div *ngIf="prijavljen" id="prijavljen">
+      <div class="p-field p-grid">
+
+
+        <div class="p-col">
+          <input [(ngModel)]="ime" id="firstname2" pInputText placeholder="Ime" type="text">
+        </div>
+
+      </div>
+      <div class="p-field p-grid">
+
+        <div class="p-col">
+          <input [(ngModel)]="prezime" id="lastname2" pInputText placeholder="Prezime" type="text">
+        </div>
+      </div>
+      <div class="p-field p-grid">
+
+        <div class="p-col">
+          <p-inputMask [(ngModel)]="brojtelefona" id="phonenumber2" mask="+387 99 999 999"
+                       placeholder="Broj telefona"></p-inputMask>
+        </div>
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <textarea [(ngModel)]="napomena" pInputTextarea placeholder="Napomena"
+                style="resize: none; width: 190px; color: black"></textarea>
+    </div>
+    <div class="dogadaji">
+
+      <div class="dogadaj">
+        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+          Dogadaj naziv
+          Dogadaj datum
+        </button>
+      </div>
+      <div class="dogadaj">
+        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+          Dogadaj naziv
+          Dogadaj datum
+        </button>
+      </div>
+      <div class="dogadaj">
+        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+          Dogadaj naziv
+          Dogadaj datum
+        </button>
+      </div>
+
+    </div>
+    <div id="tipka">
+      <button (click)="Rezerviraj()" class="p-button-success p-button-lg" label="Rezerviraj" pButton
+              type="button"></button>
+
+    </div>
+  </div>
+  <div id="desno">
+    <img alt="Slika" src="../../assets/img/Daleka.jpg">
+  </div>
+  <p-toast></p-toast>
+  <div>
+
+    <!--TODO stolovi-->
+  </div>
+
+</div>

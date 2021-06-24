@@ -33,6 +33,7 @@ export class NotificationService implements OnDestroy {
         if (message.message_type == 'auth_request') {
           this.authenticate();
         }
+
       },
       error => {
         this.logger.error(error);
