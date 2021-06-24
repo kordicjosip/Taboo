@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
-import {Table, TableReference} from "@app/_models/table";
+import {Table, TableEventHolder, TableReference} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 
 @Component({
@@ -12,18 +12,32 @@ import {TableService} from "@app/_services/table.service";
 export class TablesComponent implements OnInit {
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
 
-  private tableReferences = new Map<bigint, TableReference>();
+  private tableReferences = new Map<number, TableReference>();
+
+  @Input('eventId')
+  eventId: string | null = null;
 
   constructor(
     private logger: NGXLogger,
     private tableService: TableService
   ) {
+    tableService.loadTables(this.eventId);
     tableService.tablesSubject.subscribe(
-      () => {
-        logger.debug("Nove informacije o stolovima");
-        // TODO refresh stolove koji su drugačiji
-      }
-    )
+      (tableEventHolder: TableEventHolder) => {
+        if (this.eventId == tableEventHolder.event) {
+        }
+        for (const table of tableEventHolder.tables) {
+          const originalTable = this.tableReferences.get(table.id)
+          if (originalTable == undefined) {
+            this.addTable(table);
+          } else {
+            if (originalTable.table != table) {
+              this.removeTable(originalTable.table);
+              this.addTable(table);
+            }
+          }
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -52,6 +66,7 @@ export class TablesComponent implements OnInit {
           .attr('opacity', '1');
         console.log(d)
       })
+
     fixedLayout.append('rect')
       .attr('fill', 'rgba(0,0,0,0.01)')
       .attr('x', 0)
@@ -78,11 +93,11 @@ export class TablesComponent implements OnInit {
   }
 
   addTable(table: Table) {
-    this.logger.debug("Appending circle");
+    this.logger.debug("Adding table");
     const g = this.tablesHolder!.append("g");
     const circle = g.append('circle')
-      .attr('cx', Math.floor(Math.random() * 1200))
-      .attr('cy', Math.floor(Math.random() * 800))
+      .attr('cx', table.x)
+      .attr('cy', table.y)
       .attr('r', 50)
       .attr('fill', '#69a3b2');
     g.append('text')

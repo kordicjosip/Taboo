@@ -1,19 +1,28 @@
 import * as d3 from 'd3';
 
 interface TableInterface {
-  id: bigint;
-  x: bigint;
-  y: bigint;
-  width: bigint;
-  height: bigint;
+  id: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  status: number;
+}
+
+enum TableStatus {
+  Open = 0,
+  Canceled = 1,
+  Confirmed = 2,
+  Disabled = 3
 }
 
 export class Table {
-  id: bigint;
-  x: bigint;
-  y: bigint;
-  width: bigint;
-  height: bigint;
+  id: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  status: TableStatus;
 
   // TODO ostala polja
   constructor(table: TableInterface) {
@@ -22,6 +31,38 @@ export class Table {
     this.y = table.y;
     this.width = table.width;
     this.height = table.height;
+
+    switch (table.status) {
+      case 0: {
+        this.status = TableStatus.Open;
+        break;
+      }
+      case 1: {
+        this.status = TableStatus.Canceled;
+        break;
+      }
+      case 2: {
+        this.status = TableStatus.Confirmed;
+        break;
+      }
+      case 3: {
+        this.status = TableStatus.Disabled;
+        break;
+      }
+      default: {
+        this.status = TableStatus.Disabled;
+      }
+    }
+  }
+}
+
+export class TableEventHolder {
+  tables: Table[];
+  event: any;
+
+  constructor(tables: Table[], event: any) {
+    this.tables = tables;
+    this.event = event;
   }
 }
 

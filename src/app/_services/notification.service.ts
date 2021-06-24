@@ -38,12 +38,11 @@ export class NotificationService implements OnDestroy {
             break;
           }
           case 'table_reservation': {
-            // TODO Umjesto učitavanja svih stolova napraviti način za urediti specifični stol
-            this.tableService.loadTablesForEvent();
+            this.tableService.loadTables(message.message.event_id);
             break;
           }
           case 'table_new_layout': {
-            this.tableService.loadTablesForEvent();
+            this.tableService.loadTables(message.message.event_id);
             break;
           }
           default: {
