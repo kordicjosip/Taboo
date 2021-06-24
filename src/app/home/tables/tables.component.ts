@@ -11,17 +11,14 @@ import {BehaviorSubject} from "rxjs";
   styleUrls: ['./tables.component.sass']
 })
 export class TablesComponent implements OnInit {
-  private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
-
-  private tableReferences = new Map<number, TableReference>();
-
   @Input('eventId')
   eventId: string | null = null;
-
   @Output('selectedTable')
   selectedTable: Table | null = null;
 
-  selectedTableSubject = new BehaviorSubject<Table | null>(null);
+  private selectedTableSubject = new BehaviorSubject<Table | null>(null);
+  private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
+  private tableReferences = new Map<number, TableReference>();
 
   constructor(
     private logger: NGXLogger,
@@ -104,6 +101,7 @@ export class TablesComponent implements OnInit {
     this.logger.debug("Adding table: " + JSON.stringify(table));
     const logger = this.logger;
     const selectedTableSubject = this.selectedTableSubject;
+    const tableReferences = this.tableReferences;
 
     const g = this.tablesHolder!.append("g");
 
@@ -111,7 +109,7 @@ export class TablesComponent implements OnInit {
       .attr('cx', table.x)
       .attr('cy', table.y)
       .attr('r', 50)
-      .attr('fill', '#69a3b2');
+      .attr('fill', 'rgba(105,163,178,1)');
 
     g.append('text')
       .text('Text')
@@ -119,8 +117,17 @@ export class TablesComponent implements OnInit {
       .attr('y', circle.node()!.getBBox().y + 55);
 
     g.on('click', function () {
+      const selectedTable = selectedTableSubject.getValue();
+      if (selectedTable != null) {
+        tableReferences.get(selectedTable.id)?.g.select('circle').attr('fill', 'rgba(105,163,178,1)');
+      }
       logger.debug("Odabran stol: " + table.id);
       selectedTableSubject.next(table);
+      // TODO Vratiti na boju koja odgovara tom statusu
+      circle
+        .transition()
+        .duration(200)
+        .attr('fill', 'rgba(48,255,49,0.72)');
     });
 
     this.tableReferences.set(table.id, new TableReference({g, table}));
