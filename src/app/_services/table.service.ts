@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {Table, TableEventHolder} from "@app/_models/table";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
@@ -21,8 +21,8 @@ export class TableService {
 
   /** Učitava popis stolova u tablesSubject(po defaultu je null).
    * Moguće filtriranje po događaju putem eventId parametra */
-  loadTables(eventId: string | null = null): void {
-    this.http.get<any>(`${environment.apiURL}tables${eventId ? '?event_id='+eventId : ''}`)
+  loadTables(eventId: string | null = null): Observable<any> {
+    return this.http.get<any>(`${environment.apiURL}tables${eventId ? '?event_id=' + eventId : ''}`)
       .pipe(map((resTables: any[]) => {
         this.logger.debug("Učitani stolovi za događaj id: " + eventId)
         const tables: Table[] = [];

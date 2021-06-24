@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
 import {Table, TableEventHolder, TableReference} from "@app/_models/table";
@@ -17,23 +17,26 @@ export class TablesComponent implements OnInit {
   @Input('eventId')
   eventId: string | null = null;
 
+  @Output('selectedTable')
+  selectedTable: Table | null = null;
+
   constructor(
     private logger: NGXLogger,
     private tableService: TableService
   ) {
-    tableService.loadTables(this.eventId);
+    tableService.loadTables(this.eventId).subscribe();
     tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
-        if (this.eventId == tableEventHolder.event) {
-        }
-        for (const table of tableEventHolder.tables) {
-          const originalTable = this.tableReferences.get(table.id)
-          if (originalTable == undefined) {
-            this.addTable(table);
-          } else {
-            if (originalTable.table != table) {
-              this.removeTable(originalTable.table);
+        if (tableEventHolder != null && this.eventId == tableEventHolder.event) {
+          for (const table of tableEventHolder.tables) {
+            const originalTable = this.tableReferences.get(table.id)
+            if (originalTable == undefined) {
               this.addTable(table);
+            } else {
+              if (originalTable.table != table) {
+                this.removeTable(originalTable.table);
+                this.addTable(table);
+              }
             }
           }
         }
@@ -93,7 +96,7 @@ export class TablesComponent implements OnInit {
   }
 
   addTable(table: Table) {
-    this.logger.debug("Adding table");
+    this.logger.debug("Adding table: " + JSON.stringify(table));
     const g = this.tablesHolder!.append("g");
     const circle = g.append('circle')
       .attr('cx', table.x)

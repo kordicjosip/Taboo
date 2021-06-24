@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 
 interface TableInterface {
   id: number;
-  x: number;
-  y: number;
+  position_left: number;
+  position_top: number;
   width: number;
   height: number;
   status: number;
@@ -27,8 +27,8 @@ export class Table {
   // TODO ostala polja
   constructor(table: TableInterface) {
     this.id = table.id;
-    this.x = table.x;
-    this.y = table.y;
+    this.x = table.position_left;
+    this.y = table.position_top;
     this.width = table.width;
     this.height = table.height;
 
