@@ -14,7 +14,9 @@ export class DogadajComponent implements OnInit {
   @ViewChild('button')
   button: Button | null=null;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit(): void {
   }

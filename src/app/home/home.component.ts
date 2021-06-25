@@ -38,8 +38,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.add({severity:'success', summary: 'Success', detail: 'Message Content'});
-    this.logger.debug("Debugamo");
+    this.dogadajiService.getDogadaji(true).subscribe(dogadaji=> {
+      this.dogadaji=dogadaji;
+      this.logger.debug(this.dogadaji);
+    });
+
   }
 
   Rezerviraj() {

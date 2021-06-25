@@ -1,14 +1,29 @@
+
 <div id="wrapper">
+
   <div id="lijevo">
+
+    <div class="dogadaji">
+      <div style="color: white; text-align: center; font-weight: 700; font-size: 18px;  padding-top:10px; padding-left: 5px">1. ODABERITE DOGAĐAJ: </div>
+      <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
+      <app-dogadaj [dogadaj]=dogadaj></app-dogadaj>
+      </div>
+    </div>
+
+
+    <div class="razdvajac">
+      <img src="assets/img/appdividertransperent.png">
+    </div>
     <div *ngIf="!prijavljen" id="forma">
-      <div style="color: black; text-align: center; font-weight: 700; font-size: 18px">Unesite svoje podatke</div>
+      <div style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE PODATKE</div>
       <div class="p-field p-grid">
 
 
         <div class="p-col">
-          <input [(ngModel)]="ime" #name="ngModel" id="firstname3" pInputText placeholder="Ime" type="text" class="form-control" required >
+          <input #name="ngModel" [(ngModel)]="ime" class="form-control" id="firstname3" pInputText placeholder="Ime"
+                 required type="text">
           <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-            <div *ngIf="name.errors?.required">
+            <div style="color:white" *ngIf="name.errors?.required">
               Ime je obavezno.
             </div>
 
@@ -21,9 +36,10 @@
 
 
         <div class="p-col">
-          <input [(ngModel)]="prezime" #surname="ngModel" id="lastname3" pInputText placeholder="Prezime" type="text" class="form-control" required >
+          <input #surname="ngModel" [(ngModel)]="prezime" class="form-control" id="lastname3" pInputText placeholder="Prezime"
+                 required type="text">
           <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
-            <div *ngIf="surname.errors?.required">
+            <div style="color:white" *ngIf="surname.errors?.required">
               Prezime je obavezno.
             </div>
 
@@ -35,8 +51,8 @@
       <div class="p-field p-grid">
 
         <div class="p-col">
-          <p-inputMask [(ngModel)]="brojtelefona" #phonenumber="ngModel" id="phonenumber" mask="+387 99 999 999"
-                       placeholder="Broj telefona" class="form-control" ></p-inputMask>
+          <p-inputMask #phonenumber="ngModel" [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
+                       mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
 
         </div>
       </div>
@@ -47,68 +63,40 @@
 
 
         <div class="p-col">
-          <input [(ngModel)]="ime" id="firstname2" pInputText placeholder="Ime" [disabled]="true" type="text">
+          <input [(ngModel)]="ime" [disabled]="true" id="firstname2" pInputText placeholder="Ime" type="text">
         </div>
 
       </div>
       <div class="p-field p-grid">
 
         <div class="p-col">
-          <input [(ngModel)]="prezime" id="lastname2" pInputText placeholder="Prezime" [disabled]="true" type="text">
+          <input [(ngModel)]="prezime" [disabled]="true" id="lastname2" pInputText placeholder="Prezime" type="text">
         </div>
       </div>
       <div class="p-field p-grid">
 
         <div class="p-col">
-          <p-inputMask [(ngModel)]="brojtelefona" id="phonenumber2" mask="+387 99 999 999"
-                       placeholder="Broj telefona" [disabled]="true"></p-inputMask>
+          <p-inputMask [(ngModel)]="brojtelefona" [disabled]="true" id="phonenumber2"
+                       mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
         </div>
       </div>
     </div>
-    <div id="napomena" class="p-field p-grid">
+    <div class="p-field p-grid" id="napomena">
       <textarea [(ngModel)]="napomena" pInputTextarea placeholder="Napomena"
-                style="resize: none; width: 190px; color: black"></textarea>
+                style="resize: none; width: 240px; color: white"></textarea>
     </div>
-<!--    <div *ngFor="let dogadaj of dogadaji" class="dogadaji">-->
 
-<!--      <app-dogadaj dogadaj="dogadaj"></app-dogadaj>-->
-
-<!--    </div>-->
-    <div class="razdvajac">
-    <img src="assets/img/appdivider.png">
+    <div class="tipka">
+      <button (click)="Rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka" label="Rezerviraj" pButton
+              pRipple></button>
     </div>
-    <div class="dogadaji">
-      <div style="color: black; text-align: center; font-weight: 700; font-size: 18px;  margin-top: 15px">Odaberite događaj: </div>
-      <div class="dogadaj">
-        <button  class="p-button-lg" pButton type="button">
-          Dogadaj naziv
-          Dogadaj datum
-        </button>
-      </div>
-      <div class="dogadaj">
-        <button  class="p-button-lg" pButton type="button">
-          Dogadaj naziv
-          Dogadaj datum
-        </button>
-      </div>
-      <div class="dogadaj">
-        <button  class="p-button-lg" pButton type="button">
-          Dogadaj naziv
-          Dogadaj datum
-        </button>
-      </div>
-
-    </div>
-  <div class="tipka">
-    <button id="rezervirajtipka" pButton pRipple  label="Rezerviraj" (click)="Rezerviraj()" class="p-button-raised p-button-success p-button-text"></button>
-  </div>
   </div>
   <div id="desno">
-    <app-tables></app-tables>
+    <app-tables eventId="dogadajid"></app-tables>
 
   </div>
   <p-toast></p-toast>
 
 
-
 </div>
+
