@@ -9,11 +9,11 @@
   </ng-template>
   <ng-template pTemplate="body" let-rezervacija>
     <tr>
-      <td>{{rezervacija.korisnik}}</td>
-      <td>42</td>
+      <td>{{rezervacija.customer.ime + "" + rezervacija.customer.prezime}}</td>
+      <td>{{rezervacija.table_number}}</td>
 
-      <td *ngIf="rezervacija.confirmed">Potvrđeno</td>
-      <td *ngIf="!rezervacija.confirmed">Otkazano</td>
+      <td *ngIf="rezervacija.status == 1">Potvrđeno</td>
+      <td *ngIf="rezervacija.status == 0">Otkazano</td>
 
       <td>
         <button  (click)="PotvrdiRezervaciju(rezervacija.uid)" pButton type="button" class="p-button-rounded p-button-success" icon="pi pi-check"></button>

@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminComponent} from "@app/admin/admin.component";
-import {RezervacijaComponent} from "@app/home/rezervacija/rezervacija.component";
-import {DogadajiComponent} from "@app/home/dogadaji/dogadaji.component";
+import {RezervacijaComponent} from "@app/admin/rezervacija/rezervacija.component";
+import {DogadajiComponent} from "@app/admin/dogadaji/dogadaji.component";
 
 const routes: Routes = [
   {

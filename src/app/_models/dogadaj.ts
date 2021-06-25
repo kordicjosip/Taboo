@@ -1,18 +1,21 @@
-interface DogadajInterface {
-  id: number,
+export interface DogadajInterface {
+  id: string,
   title: string,
-  date: string
+  date: string,
+  description: string
 }
 
 export class Dogadaj {
-  id: number;
-  datum: string;
+  uid: string;
+  datum: Date;
   naziv: string;
+  opis: string;
   selected: boolean=false;
 
   constructor(res: DogadajInterface) {
-    this.id = res.id;
-    this.datum = res.date;
+    this.uid = res.id;
+    this.datum = new Date(res.date);
     this.naziv = res.title;
+    this.opis=res.description;
   }
 }

@@ -21,22 +21,23 @@ export class DogadajiService {
   private refreshTokenTimeout: any;
 
   constructor(
-    
+
     private http: HttpClient,
     private logger: NGXLogger
   ) {}
 
-  getDogadaji(): Observable<Dogadaj[]> {
-    return this.http.get<any>(`${environment.apiURL}/Events`).pipe(
+  getDogadaji(aktivni: boolean = false): Observable<Dogadaj[]> {
+    return this.http.get<any>(`${environment.apiURL}events${aktivni ? '?aktivni' : ""}`).pipe(
       map((res: any[]) => {
         const dogadaji: Dogadaj[] = [];
-        res.forEach((dogadaji: any) => {
-          dogadaji.push(new Dogadaj(dogadaji));
+        res.forEach((dogadaj: any) => {
+          dogadaji.push(new Dogadaj(dogadaj));
         });
+        this.logger.debug(JSON.stringify(dogadaji, null, 2));
         return dogadaji;
       })
     );
   }
 }
 
-    
+

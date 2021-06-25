@@ -29,20 +29,20 @@ export class AdminComponent implements OnInit {
 
   }
 
-  PotvrdiRezervaciju(uid: string) {
+  PotvrdiRezervaciju(uid: number) {
     for(let rezervacija of this.rezervacije){
       if(rezervacija.uid == uid){
-        rezervacija.confirmed=true;
+        rezervacija.status=1;
         this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste potvrdili rezervaciju!'});
         break;
       }
     }
   }
 
-  OtkaziRezervaciju(uid :string) {
+  OtkaziRezervaciju(uid: number) {
     for(let rezervacija of this.rezervacije){
       if(rezervacija.uid == uid){
-        rezervacija.confirmed=false;
+        rezervacija.status=0;
         this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste otkazali rezervaciju!'});
         break;
       }

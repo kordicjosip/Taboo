@@ -16,9 +16,9 @@ export class DogadajiComponent implements OnInit {
   ngOnInit(): void {
     this.dogadajiService.getDogadaji().subscribe(dogadaji=> this.dogadaji=dogadaji);
   }
-  
+
   link(dogadaj: Dogadaj){
-    this.router.navigate(['/dogadaji/' + dogadaj.id  +'/rezervacija'] )
+    this.router.navigate(['/dogadaji/' + dogadaj.uid  +'/rezervacija'] )
   }
 
 }

@@ -10,6 +10,7 @@ import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import { RezervacijaComponent } from './rezervacija/rezervacija.component';
 import { DogadajiComponent } from './dogadaji/dogadaji.component';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -19,6 +20,7 @@ import { DogadajiComponent } from './dogadaji/dogadaji.component';
     AdminComponent,
     RezervacijaComponent,
     DogadajiComponent,
+    LoginComponent,
 
   ],
   imports: [

@@ -6,9 +6,9 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-dogadaj>
-    <tr>
+    <tr class="clickable-row" (click)="link(dogadaj)">
       <td>{{dogadaj.naziv}}</td>
-      <td>{{dogadaj.datum}}</td>
+      <td>{{dogadaj.datum | date:"short"}}</td>
 
 
     </tr>
