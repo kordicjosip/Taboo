@@ -1,0 +1,25 @@
+<p-table [value]="rezervacije">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Ime i prezime</th>
+      <th>Broj stola</th>
+      <th>Potvrđena</th>
+      <th>Akcije</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rezervacija>
+    <tr>
+      <td>{{rezervacija.korisnik}}</td>
+      <td>42</td>
+
+      <td *ngIf="rezervacija.confirmed">Potvrđeno</td>
+      <td *ngIf="!rezervacija.confirmed">Otkazano</td>
+
+      <td>
+        <button  (click)="PotvrdiRezervaciju(rezervacija.uid)" pButton type="button" class="p-button-rounded p-button-success" icon="pi pi-check"></button>
+
+        <button (click)="OtkaziRezervaciju(rezervacija.uid)" style="margin-left: 10px" pButton type="button" class="p-button-rounded p-button-danger" icon="pi pi-times"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

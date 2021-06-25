@@ -5,7 +5,9 @@ import{NotificationService} from "@app/_services/notification.service";
 import {AuthJWTToken} from "@app/_models/auth";
 import {NGXLogger} from "ngx-logger";
 import {MessageService} from 'primeng/api';
-
+import {Table} from "@app/_models/table";
+import {DogadajiService} from "@app/_services/dogadaji.service";
+import {Dogadaj} from "@app/_models/dogadaj";
 
 
 @Component({
@@ -23,7 +25,10 @@ export class HomeComponent implements OnInit {
   brojtelefona: any;
   prezime: any;
   ime: any;
-  constructor(private messageService: MessageService, private logger:NGXLogger) {
+  dogadajid: any;
+  table: Table | null=null;
+  dogadaji: Dogadaj[]=[];
+  constructor(private messageService: MessageService, private logger:NGXLogger, private dogadajiService: DogadajiService) {
     this.logger.debug("Debug konstruktora");
 
 
@@ -41,7 +46,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  OdaberiDogadaj() {
-
+  OdaberiDogadaj(uid: string) {
+    this.dogadajid = uid;
   }
 }

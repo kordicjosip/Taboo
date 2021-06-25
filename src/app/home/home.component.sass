@@ -2,17 +2,15 @@
   display: grid
   grid-template-areas: 'lijevo desno'
   grid-template-columns: 205px auto
-  background: white
-  width: 100vw
-  height: 100vh
+  font-family: 'Poppins'
+
+
+  width: 100%
+  height: 100%
 
 #desno
   background-color: grey
 
-#desno img
-
-  width: 100%
-  height: 99vh
 
 ::ng-deep .p-inputtext
   margin-bottom: 5px
@@ -23,16 +21,46 @@
   color: black
 
 
-#lijevo
-  border: 1px groove lightblue
-  background-color: black
-  opacity: 70%
 
-#tipka
-  margin-left: 5px
-  position: absolute
-  bottom: 150px
-  left: 30px
+#lijevo
+
+  background-color: white
+
+.p-col
+  border: 1px solid lightgrey
+
+::ng-deep .p-inputtext
+  color: black
+
+
+::ng-deep ::placeholder
+  color: black
+  font-family: 'Poppins'
+  font-weight: 400
+
+.razdvajac
+  height: 100px
+
+  border-top: 1px solid lightgrey
+  border-bottom: 1px solid lightgrey
+  margin-top: 15px
+
+
+.razdvajac img
+  width: 205px
+  height: 100%
+  object-fit: cover
+
+#napomena
+  border: 1px solid lightgrey
+
+
+
+.tipka
+  text-align: center
+  margin-top: 35px
+
+
 
 .dogadaj
   color: white
@@ -40,7 +68,36 @@
   width: 190px
   margin-left: 5px
   margin-top: 20px
+  border: 1px solid lightgrey
 
+::ng-deep .p-button-lg
+  background-color: white
+  color: black
+  font-weight: bold
+  border: 0
+  height: 50px
+
+#rezervirajtipka
+  background: yellow
+  color: black
+  font-weight: bold
+  font-size: 20px
+  width: 160px
+  height: 50px
+  box-shadow: 2px 2px grey
+
+
+#rezervirajtipka:hover
+  background: greenyellow
+
+
+
+.dogadaji
+  color: black
+  font-weight: bold
+
+.container
+  text-align: center
 
 
 

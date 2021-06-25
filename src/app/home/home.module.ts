@@ -15,6 +15,9 @@ import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'primeng/toast';
 import {ButtonModule} from 'primeng/button';
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {TablesComponent} from "@app/home/tables/tables.component";
+import { DogadajComponent } from './dogadaj/dogadaj.component';
+import {RippleModule} from "primeng/ripple";
 
 
 
@@ -25,21 +28,24 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     PageComponent,
     DogadajiComponent,
     RezervacijaComponent,
+    TablesComponent,
+    DogadajComponent,
 
   ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    TabMenuModule,
-    InputTextModule,
-    InputMaskModule,
-    FormsModule,
-    ToastModule,
-    ButtonModule,
-    InputTextareaModule
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        TabMenuModule,
+        InputTextModule,
+        InputMaskModule,
+        FormsModule,
+        ToastModule,
+        ButtonModule,
+        InputTextareaModule,
+        RippleModule
 
 
-  ]
+    ]
 })
 export class HomeModule {
 }

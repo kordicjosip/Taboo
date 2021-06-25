@@ -1,26 +1,43 @@
 <div id="wrapper">
   <div id="lijevo">
     <div *ngIf="!prijavljen" id="forma">
-      <div style="color: white">Unesite svoje podatke</div>
+      <div style="color: black; text-align: center; font-weight: 700; font-size: 18px">Unesite svoje podatke</div>
       <div class="p-field p-grid">
 
 
         <div class="p-col">
-          <input [(ngModel)]="ime" id="firstname3" pInputText placeholder="Ime" type="text">
+          <input [(ngModel)]="ime" #name="ngModel" id="firstname3" pInputText placeholder="Ime" type="text" class="form-control" required >
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+            <div *ngIf="name.errors?.required">
+              Ime je obavezno.
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="p-field p-grid">
+
+
+        <div class="p-col">
+          <input [(ngModel)]="prezime" #surname="ngModel" id="lastname3" pInputText placeholder="Prezime" type="text" class="form-control" required >
+          <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
+            <div *ngIf="surname.errors?.required">
+              Prezime je obavezno.
+            </div>
+
+
+          </div>
         </div>
 
       </div>
       <div class="p-field p-grid">
 
         <div class="p-col">
-          <input [(ngModel)]="prezime" id="lastname3" pInputText placeholder="Prezime" type="text">
-        </div>
-      </div>
-      <div class="p-field p-grid">
+          <p-inputMask [(ngModel)]="brojtelefona" #phonenumber="ngModel" id="phonenumber" mask="+387 99 999 999"
+                       placeholder="Broj telefona" class="form-control" ></p-inputMask>
 
-        <div class="p-col">
-          <p-inputMask [(ngModel)]="brojtelefona" id="phonenumber" mask="+387 99 999 999"
-                       placeholder="Broj telefona"></p-inputMask>
         </div>
       </div>
 
@@ -30,63 +47,68 @@
 
 
         <div class="p-col">
-          <input [(ngModel)]="ime" id="firstname2" pInputText placeholder="Ime" type="text">
+          <input [(ngModel)]="ime" id="firstname2" pInputText placeholder="Ime" [disabled]="true" type="text">
         </div>
 
       </div>
       <div class="p-field p-grid">
 
         <div class="p-col">
-          <input [(ngModel)]="prezime" id="lastname2" pInputText placeholder="Prezime" type="text">
+          <input [(ngModel)]="prezime" id="lastname2" pInputText placeholder="Prezime" [disabled]="true" type="text">
         </div>
       </div>
       <div class="p-field p-grid">
 
         <div class="p-col">
           <p-inputMask [(ngModel)]="brojtelefona" id="phonenumber2" mask="+387 99 999 999"
-                       placeholder="Broj telefona"></p-inputMask>
+                       placeholder="Broj telefona" [disabled]="true"></p-inputMask>
         </div>
       </div>
     </div>
-    <div class="p-field p-grid">
+    <div id="napomena" class="p-field p-grid">
       <textarea [(ngModel)]="napomena" pInputTextarea placeholder="Napomena"
                 style="resize: none; width: 190px; color: black"></textarea>
     </div>
+<!--    <div *ngFor="let dogadaj of dogadaji" class="dogadaji">-->
+
+<!--      <app-dogadaj dogadaj="dogadaj"></app-dogadaj>-->
+
+<!--    </div>-->
+    <div class="razdvajac">
+    <img src="assets/img/appdivider.png">
+    </div>
     <div class="dogadaji">
-
+      <div style="color: black; text-align: center; font-weight: 700; font-size: 18px;  margin-top: 15px">Odaberite događaj: </div>
       <div class="dogadaj">
-        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+        <button  class="p-button-lg" pButton type="button">
           Dogadaj naziv
           Dogadaj datum
         </button>
       </div>
       <div class="dogadaj">
-        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+        <button  class="p-button-lg" pButton type="button">
           Dogadaj naziv
           Dogadaj datum
         </button>
       </div>
       <div class="dogadaj">
-        <button (click)="OdaberiDogadaj()" class="p-button-lg" pButton type="button">
+        <button  class="p-button-lg" pButton type="button">
           Dogadaj naziv
           Dogadaj datum
         </button>
       </div>
-
-    </div>
-    <div id="tipka">
-      <button (click)="Rezerviraj()" class="p-button-success p-button-lg" label="Rezerviraj" pButton
-              type="button"></button>
 
     </div>
+  <div class="tipka">
+    <button id="rezervirajtipka" pButton pRipple  label="Rezerviraj" (click)="Rezerviraj()" class="p-button-raised p-button-success p-button-text"></button>
+  </div>
   </div>
   <div id="desno">
-    <img alt="Slika" src="../../assets/img/Daleka.jpg">
+    <app-tables></app-tables>
+
   </div>
   <p-toast></p-toast>
-  <div>
 
-    <!--TODO stolovi-->
-  </div>
+
 
 </div>
