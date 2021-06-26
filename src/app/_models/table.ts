@@ -3,6 +3,7 @@ import {Dogadaj} from "@app/_models/dogadaj";
 
 interface TableInterface {
   id: number;
+  number: number;
   position_left: number;
   position_top: number;
   width: number;
@@ -19,6 +20,7 @@ enum TableStatus {
 
 export class Table {
   id: number;
+  number: number;
   x: number;
   y: number;
   width: number;
@@ -28,6 +30,7 @@ export class Table {
   // TODO ostala polja
   constructor(table: TableInterface) {
     this.id = table.id;
+    this.number = table.number;
     this.x = table.position_left;
     this.y = table.position_top;
     this.width = table.width;

@@ -3,6 +3,15 @@ interface JWTToken {
   refresh_token: string;
 }
 
+export interface Token {
+  token: string;
+}
+
+export interface SMSAuth {
+  token: string;
+  key: string;
+}
+
 export class AuthJWTToken {
   access_token: string;
   refresh_token: string;

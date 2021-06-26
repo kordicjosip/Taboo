@@ -15,3 +15,11 @@ export class User{
     this.enabled=res.enabled;
   }
 }
+
+export interface RegisterAndReserve {
+  phone_number: string;
+  ime: string;
+  prezime: string;
+  event: string;
+  table: number;
+}

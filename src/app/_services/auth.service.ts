@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {AuthJWTToken} from "@app/_models/auth";
+import {AuthJWTToken, SMSAuth} from "@app/_models/auth";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
@@ -45,11 +45,28 @@ export class AuthService {
   login(username: string, password: string, saveLogin: boolean) {
     this.http.post<any>(`${environment.apiURL}auth/login`, {username, password}, {withCredentials: false})
       .pipe(map(jwt => {
+        // TODO Možda ovo prebaciti u metodu
         this.jwtSubject.next(new AuthJWTToken(jwt));
         if (saveLogin) {
           this.startRefreshTokenTimer();
           this.saveCredidentials(this.jwtSubject.getValue())
         }
+        this.userService.getUserDetails().subscribe(
+          (user: User) => {
+            this.korisnikSubject.next(user);
+          }
+        );
+      })).subscribe();
+  }
+
+  confirmSMSAuth(req: SMSAuth) {
+    this.http.post<any>(`${environment.apiURL}auth/sms/confirm`, req, {withCredentials: false})
+      .pipe(map(jwt => {
+        // TODO Možda ovo prebaciti u metodu
+        this.jwtSubject.next(new AuthJWTToken(jwt));
+        this.startRefreshTokenTimer();
+        this.saveCredidentials(this.jwtSubject.getValue())
+
         this.userService.getUserDetails().subscribe(
           (user: User) => {
             this.korisnikSubject.next(user);
@@ -78,9 +95,10 @@ export class AuthService {
     const token: AuthJWTToken = this.jwtSubject.getValue();
     return this.http.post<any>(`${environment.apiURL}auth/refresh`, {refresh_token: token.refresh_token}, {withCredentials: false})
       .pipe(map(korisnikLogin => {
+        // TODO Možda ovo prebaciti u metodu
         this.jwtSubject.next(korisnikLogin);
         this.startRefreshTokenTimer();
-        localStorage.setItem('korisnikLogin', JSON.stringify(korisnikLogin));
+        this.saveCredidentials(this.jwtSubject.getValue())
         this.logger.debug('Token refresh: end');
 
         this.userService.getUserDetails().subscribe(
