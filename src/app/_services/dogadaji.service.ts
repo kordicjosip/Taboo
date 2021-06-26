@@ -18,8 +18,8 @@ export class DogadajiService {
   ) {
   }
 
-  getDogadaji(aktivni: boolean = false): Observable<Dogadaj[]> {
-    return this.http.get<any>(`${environment.apiURL}events`, {params: {aktivni}}).pipe(
+  getDogadaji(active: boolean = false): Observable<Dogadaj[]> {
+    return this.http.get<any>(`${environment.apiURL}events`, {params: {active}}).pipe(
       map((res: any[]) => {
         const dogadaji: Dogadaj[] = [];
         res.forEach((dogadaj: any) => {
