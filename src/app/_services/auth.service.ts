@@ -6,6 +6,8 @@ import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
+import {User} from "@app/_models/user";
+import {UserService} from "@app/_services/user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +17,15 @@ export class AuthService {
   jwtSubject: BehaviorSubject<AuthJWTToken | any>;
 
   // TODO podatci o korisniku
-  // korisnikSubject: BehaviorSubject<any>;
+  korisnikSubject = new BehaviorSubject<User | null>(null);
 
   private refreshTokenTimeout: any;
 
   constructor(
     private router: Router,
     private http: HttpClient,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private userService: UserService
   ) {
     const token = localStorage.getItem(this.jwt_token_key)
     if (token == null) {
@@ -39,16 +42,20 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string, saveLogin: boolean): Observable<AuthJWTToken> {
-    return this.http.post<any>(`${environment.apiURL}auth/login`, {username, password}, {withCredentials: false})
+  login(username: string, password: string, saveLogin: boolean) {
+    this.http.post<any>(`${environment.apiURL}auth/login`, {username, password}, {withCredentials: false})
       .pipe(map(jwt => {
         this.jwtSubject.next(new AuthJWTToken(jwt));
         if (saveLogin) {
           this.startRefreshTokenTimer();
           this.saveCredidentials(this.jwtSubject.getValue())
         }
-        return this.jwtSubject.getValue();
-      }));
+        this.userService.getUserDetails().subscribe(
+          (user: User) => {
+            this.korisnikSubject.next(user);
+          }
+        );
+      })).subscribe();
   }
 
   saveCredidentials(token: AuthJWTToken) {
@@ -63,6 +70,9 @@ export class AuthService {
     this.jwtSubject.next(null);
   }
 
+  /**
+   * Osvježava token i kupi detalje o trenutnom korisniku
+   */
   refreshToken() {
     this.logger.debug('Token refresh: start');
     const token: AuthJWTToken = this.jwtSubject.getValue();
@@ -72,6 +82,12 @@ export class AuthService {
         this.startRefreshTokenTimer();
         localStorage.setItem('korisnikLogin', JSON.stringify(korisnikLogin));
         this.logger.debug('Token refresh: end');
+
+        this.userService.getUserDetails().subscribe(
+          (user: User) => {
+            this.korisnikSubject.next(user);
+          }
+        );
       }));
   }
 

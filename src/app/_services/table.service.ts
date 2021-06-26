@@ -33,5 +33,4 @@ export class TableService {
         this.tablesSubject.next(new TableEventHolder(tables, eventId));
       }));
   }
-
 }

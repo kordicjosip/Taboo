@@ -24,5 +24,4 @@ export class DogadajiComponent implements OnInit {
   link(dogadaj: Dogadaj){
     this.router.navigate(['admin/dogadaji/' + dogadaj.uid  +'/rezervacija'] )
   }
-
 }

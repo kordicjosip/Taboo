@@ -50,7 +50,6 @@ export class NotificationService implements OnDestroy {
             break;
           }
         }
-
       },
       error => {
         this.logger.error(error);
