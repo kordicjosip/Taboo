@@ -4,7 +4,7 @@
 
     <div class="dogadaji">
       <div
-        style="color: white; text-align: center; font-weight: 700; font-size: 18px;  padding-top:10px; padding-left: 5px">
+        style="color: white; text-align: center; font-weight: 700; font-size: 18px;  padding-top:20px; padding-left: 5px">
         1. ODABERITE DOGAĐAJ:
       </div>
       <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
@@ -17,7 +17,7 @@
       <img src="assets/img/appdividertransperent.png">
     </div>
     <div *ngIf="!prijavljen" id="forma">
-      <div style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE PODATKE</div>
+      <div class=drugikorak style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE PODATKE</div>
       <div class="p-field p-grid">
 
 
@@ -25,7 +25,7 @@
           <input #name="ngModel" [(ngModel)]="ime" class="form-control" id="firstname3" pInputText placeholder="Ime"
                  required type="text">
           <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-            <div *ngIf="name.errors?.required" style="color:white">
+            <div *ngIf="name.errors?.required" style="color:white; margin-left: 15px">
               Ime je obavezno.
             </div>
           </div>
@@ -37,7 +37,7 @@
                  placeholder="Prezime"
                  required type="text">
           <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
-            <div *ngIf="surname.errors?.required" style="color:white">
+            <div *ngIf="surname.errors?.required" style="color:white; margin-left: 15px">
               Prezime je obavezno.
             </div>
           </div>
