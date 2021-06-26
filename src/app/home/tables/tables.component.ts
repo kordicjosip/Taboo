@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
 import {Table, TableEventHolder, TableReference} from "@app/_models/table";
@@ -15,7 +15,7 @@ export class TablesComponent implements OnInit, OnChanges {
   @Input('event')
   event: Dogadaj | null = null;
   @Output('selectedTable')
-  selectedTable: Table | null = null;
+  selectedTable = new EventEmitter<Table | null>();
 
   private selectedTableSubject = new BehaviorSubject<Table | null>(null);
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
@@ -25,7 +25,7 @@ export class TablesComponent implements OnInit, OnChanges {
     private logger: NGXLogger,
     private tableService: TableService
   ) {
-    this.selectedTableSubject.subscribe(table => this.selectedTable = table);
+    this.selectedTableSubject.subscribe(table => this.selectedTable.emit(table));
 
     tableService.loadTables(this.event).subscribe();
     tableService.tablesSubject.subscribe(
@@ -76,13 +76,11 @@ export class TablesComponent implements OnInit, OnChanges {
         d3.select(this).transition()
           .duration(500)
           .attr('opacity', '.1');
-        console.log(d)
       })
       .on('mouseout', function (d, _) {
         d3.select(this).transition()
           .duration(500)
           .attr('opacity', '1');
-        console.log(d)
       })
 
     fixedLayout.append('rect')

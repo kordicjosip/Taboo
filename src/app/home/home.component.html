@@ -79,7 +79,7 @@
     </div>
   </div>
   <div id="desno">
-    <app-tables [event]="odabraniDogadaj"></app-tables>
+    <app-tables (selectedTable)="table = $event" [event]="odabraniDogadaj"></app-tables>
   </div>
 
   <p-toast></p-toast>
