@@ -1,18 +1,19 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
 import {Table, TableEventHolder, TableReference} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
+import {Dogadaj} from "@app/_models/dogadaj";
 
 @Component({
   selector: 'app-tables',
   templateUrl: './tables.component.html',
   styleUrls: ['./tables.component.sass']
 })
-export class TablesComponent implements OnInit {
-  @Input('eventId')
-  eventId: string | null = null;
+export class TablesComponent implements OnInit, OnChanges {
+  @Input('event')
+  event: Dogadaj | null = null;
   @Output('selectedTable')
   selectedTable: Table | null = null;
 
@@ -26,10 +27,10 @@ export class TablesComponent implements OnInit {
   ) {
     this.selectedTableSubject.subscribe(table => this.selectedTable = table);
 
-    tableService.loadTables(this.eventId).subscribe();
+    tableService.loadTables(this.event).subscribe();
     tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
-        if (tableEventHolder != null && this.eventId == tableEventHolder.event) {
+        if (tableEventHolder != null && this.event == tableEventHolder.event) {
           for (const table of tableEventHolder.tables) {
             const originalTable = this.tableReferences.get(table.id)
             if (originalTable == undefined) {
@@ -39,6 +40,18 @@ export class TablesComponent implements OnInit {
                 this.removeTable(originalTable.table);
                 this.addTable(table);
               }
+            }
+          }
+          // TODO Optimizirati
+          for (const insertedTable of this.tableReferences.entries()) {
+            let remove = true;
+            for (const table of tableEventHolder.tables) {
+              if (insertedTable[0] == table.id) {
+                remove = false;
+              }
+            }
+            if (remove) {
+              this.removeTable(this.tableReferences.get(insertedTable[0])!.table);
             }
           }
         }
@@ -95,6 +108,10 @@ export class TablesComponent implements OnInit {
       }));
 
     this.logger.debug("Initialized tables");
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.tableService.loadTables(this.event).subscribe();
   }
 
   addTable(table: Table) {
