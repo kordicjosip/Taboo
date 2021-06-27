@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {AuthJWTToken, SMSAuth} from "@app/_models/auth";
+import {BehaviorSubject} from "rxjs";
+import {AuthJWTToken, Token} from "@app/_models/auth";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
@@ -18,7 +18,7 @@ export class AuthService {
 
   // TODO podatci o korisniku
   korisnikSubject = new BehaviorSubject<User | null>(null);
-
+  smsAuthToken;
   private refreshTokenTimeout: any;
 
   constructor(
@@ -28,6 +28,13 @@ export class AuthService {
     private userService: UserService
   ) {
     const token = localStorage.getItem(this.jwt_token_key)
+    const smsAuthToken = localStorage.getItem('smsAuthToken');
+    if (smsAuthToken != null)
+      this.smsAuthToken = new BehaviorSubject<Token | null>({token: JSON.parse(smsAuthToken).token});
+    else this.smsAuthToken = new BehaviorSubject<Token | null>(null);
+    this.smsAuthToken.subscribe(
+      smsAuthToken => localStorage.setItem('smsAuthToken', JSON.stringify(smsAuthToken))
+    )
     if (token == null) {
       logger.debug('User not available')
       this.jwtSubject = new BehaviorSubject(null);
@@ -59,7 +66,11 @@ export class AuthService {
       })).subscribe();
   }
 
-  confirmSMSAuth(req: SMSAuth) {
+  confirmSMSAuth(key: string) {
+    const req = {
+      key,
+      token: this.smsAuthToken.getValue()?.token
+    }
     this.http.post<any>(`${environment.apiURL}auth/sms/confirm`, req, {withCredentials: false})
       .pipe(map(jwt => {
         // TODO Možda ovo prebaciti u metodu

@@ -3,6 +3,7 @@ import {DogadajiService} from '@app/_services/dogadaji.service';
 import {Dogadaj} from '@app/_models/dogadaj';
 import {Router} from '@angular/router';
 import {NGXLogger} from "ngx-logger";
+import {RezervacijeService} from "@app/_services/rezervacije.service";
 
 @Component({
   selector: 'app-dogadaji',
@@ -10,16 +11,21 @@ import {NGXLogger} from "ngx-logger";
   styleUrls: ['./dogadaji.component.sass']
 })
 export class DogadajiComponent implements OnInit {
-
   dogadaji: Dogadaj[] = [];
 
-  constructor(private dogadajiService: DogadajiService, private router: Router, private logger: NGXLogger) {
+  rezervacijeService: RezervacijeService
+
+  constructor(private dogadajiService: DogadajiService,
+              private router: Router,
+              private logger: NGXLogger,
+              rezervacijeService: RezervacijeService) {
+    this.rezervacijeService = rezervacijeService;
   }
 
   ngOnInit(): void {
     this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
       this.dogadaji = dogadaji;
-      this.logger.debug(this.dogadaji);
+      this.rezervacijeService.selectedEvent.next(dogadaji[0])
     });
   }
 

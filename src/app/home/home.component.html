@@ -1,85 +1,16 @@
 <div id="wrapper">
 
   <div id="lijevo">
-
     <div class="dogadaji">
-      <div
-        style="color: white; text-align: center; font-weight: 700; font-size: 18px;  padding-top:20px; padding-left: 5px">
-        1. ODABERITE DOGAĐAJ:
-      </div>
-      <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
-        <app-dogadaj (click)="odabraniDogadaj = dogadaj" [dogadaj]=dogadaj></app-dogadaj>
-      </div>
+      <app-dogadaji></app-dogadaji>
     </div>
-
-
     <div class="razdvajac">
       <img src="assets/img/appdividertransperent.png">
     </div>
-    <div *ngIf="!prijavljen" id="forma">
-      <div class=drugikorak style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE PODATKE</div>
-      <div class="p-field p-grid">
-
-
-        <div class="p-col">
-          <input #name="ngModel" [(ngModel)]="ime" class="form-control" id="firstname3" pInputText placeholder="Ime"
-                 required type="text">
-          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-            <div *ngIf="name.errors?.required" style="color:white; margin-left: 15px">
-              Ime je obavezno.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <input #surname="ngModel" [(ngModel)]="prezime" class="form-control" id="lastname3" pInputText
-                 placeholder="Prezime"
-                 required type="text">
-          <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
-            <div *ngIf="surname.errors?.required" style="color:white; margin-left: 15px">
-              Prezime je obavezno.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <p-inputMask #phonenumber="ngModel" [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
-                       mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="prijavljen" id="prijavljen">
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <input [(ngModel)]="ime" [disabled]="true" id="firstname2" pInputText placeholder="Ime" type="text">
-        </div>
-      </div>
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <input [(ngModel)]="prezime" [disabled]="true" id="lastname2" pInputText placeholder="Prezime" type="text">
-        </div>
-      </div>
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <p-inputMask [(ngModel)]="brojtelefona" [disabled]="true" id="phonenumber2"
-                       mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
-        </div>
-      </div>
-    </div>
-    <div class="p-field p-grid" id="napomena">
-      <textarea [(ngModel)]="napomena" pInputTextarea placeholder="Napomena"
-                style="resize: none; width: 240px; color: white"></textarea>
-    </div>
-    <div class="tipka">
-      <button (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
-              label="Rezerviraj" pButton
-              pRipple></button>
-    </div>
+    <router-outlet></router-outlet>
   </div>
   <div id="desno">
-    <app-tables (selectedTable)="table = $event" [event]="odabraniDogadaj"></app-tables>
+    <app-tables></app-tables>
   </div>
 
   <p-toast></p-toast>

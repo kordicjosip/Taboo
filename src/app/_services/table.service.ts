@@ -6,6 +6,7 @@ import {Table, TableEventHolder} from "@app/_models/table";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
 import {Dogadaj} from "@app/_models/dogadaj";
+import {RezervacijeService} from "@app/_services/rezervacije.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,19 @@ export class TableService {
 
   constructor(
     private http: HttpClient,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private rezervacijeService: RezervacijeService
   ) {
     this.tablesSubject = new BehaviorSubject(null);
+    rezervacijeService.selectedEvent.subscribe(
+      event => {
+        if (event != null) {
+          logger.debug("Učitavanje stolova za događaj: " + event?.uid)
+          this.loadTables(event).subscribe();
+        } else
+          logger.debug("Potrebno ručno pozivanje loadTables za event null")
+      }
+    )
   }
 
   /** Učitava popis stolova u tablesSubject(po defaultu je null).
@@ -30,7 +41,6 @@ export class TableService {
         for (const resTable of resTables) {
           tables.push(new Table(resTable))
         }
-        // TODO Držati event umjesto eventId
         this.tablesSubject.next(new TableEventHolder(tables, event));
       }));
   }
