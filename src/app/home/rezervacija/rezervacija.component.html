@@ -35,8 +35,7 @@
                    mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
     </div>
   </div>
-  <div style="color: white; text-align: center; font-weight: 700; font-size: 18px;">3. ODABERITE STOL I NAPIŠITE
-    NAPOMENU
+  <div style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">3. ODABERITE STOL
   </div>
   <div class="p-field p-grid" id="napomena">
       <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
