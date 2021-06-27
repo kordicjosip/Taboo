@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "@app/_services/user.service";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {Router} from "@angular/router";
 import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
-import {InputMask} from "primeng/inputmask";
 
 @Component({
   selector: 'app-rezervacija',
@@ -14,32 +13,25 @@ import {InputMask} from "primeng/inputmask";
   providers: [ConfirmationService, MessageService]
 })
 export class RezervacijaComponent implements OnInit {
-  @ViewChild('sms')
-  sms: InputMask | undefined;
-
   ime: string = "";
   prezime: string = "";
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
 
-  rezervacijeService: RezervacijeService;
-
   constructor(
     private userService: UserService,
-    rezervacijeService: RezervacijeService,
+    private rezervacijeService: RezervacijeService,
     private router: Router,
     private authService: AuthService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private logger: NGXLogger
   ) {
-    this.rezervacijeService = rezervacijeService;
   }
 
   ngOnInit() {
     if (this.authService.smsAuthToken.getValue() != null) {
-      this.sms?.focus();
       this.confirmationService.confirm({
         accept: () => {
           this.smsConfirm(this.smskey);
@@ -52,12 +44,16 @@ export class RezervacijaComponent implements OnInit {
   }
  // TODO Napraviti success view za svaku uspješnu rezervaciju(i u mobileu)
   rezerviraj() {
+    this.rezervacijeService.ime.next(this.ime);
+    this.rezervacijeService.prezime.next(this.prezime);
+    this.rezervacijeService.brojtelefona.next(this.brojtelefona);
+    this.rezervacijeService.napomena.next(this.napomena);
+
     if (this.isLoggedIn()) {
       this.rezervacijeService.createReservacija({
         table_number: this.rezervacijeService.selectedTable.getValue()!.number,
         event: this.rezervacijeService.selectedEvent.getValue()!.uid,
         message: this.napomena
-
       })
     } else {
       this.userService.registerAndReserve({
@@ -70,7 +66,6 @@ export class RezervacijaComponent implements OnInit {
       }).subscribe(
         token => {
           this.authService.smsAuthToken.next(token);
-          this.sms?.focus();
 
           this.confirmationService.confirm({
             accept: () => {
