@@ -1,21 +1,19 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
 import {Table, TableEventHolder, TableReference} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
 import {Dogadaj} from "@app/_models/dogadaj";
+import {RezervacijeService} from "@app/_services/rezervacije.service";
 
 @Component({
   selector: 'app-tables',
   templateUrl: './tables.component.html',
   styleUrls: ['./tables.component.sass']
 })
-export class TablesComponent implements OnInit, OnChanges {
-  @Input('event')
+export class TablesComponent implements OnInit {
   event: Dogadaj | null = null;
-  @Output('selectedTable')
-  selectedTable = new EventEmitter<Table | null>();
 
   private selectedTableSubject = new BehaviorSubject<Table | null>(null);
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
@@ -23,11 +21,20 @@ export class TablesComponent implements OnInit, OnChanges {
 
   constructor(
     private logger: NGXLogger,
-    private tableService: TableService
+    private tableService: TableService,
+    private rezervacijeService: RezervacijeService
   ) {
-    this.selectedTableSubject.subscribe(table => this.selectedTable.emit(table));
+    this.selectedTableSubject.subscribe(table => {
+      this.rezervacijeService.selectedTable.next(table);
+      logger.debug("Selected table number: " + table?.number)
+    });
+    this.rezervacijeService.selectedEvent.subscribe(
+      event => {
+        this.event = event;
+        logger.debug("Selected event: " + event?.uid)
+      }
+    )
 
-    tableService.loadTables(this.event).subscribe();
     tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
         if (tableEventHolder != null && this.event == tableEventHolder.event) {
@@ -108,10 +115,6 @@ export class TablesComponent implements OnInit, OnChanges {
     this.logger.debug("Initialized tables");
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.tableService.loadTables(this.event).subscribe();
-  }
-
   addTable(table: Table) {
     this.logger.debug("Adding table: " + JSON.stringify(table));
     const logger = this.logger;
@@ -136,7 +139,6 @@ export class TablesComponent implements OnInit, OnChanges {
       if (selectedTable != null) {
         tableReferences.get(selectedTable.id)?.g.select('circle').attr('fill', 'rgba(105,163,178,1)');
       }
-      logger.debug("Odabran stol: " + table.id);
       selectedTableSubject.next(table);
       // TODO Vratiti na boju koja odgovara tom statusu
       circle

@@ -25,7 +25,7 @@ export class DogadajiService {
         res.forEach((dogadaj: any) => {
           dogadaji.push(new Dogadaj(dogadaj));
         });
-        this.logger.debug(JSON.stringify(dogadaji, null, 2));
+        this.logger.debug("Učitani događaji: " + JSON.stringify(dogadaji, null, 2))
         return dogadaji;
       })
     );
