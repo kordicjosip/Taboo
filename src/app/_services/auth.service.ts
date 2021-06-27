@@ -67,8 +67,9 @@ export class AuthService {
   }
 
   confirmSMSAuth(key: string) {
+    // TODO U slučaju da nije uspjelo spremiti novi token
     const req = {
-      key,
+      key: key,
       token: this.smsAuthToken.getValue()?.token
     }
     this.http.post<any>(`${environment.apiURL}auth/sms/confirm`, req, {withCredentials: false})

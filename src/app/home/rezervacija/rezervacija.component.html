@@ -5,7 +5,7 @@
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input #name="ngModel" (ngModelChange)="rezervacijeService.ime.next(ime)" [(ngModel)]="ime" class="form-control"
+      <input #name="ngModel" [(ngModel)]="ime" class="form-control"
              id="firstname3" pInputText placeholder="Ime"
              required type="text">
       <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
@@ -17,7 +17,7 @@
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input #surname="ngModel" (ngModelChange)="rezervacijeService.prezime.next(prezime)" [(ngModel)]="prezime"
+      <input #surname="ngModel" [(ngModel)]="prezime"
              class="form-control" id="lastname3" pInputText
              placeholder="Prezime"
              required type="text">
@@ -30,15 +30,14 @@
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <p-inputMask #phonenumber="ngModel" (ngModelChange)="rezervacijeService.brojtelefona.next(brojtelefona)"
-                   [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
+      <p-inputMask #phonenumber="ngModel" [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
                    mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
     </div>
   </div>
   <div style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">3. ODABERITE STOL --->
   </div>
   <div class="p-field p-grid" id="napomena">
-      <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
+      <textarea [(ngModel)]="napomena" pInputTextarea
                 placeholder="Napomena"
                 style="resize: none; width: 240px; color: white"></textarea>
   </div>
