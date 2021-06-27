@@ -50,7 +50,7 @@ export class RezervacijaComponent implements OnInit {
       });
     }
   }
-
+ // TODO Napraviti success view za svaku uspješnu rezervaciju(i u mobileu)
   rezerviraj() {
     if (this.isLoggedIn()) {
       this.rezervacijeService.createReservacija({

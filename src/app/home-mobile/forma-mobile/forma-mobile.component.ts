@@ -10,7 +10,8 @@ import {NGXLogger} from "ngx-logger";
 @Component({
   selector: 'app-forma-mobile',
   templateUrl: './forma-mobile.component.html',
-  styleUrls: ['./forma-mobile.component.sass']
+  styleUrls: ['./forma-mobile.component.sass'],
+  providers: [ConfirmationService, MessageService]
 })
 export class FormaMobileComponent implements OnInit {
 

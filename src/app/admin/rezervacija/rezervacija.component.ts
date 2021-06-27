@@ -25,7 +25,7 @@ export class RezervacijaComponent implements OnInit {
       this.logger.debug(this.rezervacije);
     })
   }
-
+ //TODO napraviti da PotvrdiRezervaciju i OtkaziRezervaciju pozivaju PUT metode za updateanje polja "status" od rezervacije u bazi
   PotvrdiRezervaciju(uid: number) {
     for(let rezervacija of this.rezervacije){
       if(rezervacija.uid == uid){

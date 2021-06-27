@@ -16,7 +16,7 @@ export class DogadajComponent implements OnInit {
 
   @Input('selected')
   selected: boolean = false;
-
+ //TODO Napraviti da se korisniku disablea događaj ako vec ima rezervaciju za taj dogadaj ili napraviti da mu piše VEC REZERVIRANO pored tog događaja
   constructor() {
 
   }

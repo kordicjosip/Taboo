@@ -1,6 +1,7 @@
 <div id="forma">
+  <!-- TODO Napraviti prikaz polja iako je logiran korisnik sa njegovim podatcima i disableati input -->
   <div *ngIf="!isLoggedIn()" class=drugikorak
-       style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE
+       style="color: white; text-align: center; font-weight: 700; font-size: 23px; padding-top:160px; margin-bottom: 30px; padding-left: 5px">3. UNESITE VAŠE
     PODATKE
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
@@ -35,12 +36,11 @@
                    mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
     </div>
   </div>
-  <div style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">3. ODABERITE STOL --->
   </div>
   <div class="p-field p-grid" id="napomena">
       <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
-                placeholder="Napomena"
-                style="resize: none; width: 240px; color: white"></textarea>
+                placeholder="Napomena (opcionalno)"
+                style="resize: none; width: 240px; color: white; "></textarea>
   </div>
 
   <div class="tipka">
@@ -48,7 +48,7 @@
             label="Rezerviraj" pButton
             pRipple></button>
   </div>
-</div>
+
 
 <p-confirmDialog #cd [closeOnEscape]="true" [dismissableMask]="true" [style]="{width: '50vw'}">
   <ng-template pTemplate="header">

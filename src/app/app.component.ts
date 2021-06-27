@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {NotificationService} from "@app/_services/notification.service";
+import {RezervacijeService} from "@app/_services/rezervacije.service";
+import {TableService} from "@app/_services/table.service";
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,6 @@ import {NotificationService} from "@app/_services/notification.service";
 })
 export class AppComponent {
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private reservationService: RezervacijeService, private tableService: TableService) {
   }
 }

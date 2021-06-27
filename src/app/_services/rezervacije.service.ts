@@ -36,7 +36,7 @@ export class RezervacijeService {
   }
 
   getRezervacijeByEvent(uid: string): Observable<Rezervacija[]> {
-    return this.http.get<any>(`${environment.apiURL}reservations/event/${uid}`).pipe(
+    return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`).pipe(
       map((res: any[]) => {
         const rezervacije: Rezervacija[] = [];
         res.forEach((rezervacija: any) => {
