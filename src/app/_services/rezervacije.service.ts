@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
-import {Rezervacija} from "@app/_models/rezervacija";
+import {Rezervacija, RezervacijaCreateInterface} from "@app/_models/rezervacija";
 import {Table} from "@app/_models/table";
 import {Dogadaj} from "@app/_models/dogadaj";
 
@@ -25,6 +25,14 @@ export class RezervacijeService {
     private http: HttpClient,
     private logger: NGXLogger,
   ) {
+  }
+
+  createReservacija(req: RezervacijaCreateInterface): Observable<Rezervacija> {
+    return this.http.post(`${environment.apiURL}reservations`, req).pipe(
+      map((res: any) => {
+        return new Rezervacija(res);
+      })
+    )
   }
 
   getRezervacijeByEvent(uid: string): Observable<Rezervacija[]> {

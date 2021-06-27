@@ -3,8 +3,6 @@ import {CommonModule} from '@angular/common';
 
 import {HomeRoutingModule} from './home-routing.module';
 import {HomeComponent} from './home.component';
-import {NavbarComponent} from './navbar/navbar.component';
-import {PageComponent} from './page/page.component';
 import {DogadajiComponent} from './dogadaji/dogadaji.component';
 import {RezervacijaComponent} from './rezervacija/rezervacija.component';
 import {TabMenuModule} from 'primeng/tabmenu';
@@ -17,36 +15,30 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {TablesComponent} from "@app/home/tables/tables.component";
 import {DogadajComponent} from './dogadaj/dogadaj.component';
 import {RippleModule} from "primeng/ripple";
-import {RezervacijaRegistracijaComponent} from './rezervacija-registracija/rezervacija-registracija.component';
-import {PotvrdaSmsComponent} from './potvrda-sms/potvrda-sms.component';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    NavbarComponent,
-    PageComponent,
     DogadajiComponent,
     RezervacijaComponent,
     TablesComponent,
     DogadajComponent,
-    RezervacijaRegistracijaComponent,
-    PotvrdaSmsComponent,
   ],
-    imports: [
-        CommonModule,
-        HomeRoutingModule,
-        TabMenuModule,
-        InputTextModule,
-        InputMaskModule,
-        FormsModule,
-        ToastModule,
-        ButtonModule,
-        InputTextareaModule,
-        RippleModule,
-        ConfirmDialogModule
-    ]
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    TabMenuModule,
+    InputTextModule,
+    InputMaskModule,
+    FormsModule,
+    ToastModule,
+    ButtonModule,
+    InputTextareaModule,
+    RippleModule,
+    ConfirmDialogModule
+  ]
 })
 export class HomeModule {
 }

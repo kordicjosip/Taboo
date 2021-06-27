@@ -19,6 +19,7 @@ export class AuthGuardCustomer implements CanActivate {
     const jwt = this.authService.jwtSubject.getValue();
     if (jwt == null) {
       this.logger.debug(`User not logged in`);
+      // TODO Proslijediti get parametre
       this.router.navigate(["/rezervacijeregister"])
       return false;
     }

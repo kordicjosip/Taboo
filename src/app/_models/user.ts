@@ -27,4 +27,5 @@ export interface RegisterAndReserve {
   prezime: string;
   event: string;
   table: number;
+  message: string;
 }

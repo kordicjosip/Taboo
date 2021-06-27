@@ -70,7 +70,8 @@ export class TablesComponent implements OnInit {
 
     const svg = d3.select("div#tables")
       .append("svg")
-      .attr("viewBox", "0 0 1200 800");
+      .attr("height", "100%")
+      .attr("width", "100%");
 
     const fixedLayout = svg.append("g");
 
@@ -94,8 +95,8 @@ export class TablesComponent implements OnInit {
       .attr('fill', 'rgba(0,0,0,0.01)')
       .attr('x', 0)
       .attr("y", 0)
-      .attr("width", 1200)
-      .attr("height", 800)
+      .attr("width", "100%")
+      .attr("height", "100%")
       .attr('stroke', '#2378ae')
       .attr('stroke-dasharray', '10,5')
       .attr('stroke-linecap', 'butt')
