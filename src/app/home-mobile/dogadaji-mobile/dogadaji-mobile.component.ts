@@ -40,6 +40,6 @@ export class DogadajiMobileComponent implements OnInit {
   }
 
   next() {
-
+    this.router.navigate(["/tables"]);
   }
 }
