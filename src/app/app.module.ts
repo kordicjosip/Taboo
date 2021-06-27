@@ -12,13 +12,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appInitializer} from "@app/_helpers/app.initializer";
 import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
 import {NotFoundComponent} from './not-found/not-found.component';
+import { HomeMobileComponent } from './home-mobile/home-mobile.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HomeMobileComponent
   ],
   imports: [
     BrowserModule,

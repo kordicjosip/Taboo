@@ -19,6 +19,7 @@ import {DogadajComponent} from './dogadaj/dogadaj.component';
 import {RippleModule} from "primeng/ripple";
 import {RezervacijaRegistracijaComponent} from './rezervacija-registracija/rezervacija-registracija.component';
 import {PotvrdaSmsComponent} from './potvrda-sms/potvrda-sms.component';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 
 @NgModule({
@@ -33,18 +34,19 @@ import {PotvrdaSmsComponent} from './potvrda-sms/potvrda-sms.component';
     RezervacijaRegistracijaComponent,
     PotvrdaSmsComponent,
   ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    TabMenuModule,
-    InputTextModule,
-    InputMaskModule,
-    FormsModule,
-    ToastModule,
-    ButtonModule,
-    InputTextareaModule,
-    RippleModule
-  ]
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        TabMenuModule,
+        InputTextModule,
+        InputMaskModule,
+        FormsModule,
+        ToastModule,
+        ButtonModule,
+        InputTextareaModule,
+        RippleModule,
+        ConfirmDialogModule
+    ]
 })
 export class HomeModule {
 }

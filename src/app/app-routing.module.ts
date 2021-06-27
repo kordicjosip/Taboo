@@ -5,7 +5,16 @@ import {AuthGuard} from "@app/_helpers/auth-guard.service";
 import {NotFoundComponent} from "@app/not-found/not-found.component";
 
 const routes: Routes = [
-  {path: '', loadChildren: () => import(`./home/home.module`).then(m => m.HomeModule)},
+  {path: '',
+    loadChildren: () => {
+      if(window.innerWidth > 768 ) {
+        return import('./home/home.module').then(m => m.HomeModule)
+      } else {
+        return import('./home-mobile/home-mobile.module').then(m => m.HomeMobileModule)
+      }
+    }
+    },
+
   {
     path: 'admin',
     loadChildren: () => import(`./admin/admin.module`).then(m => m.AdminModule),

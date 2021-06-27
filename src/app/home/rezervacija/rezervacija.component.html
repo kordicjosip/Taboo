@@ -1,1 +1,42 @@
-<p>rezervacija works!</p>
+<div id="forma">
+  <div class=drugikorak style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE
+    PODATKE
+  </div>
+  <div class="p-field p-grid">
+
+    <div class="p-col">
+      <input
+        id="firstname3" pInputText
+        required type="text"
+        [value]="ime"
+        [disabled]="true">
+    </div>
+  </div>
+  <div class="p-field p-grid">
+    <div class="p-col">
+      <input
+            id="lastname3" pInputText
+            required type="text"
+            [value]="prezime"
+            [disabled]="true">
+    </div>
+  </div>
+  <div class="p-field p-grid">
+    <div class="p-col">
+      <p-inputMask id="phonenumber"
+                   mask="+387 99 999 999"
+                    [disabled]="true"
+      >{{brojtelefona}}</p-inputMask>
+    </div>
+  </div>
+</div>
+<div class="p-field p-grid" id="napomena">
+      <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
+                placeholder="Napomena"
+                style="resize: none; width: 240px; color: white"></textarea>
+</div>
+<div class="tipka">
+  <button (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+          label="Rezerviraj" pButton
+          pRipple></button>
+</div>
