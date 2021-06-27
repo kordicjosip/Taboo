@@ -131,9 +131,10 @@ export class TablesComponent implements OnInit {
       .attr('fill', 'rgba(105,163,178,1)');
 
     g.append('text')
-      .text('Text')
-      .attr('x', circle.node()!.getBBox().x + 35)
-      .attr('y', circle.node()!.getBBox().y + 55);
+      .text(table.number)
+      .attr('x', table.x)
+      .attr('y', table.y + 5)
+      .attr("text-anchor", "middle");
 
     g.on('click', function () {
       const selectedTable = selectedTableSubject.getValue();
