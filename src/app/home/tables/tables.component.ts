@@ -34,35 +34,6 @@ export class TablesComponent implements OnInit {
         logger.debug("Selected event: " + event?.uid)
       }
     )
-
-    tableService.tablesSubject.subscribe(
-      (tableEventHolder: TableEventHolder) => {
-        if (tableEventHolder != null && this.event == tableEventHolder.event) {
-          for (const table of tableEventHolder.tables) {
-            const originalTable = this.tableReferences.get(table.id)
-            if (originalTable == undefined) {
-              this.addTable(table);
-            } else {
-              if (originalTable.table != table) {
-                this.removeTable(originalTable.table);
-                this.addTable(table);
-              }
-            }
-          }
-          // TODO Optimizirati
-          for (const insertedTable of this.tableReferences.entries()) {
-            let remove = true;
-            for (const table of tableEventHolder.tables) {
-              if (insertedTable[0] == table.id) {
-                remove = false;
-              }
-            }
-            if (remove) {
-              this.removeTable(this.tableReferences.get(insertedTable[0])!.table);
-            }
-          }
-        }
-      });
   }
 
   ngOnInit(): void {
@@ -114,11 +85,40 @@ export class TablesComponent implements OnInit {
       }));
 
     this.logger.debug("Initialized tables");
+
+    this.tableService.tablesSubject.subscribe(
+      (tableEventHolder: TableEventHolder) => {
+        if (tableEventHolder != null && this.event == tableEventHolder.event) {
+          for (const table of tableEventHolder.tables) {
+            const originalTable = this.tableReferences.get(table.id)
+            if (originalTable == undefined) {
+              this.addTable(table);
+            } else {
+              if (originalTable.table != table) {
+                this.removeTable(originalTable.table);
+                this.addTable(table);
+              }
+            }
+          }
+          // TODO Optimizirati
+          for (const insertedTable of this.tableReferences.entries()) {
+            let remove = true;
+            for (const table of tableEventHolder.tables) {
+              if (insertedTable[0] == table.id) {
+                remove = false;
+              }
+            }
+            if (remove) {
+              this.removeTable(this.tableReferences.get(insertedTable[0])!.table);
+            }
+          }
+        }
+      });
   }
 
   addTable(table: Table) {
     this.logger.debug("Adding table: " + JSON.stringify(table));
-    const logger = this.logger;
+    // TODO Drugačiji tipovi stola
     const selectedTableSubject = this.selectedTableSubject;
     const tableReferences = this.tableReferences;
 
