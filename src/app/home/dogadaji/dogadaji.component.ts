@@ -33,4 +33,9 @@ export class DogadajiComponent implements OnInit {
     this.router.navigate(['/dogadaji/' + dogadaj.uid + '/rezervacija'])
   }
 
+  select(dogadaj: Dogadaj) {
+    for (const i of this.dogadaji) {
+      i.selected = i.uid == dogadaj.uid;
+    }
+  }
 }

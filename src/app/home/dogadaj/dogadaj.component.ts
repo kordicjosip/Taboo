@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Button} from "primeng/button";
 import {Dogadaj} from "@app/_models/dogadaj";
 
@@ -12,7 +12,10 @@ export class DogadajComponent implements OnInit {
   dogadaj: Dogadaj | undefined;
 
   @ViewChild('button')
-  button: Button | null=null;
+  button: Button | null = null;
+
+  @Input('selected')
+  selected: boolean = false;
 
   constructor() {
 
