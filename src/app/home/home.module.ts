@@ -38,6 +38,10 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     InputTextareaModule,
     RippleModule,
     ConfirmDialogModule
+  ],
+  exports: [
+    TablesComponent,
+    RezervacijaComponent
   ]
 })
 export class HomeModule {

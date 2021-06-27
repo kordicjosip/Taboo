@@ -1,0 +1,6 @@
+<div  class="dogadaj">
+  <button *ngIf="dogadaj!=undefined" #button (click)="click()"  [ngClass]="{'selected' : selected}" pButton type="button">
+    <span class="datum">{{dogadaj.datum | date:"dd.MM."}}</span>
+    <span class="naziv">{{dogadaj.naziv}}</span>
+  </button>
+</div>

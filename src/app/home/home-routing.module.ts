@@ -10,9 +10,7 @@ const routes: Routes = [
       {
         path: '', component: RezervacijaComponent,
       },
-      {
-        path: 'dogadaji/:id/rezervacija', component: RezervacijaComponent,
-      }
+
     ]
   }
 ];

@@ -1,0 +1,15 @@
+<div class="dogadaji">
+<div
+  style="color: white; text-align: center; font-weight: 700; font-size: 23px;  padding-top:160px; margin-bottom: 30px; padding-left: 5px">
+  1. ODABERITE DOGAĐAJ:
+</div>
+  <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
+    <app-dogadaj-mobile (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)" [selected]="dogadaj.selected"
+                 [dogadaj]=dogadaj></app-dogadaj-mobile>
+  </div>
+<div id="tipka">
+  <button (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipka"
+          label="Next ->" pButton
+          pRipple></button>
+</div>
+</div>
