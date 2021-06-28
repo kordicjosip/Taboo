@@ -25,7 +25,7 @@ export class FormaMobileComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
-  korisnik: User | null=null;
+  korisnik: User | null = null;
 
   rezervacijeService: RezervacijeService;
 
@@ -43,11 +43,11 @@ export class FormaMobileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.korisnik=this.authService.korisnikSubject.getValue();
-    if(this.korisnik?.customer!=null){
-      this.ime=this.korisnik.customer.ime;
-      this.prezime=this.korisnik.customer.prezime;
-      this.brojtelefona=this.korisnik.customer.phone_number;
+    this.korisnik = this.authService.korisnikSubject.getValue();
+    if (this.korisnik?.customer != null) {
+      this.ime = this.korisnik.customer.ime;
+      this.prezime = this.korisnik.customer.prezime;
+      this.brojtelefona = this.korisnik.customer.phone_number;
     }
     if (this.authService.smsAuthToken.getValue() != null) {
       this.sms?.focus();
@@ -105,14 +105,17 @@ export class FormaMobileComponent implements OnInit {
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
-  isImeEmpty(){
-    return this.ime=="";
+
+  isImeEmpty() {
+    return this.ime == "";
   }
-  isPrezimeEmpty(){
-    return this.prezime=="";
+
+  isPrezimeEmpty() {
+    return this.prezime == "";
   }
-  isBrojFull(){
-    return this.brojtelefona.length==15;
+
+  isBrojFull() {
+    return this.brojtelefona.length == 15;
   }
 
 

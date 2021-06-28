@@ -32,8 +32,15 @@ export class AuthService {
     if (smsAuthToken != null)
       this.smsAuthToken = new BehaviorSubject<Token | null>(JSON.parse(smsAuthToken));
     else this.smsAuthToken = new BehaviorSubject<Token | null>(null);
+
     this.smsAuthToken.subscribe(
-      smsAuthToken => localStorage.setItem('smsAuthToken', JSON.stringify(smsAuthToken))
+      smsAuthToken => {
+        if (smsAuthToken != null)
+          localStorage.setItem('smsAuthToken', JSON.stringify(smsAuthToken))
+        else
+          localStorage.removeItem('smsAuthToken')
+
+      }
     )
     if (token == null) {
       logger.debug('User not available')
