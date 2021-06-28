@@ -7,9 +7,16 @@ const routes: Routes = [
   {
     path: '', component: HomeComponent,
     children: [
+
       {
         path: '', component: RezervacijaComponent,
       },
+      {
+        path: 'tables', component: RezervacijaComponent
+      },
+      {
+        path:'forma', component: RezervacijaComponent
+      }
 
     ]
   }

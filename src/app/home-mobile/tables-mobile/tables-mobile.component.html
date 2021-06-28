@@ -1,8 +1,13 @@
 <div id="tablewrapper">
 <app-tables></app-tables>
-<!-- TODO centrirati tipku i urediti da stolovi zauzimaju manje ekrana da tipke mogu stati -->
 <div id="tipka">
-  <button (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipka"
+  <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
+          label="<- Back" pButton
+          pRipple></button>
+  <button *ngIf="this.rezervacijeService.selectedTable.getValue()==null" [disabled]="true"class="p-button-raised p-button-success p-button-text" id="nexttipka"
+          label="Next ->" pButton
+          pRipple></button>
+  <button *ngIf="this.rezervacijeService.selectedTable.getValue()!=null" (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipkaActive"
           label="Next ->" pButton
           pRipple></button>
 </div>

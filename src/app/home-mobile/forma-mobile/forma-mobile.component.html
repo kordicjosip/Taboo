@@ -1,5 +1,5 @@
 <div id="forma">
-  <!-- TODO Napraviti prikaz polja iako je logiran korisnik sa njegovim podatcima i disableati input -->
+  <!-- TODO testirati prikaz polja iako je logiran korisnik sa njegovim podatcima i disableati input -->
   <div *ngIf="!isLoggedIn()" class=drugikorak
        style="color: white; text-align: center; font-weight: 700; font-size: 23px; padding-top:160px; margin-bottom: 30px; padding-left: 5px">3. UNESITE VAŠE
     PODATKE
@@ -16,6 +16,12 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <label for="firstname2">Ime</label>
+      <input [(ngModel)]="ime" id="firstname2" pInputText value="{{ime}}" [disabled]="true">
+    </div>
+  </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <input #surname="ngModel" (ngModelChange)="rezervacijeService.prezime.next(prezime)" [(ngModel)]="prezime"
@@ -29,11 +35,23 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <label for="firstname2">Prezime</label>
+      <input [(ngModel)]="prezime" id="lastname2" pInputText value="{{prezime}}" [disabled]="true">
+    </div>
+  </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <p-inputMask #phonenumber="ngModel" (ngModelChange)="rezervacijeService.brojtelefona.next(brojtelefona)"
                    [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
                    mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
+    </div>
+  </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <label for="firstname2">Broj telefona</label>
+      <input [(ngModel)]="brojtelefona" id="phonenumber2" pInputText value="{{brojtelefona}}" [disabled]="true">
     </div>
   </div>
   </div>
@@ -44,7 +62,14 @@
   </div>
 
   <div class="tipka">
-    <button (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+    <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
+            label="<- Back" pButton
+            pRipple></button>
+    <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+            label="Rezerviraj" pButton
+            pRipple></button>
+    <button *ngIf="!isLoggedIn() && (isImeEmpty() || isPrezimeEmpty() || !isBrojFull())" [disabled]="true"
+            class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
             pRipple></button>
   </div>
@@ -62,7 +87,7 @@
               label="Nisam dobio/dobila poruku"
               pButton
               type="button"></button>
-      <button (click)="cd.accept()" icon="pi pi-check" label="OK" pButton
+      <button (click)="cd.accept()" icon="pi pi-check" label="Potvrdi" pButton
               type="button"></button>
     </div>
   </ng-template>

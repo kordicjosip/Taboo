@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
+import {Location} from "@angular/common";
+import {User} from "@app/_models/user";
 
 @Component({
   selector: 'app-forma-mobile',
@@ -23,6 +25,7 @@ export class FormaMobileComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
+  korisnik: User | null=null;
 
   rezervacijeService: RezervacijeService;
 
@@ -33,12 +36,19 @@ export class FormaMobileComponent implements OnInit {
     private authService: AuthService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private _location: Location
   ) {
     this.rezervacijeService = rezervacijeService;
   }
 
   ngOnInit() {
+    this.korisnik=this.authService.korisnikSubject.getValue();
+    if(this.korisnik?.customer!=null){
+      this.ime=this.korisnik.customer.ime;
+      this.prezime=this.korisnik.customer.prezime;
+      this.brojtelefona=this.korisnik.customer.phone_number;
+    }
     if (this.authService.smsAuthToken.getValue() != null) {
       this.sms?.focus();
       this.confirmationService.confirm({
@@ -94,5 +104,25 @@ export class FormaMobileComponent implements OnInit {
 
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
+  }
+  isImeEmpty(){
+    return this.ime=="";
+  }
+  isPrezimeEmpty(){
+    return this.prezime=="";
+  }
+  isBrojFull(){
+    return this.brojtelefona.length==15;
+  }
+
+
+  ProvjeriBroj() {
+    this.logger.debug(`Vrijednost broja je: ${this.brojtelefona}`);
+    this.logger.debug(`Veličina string broja je: ${this.brojtelefona.length}`);
+    this.logger.debug(`Vrijednost isbrojfull je ${this.isBrojFull()}`)
+  }
+
+  back() {
+    this._location.back();
   }
 }

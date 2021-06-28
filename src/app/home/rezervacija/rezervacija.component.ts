@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
+import {User} from "@app/_models/user";
 
 @Component({
   selector: 'app-rezervacija',
@@ -18,6 +19,7 @@ export class RezervacijaComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
+  korisnik: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -31,6 +33,7 @@ export class RezervacijaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.korisnik=this.authService.korisnikSubject.getValue();
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {

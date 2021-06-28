@@ -4,11 +4,13 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {DogadajiService} from "@app/_services/dogadaji.service";
 import {Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-dogadaji-mobile',
   templateUrl: './dogadaji-mobile.component.html',
-  styleUrls: ['./dogadaji-mobile.component.sass']
+  styleUrls: ['./dogadaji-mobile.component.sass'],
+  providers: [MessageService]
 })
 export class DogadajiMobileComponent implements OnInit {
 
@@ -19,20 +21,18 @@ export class DogadajiMobileComponent implements OnInit {
   constructor(private dogadajiService: DogadajiService,
               private router: Router,
               private logger: NGXLogger,
-              rezervacijeService: RezervacijeService) {
+              rezervacijeService: RezervacijeService,
+              private messageService: MessageService) {
     this.rezervacijeService = rezervacijeService;
   }
 
   ngOnInit(): void {
     this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
       this.dogadaji = dogadaji;
-      this.rezervacijeService.selectedEvent.next(dogadaji[0])
+      this.logger.debug(`Izabrani dogadaj je: ${this.rezervacijeService.selectedEvent.getValue()?.naziv}`)
     });
   }
 
-  link(dogadaj: Dogadaj) {
-    this.router.navigate(['/dogadaji/' + dogadaj.uid + '/rezervacija'])
-  }
   select(dogadaj: Dogadaj) {
     for (const i of this.dogadaji) {
       i.selected = i.uid == dogadaj.uid;
@@ -41,5 +41,10 @@ export class DogadajiMobileComponent implements OnInit {
 
   next() {
     this.router.navigate(["/tables"]);
+  }
+
+  alert() {
+    this.messageService.add({severity: 'danger', summary: 'Nemoguće nastaviti', detail: 'Niste odabrali događaj.'});
+    this.logger.debug("Alert je trebao biti tu.")
   }
 }
