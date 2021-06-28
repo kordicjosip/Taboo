@@ -14,6 +14,7 @@
 
       <td *ngIf="rezervacija.status == 1">Potvrđeno</td>
       <td *ngIf="rezervacija.status == 0">Otkazano</td>
+      <td *ngIf="rezervacija.status != 1 && rezervacija.status != 0">/</td>
 
       <td>
         <button  (click)="PotvrdiRezervaciju(rezervacija.uid)" pButton type="button" class="p-button-rounded p-button-success" icon="pi pi-check"></button>
