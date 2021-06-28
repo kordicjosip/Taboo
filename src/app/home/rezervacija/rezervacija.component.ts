@@ -8,6 +8,9 @@ import {NGXLogger} from "ngx-logger";
 import {User} from "@app/_models/user";
 import {Rezervacija} from "@app/_models/rezervacija";
 import {Observable} from "rxjs";
+import {Customer} from "@app/_models/customer";
+import {Dogadaj} from "@app/_models/dogadaj";
+import {Table} from "@app/_models/table";
 
 @Component({
   selector: 'app-rezervacija',
@@ -21,7 +24,9 @@ export class RezervacijaComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
-  korisnik: User | null = null;
+  customer: Customer | null=null;
+  selectedDogadaj: Dogadaj | null =null;
+  selectedStol: Table | null = null;
 
   constructor(
     private userService: UserService,
@@ -35,12 +40,12 @@ export class RezervacijaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.korisnik=this.authService.korisnikSubject.getValue();
-    if(this.korisnik?.customer!=null){
-      this.ime=this.korisnik.customer.ime;
-      this.prezime=this.korisnik.customer.prezime;
-      this.brojtelefona=this.korisnik.customer.phone_number;
-    }
+    this.userService.getUserDetails().subscribe(
+      (user: User) => {
+        this.logger.debug("Fetched user: " + JSON.stringify(user));
+        this.CustomerToValues(user.customer.ime, user.customer.prezime,user.customer.phone_number);
+      }
+    )
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {
@@ -52,6 +57,14 @@ export class RezervacijaComponent implements OnInit {
       });
     }
   }
+
+  //Kupljenje vrijednosti logiranog usera da bi ih prikazali odmah
+  CustomerToValues(ime: string, prezime: string, brojtelefona: string){
+    this.ime=ime;
+    this.prezime=prezime;
+    this.brojtelefona=brojtelefona;
+  }
+
  // TODO Napraviti success view za svaku uspješnu rezervaciju(i u mobileu)
   rezerviraj() {
     this.rezervacijeService.ime.next(this.ime);
@@ -106,7 +119,26 @@ export class RezervacijaComponent implements OnInit {
     }
   }
 
+  isImeEmpty() {
+    return this.ime == "";
+  }
+
+  isPrezimeEmpty() {
+    return this.prezime == "";
+  }
+
+//Viditi zasto ovdje cim jedno slovo unesemo odmah rezerviraj button postane available
+  isBrojFull() {
+    return this.brojtelefona.length == 15;
+  }
+  isDogadajEmpty(){
+    return this.rezervacijeService.selectedEvent.getValue() == null;
+  }
+  isStolEmpty(){
+    return this.rezervacijeService.selectedTable.getValue() == null;
+  }
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
+
 }

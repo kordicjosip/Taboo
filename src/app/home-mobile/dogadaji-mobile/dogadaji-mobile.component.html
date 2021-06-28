@@ -6,7 +6,8 @@
   <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
     <app-dogadaj-mobile (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)"
                         [dogadaj]=dogadaj
-                        [selected]="dogadaj.selected"></app-dogadaj-mobile>
+                        [selected]="dogadaj.selected"
+                        [alreadyReserved]="dogadaj.alreadyReserved"></app-dogadaj-mobile>
   </div>
   <div *ngIf="rezervacijeService.selectedEvent.getValue()==undefined"  id="tipka">
 

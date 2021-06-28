@@ -7,7 +7,8 @@ export interface RezervacijaInterface {
   date: string,
   customer: CustomerInterface,
   event: DogadajInterface,
-  status: number
+  status: number,
+  message: string
 }
 
 export interface RezervacijaCreateInterface {
@@ -23,6 +24,7 @@ export class Rezervacija {
   date: Date;
   event: Dogadaj;
   status: number;
+  napomena: string;
 
 
   constructor(res: RezervacijaInterface) {
@@ -32,5 +34,6 @@ export class Rezervacija {
     this.date = new Date(res.date);
     this.event = new Dogadaj(res.event);
     this.status = res.status;
+    this.napomena=res.message;
   }
 }

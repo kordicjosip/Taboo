@@ -35,7 +35,6 @@ export class DogadajiComponent implements OnInit {
   ngOnInit(): void {
     this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
       this.dogadaji = dogadaji;
-      this.rezervacijeService.selectedEvent.next(dogadaji[0]);
       this.setReservedDogadaji();
     });
 
@@ -50,6 +49,7 @@ export class DogadajiComponent implements OnInit {
           this.korisnikRezervacije = []
 
         this.logger.debug(`Provjera je li događaj rezerviran`)
+        this.logger.debug(`Provjera vrijednosti korisnikRezervacija: ${this.korisnikRezervacije}`)
       }
     );
   }

@@ -43,12 +43,12 @@ export class FormaMobileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.korisnik = this.authService.korisnikSubject.getValue();
-    if (this.korisnik?.customer != null) {
-      this.ime = this.korisnik.customer.ime;
-      this.prezime = this.korisnik.customer.prezime;
-      this.brojtelefona = this.korisnik.customer.phone_number;
-    }
+    this.userService.getUserDetails().subscribe(
+      (user: User) => {
+        this.logger.debug("Fetched user: " + JSON.stringify(user));
+        this.CustomerToValues(user.customer.ime, user.customer.prezime,user.customer.phone_number);
+      }
+    )
     if (this.authService.smsAuthToken.getValue() != null) {
       this.sms?.focus();
       this.confirmationService.confirm({
@@ -60,6 +60,13 @@ export class FormaMobileComponent implements OnInit {
         }
       });
     }
+  }
+
+  //Kupljenje vrijednosti logiranog usera da bi ih prikazali odmah
+  CustomerToValues(ime: string, prezime: string, brojtelefona: string){
+    this.ime=ime;
+    this.prezime=prezime;
+    this.brojtelefona=brojtelefona;
   }
 
   rezerviraj() {
@@ -114,6 +121,7 @@ export class FormaMobileComponent implements OnInit {
     return this.prezime == "";
   }
 
+//Viditi zasto ovdje cim jedno slovo unesemo odmah rezerviraj button postane available
   isBrojFull() {
     return this.brojtelefona.length == 15;
   }

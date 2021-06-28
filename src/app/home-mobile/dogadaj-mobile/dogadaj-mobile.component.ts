@@ -18,6 +18,9 @@ export class DogadajMobileComponent implements OnInit {
   @Input('selected')
   selected: boolean = false;
 
+  @Input('alreadyReserved')
+  alreadyReserved: boolean = false;
+
   constructor() {
 
   }

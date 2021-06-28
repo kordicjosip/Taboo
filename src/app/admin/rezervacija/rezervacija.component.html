@@ -3,6 +3,7 @@
     <tr>
       <th>Ime i prezime</th>
       <th>Broj stola</th>
+      <th>Napomena</th>
       <th>Potvrđena</th>
       <th>Akcije</th>
     </tr>
@@ -11,7 +12,7 @@
     <tr>
       <td>{{rezervacija.customer.ime + "" + rezervacija.customer.prezime}}</td>
       <td>{{rezervacija.table_number}}</td>
-
+      <td>{{rezervacija.napomena}}</td>
       <td *ngIf="rezervacija.status == 1">Potvrđeno</td>
       <td *ngIf="rezervacija.status == 0">Otkazano</td>
       <td *ngIf="rezervacija.status != 1 && rezervacija.status != 0">/</td>

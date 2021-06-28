@@ -15,6 +15,11 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <input  [(ngModel)]="ime" id="firstname2" pInputText value="{{ime}}" [disabled]="true">
+    </div>
+  </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <input #surname="ngModel" [(ngModel)]="prezime"
@@ -28,10 +33,20 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <input [(ngModel)]="prezime" id="lastname2" pInputText value="{{prezime}}" [disabled]="true">
+    </div>
+  </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <p-inputMask #phonenumber="ngModel" [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
                    mask="+387 99 999 999?9" placeholder="Broj telefona"></p-inputMask>
+    </div>
+  </div>
+  <div *ngIf="isLoggedIn()" class="p-field p-grid">
+    <div class="p-col">
+      <input [(ngModel)]="brojtelefona" id="phonenumber2" pInputText value="{{brojtelefona}}" [disabled]="true">
     </div>
   </div>
   <div style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">3. ODABERITE STOL --->
@@ -43,7 +58,11 @@
   </div>
 
   <div class="tipka">
-    <button (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+    <button *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isStolEmpty())" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+            label="Rezerviraj" pButton
+            pRipple></button>
+    <button *ngIf="!isLoggedIn() || (isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isStolEmpty())" [disabled]="true"
+            class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
             pRipple></button>
   </div>
