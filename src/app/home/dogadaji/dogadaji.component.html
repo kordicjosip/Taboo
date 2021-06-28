@@ -3,6 +3,6 @@
   1. ODABERITE DOGAĐAJ:
 </div>
 <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
-  <app-dogadaj (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)" [selected]="dogadaj.selected"
+  <app-dogadaj (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)" [selected]="dogadaj.selected" [alreadyReserved]="dogadaj.alreadyReserved"
                [dogadaj]=dogadaj></app-dogadaj>
 </div>

@@ -11,6 +11,7 @@ export class Dogadaj {
   naziv: string;
   opis: string;
   selected: boolean=false;
+  alreadyReserved: boolean=false;
 
   constructor(res: DogadajInterface) {
     this.uid = res.id;

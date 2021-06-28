@@ -33,26 +33,23 @@ export class DogadajiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dogadajiService.getDogadaji(true).subscribe(
-      dogadaji => {
-        this.dogadaji = dogadaji;
-        this.rezervacijeService.selectedEvent.next(dogadaji[0]);
-      },
-      error => {
-        this.logger.debug(error);
-      });
-    this.korisnik = this.authService.korisnikSubject.getValue();
-    if (this.korisnik != null) {
+    this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
+      this.dogadaji = dogadaji;
+      this.rezervacijeService.selectedEvent.next(dogadaji[0])
+    });
+    this.korisnik=this.authService.korisnikSubject.getValue();
+    this.logger.debug(`Vrijednost korisnika je: ${this.korisnik}`);
+    if(this.korisnik!=null){
       this.userService.getUserDetails(this.korisnik.id).subscribe(
         kastomer => {
           this.logger.debug(`Fetchani podaci o korisniku sa id ${kastomer.id}`);
-          this.korisnikRezervacije = kastomer.rezervacije;
+          this.korisnikRezervacije=kastomer.rezervacije;
         }
       )
     }
-    for (let dogadaj of this.dogadaji) {
+    for (let dogadaj of this.dogadaji){
       if(this.isAlreadyReserved(dogadaj))
-        break; //TODO dodati parametar kao sto je sada "selected" u dogadajima i napraviti da ako ovdje isAlreadyReserved bude true za taj dogadaj staviti taj parametar true i da doda klasu koja ce disableati button i evenutalno promijeniti tekst(nadodati "Vec imate rezervaciju za ovaj dogadaj")
+        dogadaj.alreadyReserved=true;
     }
   }
 
