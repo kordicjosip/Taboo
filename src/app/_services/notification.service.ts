@@ -63,9 +63,12 @@ export class NotificationService implements OnDestroy {
   }
 
   authenticate() {
-    const token: AuthJWTToken = this.authService.jwtSubject.getValue();
-    if (token != null && token.accessTokenIsValid())
+    const user = this.authService.korisnikSubject.getValue();
+    const token: AuthJWTToken | null = this.authService.jwtSubject.getValue();
+    if (token != null && token.accessTokenIsValid() &&
+      user != null && user.customer == null) {
       this.socket$.next({access_token: token.access_token});
+    }
   }
 
   ngOnDestroy(): void {

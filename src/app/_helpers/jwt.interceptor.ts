@@ -18,13 +18,13 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.logger.debug('Intercepting HTTP Request: ', request);
 
-    const user: AuthJWTToken = this.authService.jwtSubject.getValue();
+    const authToken: AuthJWTToken | null = this.authService.jwtSubject.getValue();
 
-    const isLoggedIn = user != null;
+    const isLoggedIn = authToken != null;
     const isApiUrl = request.url.startsWith(environment.apiURL);
-    if (isLoggedIn && isApiUrl) {
+    if (isLoggedIn && isApiUrl && authToken != null) {
       request = request.clone({
-        setHeaders: {Authorization: `Bearer ${user.access_token}`},
+        setHeaders: {Authorization: `Bearer ${authToken.access_token}`},
       });
       this.logger.debug('Added Bearer token to request');
     }

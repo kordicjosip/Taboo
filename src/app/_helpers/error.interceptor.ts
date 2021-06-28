@@ -16,7 +16,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      if ([401, 403].includes(err.status) && this.authService.jwtSubject.getValue().isValid()) {
+      if ([401, 403].includes(err.status) &&
+        this.authService.jwtSubject.getValue() != null &&
+        this.authService.jwtSubject.getValue()!.accessTokenIsValid()) {
         this.logger.debug('Credentials expired or not logged in');
         this.authService.logout();
       }

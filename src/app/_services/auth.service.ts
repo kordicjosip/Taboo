@@ -14,7 +14,7 @@ import {UserService} from "@app/_services/user.service";
 })
 export class AuthService {
   jwt_token_key = 'jwt';
-  jwtSubject: BehaviorSubject<AuthJWTToken | any>;
+  jwtSubject = new BehaviorSubject<AuthJWTToken | null>(null);
 
   // TODO podatci o korisniku
   korisnikSubject = new BehaviorSubject<User | null>(null);
@@ -37,11 +37,11 @@ export class AuthService {
     )
     if (token == null) {
       logger.debug('User not available')
-      this.jwtSubject = new BehaviorSubject(null);
+      this.jwtSubject.next(null);
     } else {
       logger.debug('User needs to be validated')
-      this.jwtSubject = new BehaviorSubject((JSON.parse(token)));
-      if (this.jwtSubject.getValue().accessTokenIsValid()) {
+      this.jwtSubject.next(new AuthJWTToken(JSON.parse(token)));
+      if (this.jwtSubject.getValue() != null && this.jwtSubject.getValue()?.accessTokenIsValid()) {
         this.startRefreshTokenTimer();
       } else {
         this.refreshToken();
@@ -87,7 +87,7 @@ export class AuthService {
       })).subscribe();
   }
 
-  saveCredidentials(token: AuthJWTToken) {
+  saveCredidentials(token: AuthJWTToken | null) {
     this.logger.debug('Saving user credidentials');
     localStorage.setItem(this.jwt_token_key, JSON.stringify(token))
   }
@@ -104,11 +104,11 @@ export class AuthService {
    */
   refreshToken() {
     this.logger.debug('Token refresh: start');
-    const token: AuthJWTToken = this.jwtSubject.getValue();
-    return this.http.post<any>(`${environment.apiURL}auth/refresh`, {refresh_token: token.refresh_token}, {withCredentials: false})
+    const token: AuthJWTToken | null = this.jwtSubject.getValue();
+    return this.http.post<any>(`${environment.apiURL}auth/refresh`, {refresh_token: token!.refresh_token}, {withCredentials: false})
       .pipe(map(korisnikLogin => {
         // TODO Možda ovo prebaciti u metodu
-        this.jwtSubject.next(korisnikLogin);
+        this.jwtSubject.next(new AuthJWTToken(korisnikLogin));
         this.startRefreshTokenTimer();
         this.saveCredidentials(this.jwtSubject.getValue())
         this.logger.debug('Token refresh: end');
@@ -122,7 +122,7 @@ export class AuthService {
   }
 
   private startRefreshTokenTimer() {
-    const jwt: AuthJWTToken = this.jwtSubject.getValue();
+    const jwt: AuthJWTToken | null = this.jwtSubject.getValue();
     if (jwt != null) {
       // set a timeout to refresh the token a minute before it expires
       const expires = jwt.getExpiration(jwt.access_token)
