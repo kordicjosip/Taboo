@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Dogadaj} from "@app/_models/dogadaj";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {DogadajiService} from "@app/_services/dogadaji.service";
@@ -47,10 +47,6 @@ export class DogadajiMobileComponent implements OnInit {
           this.setReservedDogadaji();
         } else
           this.korisnikRezervacije = []
-
-        this.logger.debug(`Provjera je li događaj rezerviran`)
-        this.logger.debug(`Provjera this.korisnik: ${this.korisnik}`)
-        this.logger.debug(`Provjera vrijednosti korisnikRezervacija: ${this.korisnikRezervacije}`)
       }
     );
   }
@@ -59,8 +55,10 @@ export class DogadajiMobileComponent implements OnInit {
     for (let dogadaj of this.dogadaji) {
       if (this.isAlreadyReserved(dogadaj)) {
         dogadaj.alreadyReserved = true;
+        this.logger.debug("Already reserved: " + dogadaj.uid)
       }
     }
+    this.logger.debug(JSON.stringify(this.dogadaji, null, 2))
   }
 
   isAlreadyReserved(dogadaj: Dogadaj): boolean {
