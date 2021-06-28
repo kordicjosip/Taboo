@@ -6,6 +6,8 @@ import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
 import {User} from "@app/_models/user";
+import {Rezervacija} from "@app/_models/rezervacija";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-rezervacija',
@@ -20,6 +22,7 @@ export class RezervacijaComponent implements OnInit {
   napomena: string = "";
   smskey: string = "";
   korisnik: User | null = null;
+  returnrezervacija: Observable<Rezervacija> | null = null;
 
   constructor(
     private userService: UserService,
@@ -57,7 +60,17 @@ export class RezervacijaComponent implements OnInit {
         table_number: this.rezervacijeService.selectedTable.getValue()!.number,
         event: this.rezervacijeService.selectedEvent.getValue()!.uid,
         message: this.napomena
-      })
+      }).subscribe(
+        rezervacij => {
+          this.logger.debug("Uspješno kreirana rezervacija " + rezervacij.uid);
+          //TODO skontat sta cemo za success ovdje (Ili ostaviti usera na istom screenu sa popup porukom ili ga prebacit na kompletno drugu rutu)
+          this.router.navigate(["/success"])
+        },
+        error => {
+          this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
+          this.messageService.add({severity: 'danger', summary: 'Greška', detail: 'Greška prilikom kreiranja rezervacije, pokušajte ponovno.'});
+        }
+      )
     } else {
       this.userService.registerAndReserve({
         phone_number: this.rezervacijeService.brojtelefona.getValue()!,

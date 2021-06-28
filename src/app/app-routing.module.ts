@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {BrowserModule} from "@angular/platform-browser";
 import {NotFoundComponent} from "@app/not-found/not-found.component";
 
+
 const routes: Routes = [
   {
     path: '',
@@ -19,7 +20,8 @@ const routes: Routes = [
     loadChildren: () => import(`./admin/admin.module`).then(m => m.AdminModule),
     // canActivate: [AuthGuard]
   },
-  {path: '**', component: NotFoundComponent}
+  {path: '**', component: NotFoundComponent},
+
 ];
 
 @NgModule({

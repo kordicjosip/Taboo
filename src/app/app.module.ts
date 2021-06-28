@@ -16,11 +16,12 @@ import { HomeMobileComponent } from './home-mobile/home-mobile.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
-    HomeMobileComponent
+    HomeMobileComponent,
   ],
   imports: [
     BrowserModule,
