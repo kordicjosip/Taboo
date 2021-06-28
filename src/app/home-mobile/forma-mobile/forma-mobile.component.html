@@ -1,5 +1,4 @@
 <div id="forma">
-  <!-- TODO testirati prikaz polja iako je logiran korisnik sa njegovim podatcima i disableati input -->
   <div *ngIf="!isLoggedIn()" class=drugikorak
        style="color: white; text-align: center; font-weight: 700; font-size: 23px; padding-top:160px; margin-bottom: 30px; padding-left: 5px">3. UNESITE VAŠE
     PODATKE
@@ -70,6 +69,7 @@
             label="Rezerviraj" pButton
             pRipple></button>
   </div>
+
 
 
 <p-confirmDialog #cd [closeOnEscape]="true" [dismissableMask]="true" [style]="{width: '50vw'}">

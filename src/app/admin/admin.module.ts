@@ -11,7 +11,7 @@ import {ToastModule} from "primeng/toast";
 import { RezervacijaComponent } from './rezervacija/rezervacija.component';
 import { DogadajiComponent } from './dogadaji/dogadaji.component';
 import { LoginComponent } from './login/login.component';
-
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -23,16 +23,17 @@ import { LoginComponent } from './login/login.component';
     LoginComponent,
 
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    TabMenuModule,
-    MenuModule,
-    TableModule,
-    ButtonModule,
-    ToastModule,
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        TabMenuModule,
+        MenuModule,
+        TableModule,
+        ButtonModule,
+        ToastModule,
+        FormsModule,
 
-  ]
+    ]
 })
 export class AdminModule {
 }

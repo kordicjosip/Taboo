@@ -136,4 +136,5 @@ export class FormaMobileComponent implements OnInit {
   back() {
     this._location.back();
   }
+
 }

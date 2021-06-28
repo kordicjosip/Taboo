@@ -28,24 +28,4 @@ export class AdminComponent implements OnInit {
     ];
 
   }
-
-  PotvrdiRezervaciju(uid: number) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=1;
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste potvrdili rezervaciju!'});
-        break;
-      }
-    }
-  }
-
-  OtkaziRezervaciju(uid: number) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=0;
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste otkazali rezervaciju!'});
-        break;
-      }
-    }
-  }
 }

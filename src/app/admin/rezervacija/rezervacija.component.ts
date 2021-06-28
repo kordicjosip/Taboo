@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {Rezervacija} from "@app/_models/rezervacija";
 import {MessageService} from "primeng/api";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
@@ -14,18 +14,20 @@ import {ActivatedRoute} from "@angular/router";
 export class RezervacijaComponent implements OnInit {
   eventid: string | null;
   rezervacije: Rezervacija[];
+
   constructor(private messageService: MessageService, private rezervacijaService: RezervacijeService, private logger: NGXLogger, private activatedRoute: ActivatedRoute) {
     this.rezervacije=[];
     this.eventid=activatedRoute.snapshot.paramMap.get("id");
   }
-
   ngOnInit(): void {
     this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(rezervacije => {
       this.rezervacije=rezervacije;
       this.logger.debug(this.rezervacije);
     })
   }
+
  //TODO napraviti da PotvrdiRezervaciju i OtkaziRezervaciju pozivaju PUT metode za updateanje polja "status" od rezervacije u bazi
+
   PotvrdiRezervaciju(uid: number) {
     for(let rezervacija of this.rezervacije){
       if(rezervacija.uid == uid){

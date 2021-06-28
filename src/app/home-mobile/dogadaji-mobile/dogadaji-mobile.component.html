@@ -4,8 +4,11 @@
     1. ODABERITE DOGAĐAJ:
   </div>
   <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
-    <app-dogadaj-mobile (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)"
+    <app-dogadaj-mobile *ngIf="!dogadaj.alreadyReserved" (click)="rezervacijeService.selectedEvent.next(dogadaj); select(dogadaj)"
                         [dogadaj]=dogadaj
+                        [selected]="dogadaj.selected"
+                        [alreadyReserved]="dogadaj.alreadyReserved"></app-dogadaj-mobile>
+    <app-dogadaj-mobile *ngIf="dogadaj.alreadyReserved"  [dogadaj]=dogadaj
                         [selected]="dogadaj.selected"
                         [alreadyReserved]="dogadaj.alreadyReserved"></app-dogadaj-mobile>
   </div>
