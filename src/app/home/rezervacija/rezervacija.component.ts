@@ -22,7 +22,6 @@ export class RezervacijaComponent implements OnInit {
   napomena: string = "";
   smskey: string = "";
   korisnik: User | null = null;
-  returnrezervacija: Observable<Rezervacija> | null = null;
 
   constructor(
     private userService: UserService,
@@ -37,6 +36,11 @@ export class RezervacijaComponent implements OnInit {
 
   ngOnInit() {
     this.korisnik=this.authService.korisnikSubject.getValue();
+    if(this.korisnik?.customer!=null){
+      this.ime=this.korisnik.customer.ime;
+      this.prezime=this.korisnik.customer.prezime;
+      this.brojtelefona=this.korisnik.customer.phone_number;
+    }
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {

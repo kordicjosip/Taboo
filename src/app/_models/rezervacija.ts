@@ -1,7 +1,7 @@
 ﻿import {Dogadaj, DogadajInterface} from "@app/_models/dogadaj";
 import {Customer, CustomerInterface} from "@app/_models/customer";
 
-interface RezervacijaInterface {
+export interface RezervacijaInterface {
   id: number,
   table_number: number,
   date: string,
