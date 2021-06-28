@@ -12,9 +12,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appInitializer} from "@app/_helpers/app.initializer";
 import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
 import {NotFoundComponent} from './not-found/not-found.component';
-import { HomeMobileComponent } from './home-mobile/home-mobile.component';
-
-
+import {HomeMobileComponent} from './home-mobile/home-mobile.component';
+import {UserService} from "@app/_services/user.service";
 
 
 @NgModule({
@@ -34,7 +33,7 @@ import { HomeMobileComponent } from './home-mobile/home-mobile.component';
     }),
   ],
   providers: [
-    {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService, NGXLogger]},
+    {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService, NGXLogger, UserService]},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],

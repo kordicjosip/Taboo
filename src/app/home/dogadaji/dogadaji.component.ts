@@ -19,7 +19,7 @@ import {Rezervacija} from "@app/_models/rezervacija";
 export class DogadajiComponent implements OnInit {
   dogadaji: Dogadaj[] = [];
   korisnik: User | null = null;
-  korisnikRezervacije: Rezervacija[] | null = null;
+  korisnikRezervacije: Rezervacija[] = [];
   rezervacijeService: RezervacijeService
 
   constructor(private dogadajiService: DogadajiService,
@@ -35,29 +35,38 @@ export class DogadajiComponent implements OnInit {
   ngOnInit(): void {
     this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
       this.dogadaji = dogadaji;
-      this.rezervacijeService.selectedEvent.next(dogadaji[0])
+      this.rezervacijeService.selectedEvent.next(dogadaji[0]);
+      this.setReservedDogadaji();
     });
-    this.korisnik=this.authService.korisnikSubject.getValue();
-    this.logger.debug(`Vrijednost korisnika je: ${this.korisnik}`);
-    if(this.korisnik!=null){
-      this.userService.getUserDetails(this.korisnik.id).subscribe(
-        kastomer => {
-          this.logger.debug(`Fetchani podaci o korisniku sa id ${kastomer.id}`);
-          this.korisnikRezervacije=kastomer.rezervacije;
-        }
-      )
-    }
-    for (let dogadaj of this.dogadaji){
-      if(this.isAlreadyReserved(dogadaj))
-        dogadaj.alreadyReserved=true;
+
+    // Svaki put kad se promjeni korisnik pozvati će se slijedeće:
+    this.authService.korisnikSubject.subscribe(
+      korisnik => {
+        this.korisnik = korisnik;
+        if (korisnik != null) {
+          this.korisnikRezervacije = korisnik.rezervacije;
+          this.setReservedDogadaji();
+        } else
+          this.korisnikRezervacije = []
+
+        this.logger.debug(`Provjera je li događaj rezerviran`)
+      }
+    );
+  }
+
+  setReservedDogadaji() {
+    for (let dogadaj of this.dogadaji) {
+      if (this.isAlreadyReserved(dogadaj)) {
+        dogadaj.alreadyReserved = true;
+      }
     }
   }
 
   isAlreadyReserved(dogadaj: Dogadaj): boolean {
-    if(this.korisnikRezervacije!=null) {
+    if (this.korisnikRezervacije != null) {
       for (let rez of this.korisnikRezervacije) {
-          if(rez.event.uid == dogadaj.uid)
-            return true;
+        if (rez.event.uid == dogadaj.uid)
+          return true;
       }
     }
     return false;
