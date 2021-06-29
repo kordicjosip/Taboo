@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(["/admin/login"])
       return false;
     }
-
+  //TODO viditi sta je s ovim
     const isValid = jwt.isValid();
     this.logger.debug(`User logged in? ${isValid}`);
     return isValid;

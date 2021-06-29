@@ -40,12 +40,14 @@ export class RezervacijaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUserDetails().subscribe(
-      (user: User) => {
-        this.logger.debug("Fetched user: " + JSON.stringify(user));
-        this.CustomerToValues(user.customer.ime, user.customer.prezime,user.customer.phone_number);
-      }
-    )
+    if(this.isLoggedIn()) {
+      this.userService.getUserDetails().subscribe(
+        (user: User) => {
+          this.logger.debug("Fetched user: " + JSON.stringify(user));
+          this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
+        }
+      )
+    }
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {
