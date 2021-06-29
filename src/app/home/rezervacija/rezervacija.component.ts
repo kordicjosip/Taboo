@@ -40,6 +40,7 @@ export class RezervacijaComponent implements OnInit {
   }
 
   ngOnInit() {
+    //TODO Vidit zasto ovdje izbacuje error "Not Authenticated" kad je user vec logiran ( ne kupi podatke o vec rezerviranim dogadajima i ime prezime itd.)
     if(this.isLoggedIn()) {
       this.userService.getUserDetails().subscribe(
         (user: User) => {
@@ -128,9 +129,8 @@ export class RezervacijaComponent implements OnInit {
     return this.prezime == "";
   }
 
-//Viditi zasto ovdje cim jedno slovo unesemo odmah rezerviraj button postane available
   isBrojFull() {
-    if(this.brojtelefona.length == 15 ||this.brojtelefona.length== 16)
+    if(this.brojtelefona.length == 15 || this.brojtelefona.length == 16)
       return true;
     else
       return false;
