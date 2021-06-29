@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "@app/_services/auth.service";
 import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
@@ -13,19 +13,20 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private logger: NGXLogger,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    if(this.isLoggedIn())
+    if (this.isLoggedIn())
       this.router.navigate(["/admin"]);
   }
 
-  login(){
-    let username= (document.getElementById("username") as HTMLInputElement).value;
-    let password= (document.getElementById("password") as HTMLInputElement).value;
+  login() {
+    let username = (document.getElementById("username") as HTMLInputElement).value;
+    let password = (document.getElementById("password") as HTMLInputElement).value;
     this.logger.debug(`Vrijednost username: ${username}`);
     this.logger.debug(`Vrijednost passworda: ${password}`);
-    this.authService.login(username,password,true);
+    this.authService.login(username, password, true);
     this.router.navigate(["/admin"])
   }
 

@@ -58,7 +58,11 @@ export class AuthService {
   }
 
   login(username: string, password: string, saveLogin: boolean) {
-    this.http.post<any>(`${environment.apiURL}auth/login`, {username, password}, {withCredentials: false})
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+
+    this.http.post<any>(`${environment.apiURL}auth/login`, formData, {withCredentials: false})
       .pipe(map(jwt => {
         // TODO Možda ovo prebaciti u metodu
         this.jwtSubject.next(new AuthJWTToken(jwt));
