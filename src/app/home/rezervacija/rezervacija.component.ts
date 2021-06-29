@@ -130,7 +130,10 @@ export class RezervacijaComponent implements OnInit {
 
 //Viditi zasto ovdje cim jedno slovo unesemo odmah rezerviraj button postane available
   isBrojFull() {
-    return this.brojtelefona.length == 15;
+    if(this.brojtelefona.length == 15 ||this.brojtelefona.length== 16)
+      return true;
+    else
+      return false;
   }
   isDogadajEmpty(){
     return this.rezervacijeService.selectedEvent.getValue() == null;

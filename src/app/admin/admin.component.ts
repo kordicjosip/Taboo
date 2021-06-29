@@ -38,4 +38,5 @@ export class AdminComponent implements OnInit {
   isLoggedInAdmin() {
     return this.authService.jwtSubject.getValue() != null;
   }
+  //TODO implementirati websocket da refresha i search bar za rezervacije po imenu
 }
