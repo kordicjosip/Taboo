@@ -6,8 +6,6 @@ import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
 import {User} from "@app/_models/user";
-import {Rezervacija} from "@app/_models/rezervacija";
-import {Observable} from "rxjs";
 import {Customer} from "@app/_models/customer";
 import {Dogadaj} from "@app/_models/dogadaj";
 import {Table} from "@app/_models/table";
@@ -45,7 +43,8 @@ export class RezervacijaComponent implements OnInit {
       this.userService.getUserDetails().subscribe(
         (user: User) => {
           this.logger.debug("Fetched user: " + JSON.stringify(user));
-          this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
+          if (user.customer != null)
+            this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
         }
       )
     }

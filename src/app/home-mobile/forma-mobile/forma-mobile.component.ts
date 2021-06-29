@@ -46,7 +46,8 @@ export class FormaMobileComponent implements OnInit {
     this.userService.getUserDetails().subscribe(
       (user: User) => {
         this.logger.debug("Fetched user: " + JSON.stringify(user));
-        this.CustomerToValues(user.customer.ime, user.customer.prezime,user.customer.phone_number);
+        if (user.customer != null)
+          this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
       }
     )
     if (this.authService.smsAuthToken.getValue() != null) {
