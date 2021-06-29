@@ -14,6 +14,8 @@ import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
 import {NotFoundComponent} from './not-found/not-found.component';
 import {HomeMobileComponent} from './home-mobile/home-mobile.component';
 import {UserService} from "@app/_services/user.service";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 
 
@@ -23,20 +25,22 @@ import {UserService} from "@app/_services/user.service";
     NotFoundComponent,
     HomeMobileComponent,
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    LoggerModule.forRoot({
-      level: environment.logLevel,
-      serverLogLevel: NgxLoggerLevel.ERROR,
-    }),
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        LoggerModule.forRoot({
+            level: environment.logLevel,
+            serverLogLevel: NgxLoggerLevel.ERROR,
+        }),
+        ToastModule,
+    ],
   providers: [
     {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService, NGXLogger, UserService]},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

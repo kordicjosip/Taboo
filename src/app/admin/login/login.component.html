@@ -1,5 +1,22 @@
 <div id="wrapper">
-  <div id="login">
-  <!-- TODO napraviti login view-->
+  <div class="login-box">
+    <h2>Login</h2>
+    <form>
+      <div class="user-box">
+        <input id="username" type="text" name="username" [required]="true">
+        <label>Username</label>
+      </div>
+      <div class="user-box">
+        <input id="password" type="password" name="password" [required]="true">
+        <label>Password</label>
+      </div>
+      <a (click)="login()">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+         Prijavi se
+      </a>
+    </form>
   </div>
 </div>

@@ -12,14 +12,14 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private logger: NGXLogger) {
   }
-
+ //TODO staviti da provjerava je li role admin
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     const jwt = this.authService.jwtSubject.getValue();
     if (jwt == null) {
       this.logger.debug(`User not logged in`);
-      // this.router.navigate(["/admin/login"])
+      this.router.navigate(["/admin/login"])
       return false;
     }
 

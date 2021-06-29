@@ -12,7 +12,7 @@ export class AuthGuardCustomer implements CanActivate {
     private authService: AuthService,
     private logger: NGXLogger) {
   }
-
+//Ovo koristiti za customera a auth-guard.service za admin
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {

@@ -12,7 +12,6 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass'],
-  providers: [MessageService]
 })
 export class HomeComponent {
   odabraniStol: Table | null = null;
@@ -30,6 +29,8 @@ export class HomeComponent {
   }
 
   addSingle() {
-    this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+    this.messageService.add({severity: 'success', key:"glavnitoast", summary: 'Service Message', detail: 'Via MessageService'});
   }
+
+
 }

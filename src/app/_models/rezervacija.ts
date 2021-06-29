@@ -2,7 +2,7 @@
 import {Customer, CustomerInterface} from "@app/_models/customer";
 
 export interface RezervacijaInterface {
-  id: number,
+  id: string,
   table_number: number,
   date: string,
   customer: CustomerInterface,
@@ -18,7 +18,7 @@ export interface RezervacijaCreateInterface {
 }
 
 export class Rezervacija {
-  uid: number;
+  uid: string;
   table_number: number;
   customer: Customer;
   date: Date;

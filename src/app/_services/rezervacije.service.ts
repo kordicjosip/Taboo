@@ -47,6 +47,21 @@ export class RezervacijeService {
       })
     )
   }
+  confirmRezervacija(uid: string): Observable<Rezervacija>{
+    return this.http.post(`${environment.apiURL}reservations/${uid}/confirm`, {}).pipe(
+      map((res: any) =>{
+        return new Rezervacija(res);
+      })
+    )
+  }
+  cancelRezervacija(uid: string): Observable<Rezervacija>{
+    return this.http.post(`${environment.apiURL}reservations/${uid}/cancel`, {}).pipe(
+      map((res: any) =>{
+        return new Rezervacija(res);
+      })
+    )
+  }
+  //TODO dodati endpoint koji ce dobavljati samo otkazane rezervacije po eventid
 
 }
 

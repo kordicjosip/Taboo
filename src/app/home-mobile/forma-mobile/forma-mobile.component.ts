@@ -13,7 +13,7 @@ import {User} from "@app/_models/user";
   selector: 'app-forma-mobile',
   templateUrl: './forma-mobile.component.html',
   styleUrls: ['./forma-mobile.component.sass'],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService]
 })
 export class FormaMobileComponent implements OnInit {
 

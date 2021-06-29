@@ -23,9 +23,6 @@ export class DogadajComponent implements OnInit {
 
   rezervacijeService: RezervacijeService
 
- //TODO Napraviti da se korisniku disablea događaj ako vec ima rezervaciju za taj dogadaj
-  // TODO ili napraviti da mu piše VEC REZERVIRANO pored tog događaja (I U MOBILEU) (OSTALO SAMO U MOBILEU !!!)
-
   constructor(
     rezervacijeService: RezervacijeService
   ) {

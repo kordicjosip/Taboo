@@ -1,4 +1,4 @@
-<p-tabMenu [model]="items"></p-tabMenu>
+<p-tabMenu *ngIf="isLoggedInAdmin()" [model]="items" [activeItem]="activeItem"></p-tabMenu>
 
-<p-toast></p-toast>
+
 <router-outlet></router-outlet>

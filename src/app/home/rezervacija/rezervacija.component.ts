@@ -16,7 +16,7 @@ import {Table} from "@app/_models/table";
   selector: 'app-rezervacija',
   templateUrl: './rezervacija.component.html',
   styleUrls: ['./rezervacija.component.sass'],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService]
 })
 export class RezervacijaComponent implements OnInit {
   ime: string = "";
@@ -80,12 +80,11 @@ export class RezervacijaComponent implements OnInit {
       }).subscribe(
         rezervacij => {
           this.logger.debug("Uspješno kreirana rezervacija " + rezervacij.uid);
-          //TODO skontat sta cemo za success ovdje (Ili ostaviti usera na istom screenu sa popup porukom ili ga prebacit na kompletno drugu rutu)
-          this.messageService.add({severity: 'success', summary: 'Uspješno', detail: `Uspješno ste rezervirali stol na ime ${this.ime + ' ' + this.prezime }`});
+          this.alertSuccess();
         },
         error => {
+          this.alertError();
           this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
-          this.messageService.add({severity: 'danger', summary: 'Greška', detail: 'Greška prilikom kreiranja rezervacije, pokušajte ponovno.'});
         }
       )
     } else {
@@ -139,6 +138,13 @@ export class RezervacijaComponent implements OnInit {
   }
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
+  }
+//TODO vidit zasto ne radi messageservice (ne izbacuje popup)
+  alertSuccess(){
+    this.messageService.add({severity: 'success', summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
+  }
+  alertError(){
+    this.messageService.add({severity: 'danger', summary: 'Greška', key:"glavnitoast" ,detail: 'Greška prilikom kreiranja rezervacije. Taj stol je već zauzet.'});
   }
 
 }

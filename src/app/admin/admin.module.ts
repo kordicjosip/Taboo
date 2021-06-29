@@ -12,6 +12,8 @@ import { RezervacijaComponent } from './rezervacija/rezervacija.component';
 import { DogadajiComponent } from './dogadaji/dogadaji.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from "@angular/forms";
+import { OtkazaniComponent } from './otkazani/otkazani.component';
+import { DogadajiotkazaniComponent } from './dogadajiotkazani/dogadajiotkazani.component';
 
 
 
@@ -21,6 +23,8 @@ import {FormsModule} from "@angular/forms";
     RezervacijaComponent,
     DogadajiComponent,
     LoginComponent,
+    OtkazaniComponent,
+    DogadajiotkazaniComponent,
 
   ],
     imports: [

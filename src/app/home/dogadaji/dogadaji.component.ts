@@ -14,7 +14,6 @@ import {Rezervacija} from "@app/_models/rezervacija";
   selector: 'app-dogadaji',
   templateUrl: './dogadaji.component.html',
   styleUrls: ['./dogadaji.component.sass'],
-  providers: [MessageService]
 })
 export class DogadajiComponent implements OnInit {
   dogadaji: Dogadaj[] = [];

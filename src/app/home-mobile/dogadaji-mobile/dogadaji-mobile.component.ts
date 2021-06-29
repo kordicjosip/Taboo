@@ -14,7 +14,6 @@ import {AuthService} from "@app/_services/auth.service";
   selector: 'app-dogadaji-mobile',
   templateUrl: './dogadaji-mobile.component.html',
   styleUrls: ['./dogadaji-mobile.component.sass'],
-  providers: [MessageService]
 })
 export class DogadajiMobileComponent implements OnInit {
 
