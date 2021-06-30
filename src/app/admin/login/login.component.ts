@@ -26,7 +26,14 @@ export class LoginComponent implements OnInit {
     let password = (document.getElementById("password") as HTMLInputElement).value;
     this.logger.debug(`Vrijednost username: ${username}`);
     this.logger.debug(`Vrijednost passworda: ${password}`);
-    this.authService.login(username, password, true);
+    this.authService.login(username, password, true).subscribe(
+      () => {
+        this.logger.debug("Successful login");
+      },
+      error => {
+        this.logger.debug(`Error while logging in: ${JSON.stringify(error, null, 2)}`)
+      }
+    );
     this.router.navigate(["/admin"])
   }
 

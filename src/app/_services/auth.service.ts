@@ -62,14 +62,13 @@ export class AuthService {
     formData.append("username", username);
     formData.append("password", password);
 
-    this.http.post<any>(`${environment.apiURL}auth/login`, formData, {withCredentials: false})
+    return this.http.post<any>(`${environment.apiURL}auth/login`, formData, {withCredentials: false})
       .pipe(map(jwt => {
-        // TODO Možda ovo prebaciti u metodu
         this.jwtSubject.next(new AuthJWTToken(jwt));
         if (saveLogin) {
           this.saveCredidentials(this.jwtSubject.getValue())
         }
-      })).subscribe();
+      }));
   }
 
   confirmSMSAuth(key: string) {
