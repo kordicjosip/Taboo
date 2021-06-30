@@ -24,7 +24,14 @@ export class AuthGuard implements CanActivate {
     }
 
     const user = this.authService.korisnikSubject.getValue();
-    return user!=null && user.admin;
+    if(user!=null && user.admin){
+      return true;
+    }
+    //navigate na home ako user nije admin
+    else{
+      this.router.navigate([""])
+      return false;
+    }
   }
 
 }

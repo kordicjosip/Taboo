@@ -1,8 +1,5 @@
 <div id="forma">
-  <div *ngIf="!isLoggedIn()" class=drugikorak
-       style="color: white; text-align: center; font-weight: 700; font-size: 23px; padding-top:160px; margin-bottom: 30px; padding-left: 5px">3. UNESITE VAŠE
-    PODATKE
-  </div>
+  <div  class=drugikorak>3. UNESITE VAŠE PODATKE</div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <input #name="ngModel" (ngModelChange)="rezervacijeService.ime.next(ime)" [(ngModel)]="ime" class="form-control"
@@ -52,7 +49,7 @@
   </div>
   </div>
   <div class="p-field p-grid" id="napomena">
-      <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
+      <textarea id="napomena1" (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
                 placeholder="Napomena (opcionalno)"
                 style="resize: none; width: 240px; color: white; "></textarea>
   </div>
@@ -64,7 +61,7 @@
     <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>
-    <button *ngIf="!isLoggedIn() && (isImeEmpty() || isPrezimeEmpty() || !isBrojFull())" [disabled]="true"
+    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull())" [disabled]="true"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
             pRipple></button>

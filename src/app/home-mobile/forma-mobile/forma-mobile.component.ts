@@ -71,13 +71,26 @@ export class FormaMobileComponent implements OnInit {
   }
 
   rezerviraj() {
+    this.rezervacijeService.ime.next(this.ime);
+    this.rezervacijeService.prezime.next(this.prezime);
+    this.rezervacijeService.brojtelefona.next(this.brojtelefona);
+    this.rezervacijeService.napomena.next(this.napomena);
+
     if (this.isLoggedIn()) {
       this.rezervacijeService.createReservacija({
         table_number: this.rezervacijeService.selectedTable.getValue()!.number,
         event: this.rezervacijeService.selectedEvent.getValue()!.uid,
         message: this.napomena
-
-      })
+      }).subscribe(
+        rezervacij => {
+          this.logger.debug("Uspješno kreirana rezervacija " + rezervacij.uid);
+          this.alertSuccess();
+        },
+        error => {
+          this.alertError(error);
+          this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
+        }
+      )
     } else {
       this.userService.registerAndReserve({
         phone_number: this.rezervacijeService.brojtelefona.getValue()!,
@@ -89,7 +102,6 @@ export class FormaMobileComponent implements OnInit {
       }).subscribe(
         token => {
           this.authService.smsAuthToken.next(token);
-          this.sms?.focus();
 
           this.confirmationService.confirm({
             accept: () => {
@@ -99,6 +111,9 @@ export class FormaMobileComponent implements OnInit {
               this.authService.smsAuthToken.next(null);
             }
           });
+        },
+        error => {
+          this.alertError(error);
         }
       )
     }
@@ -109,33 +124,28 @@ export class FormaMobileComponent implements OnInit {
       this.authService.confirmSMSAuth(key);
     }
   }
-
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
-
   isImeEmpty() {
     return this.ime == "";
   }
-
   isPrezimeEmpty() {
     return this.prezime == "";
   }
-
-//Viditi zasto ovdje cim jedno slovo unesemo odmah rezerviraj button postane available
   isBrojFull() {
-    return this.brojtelefona.length == 15;
+    return this.brojtelefona.length == 15 || this.brojtelefona.length == 16
   }
 
-
-  ProvjeriBroj() {
-    this.logger.debug(`Vrijednost broja je: ${this.brojtelefona}`);
-    this.logger.debug(`Veličina string broja je: ${this.brojtelefona.length}`);
-    this.logger.debug(`Vrijednost isbrojfull je ${this.isBrojFull()}`)
-  }
 
   back() {
     this._location.back();
+  }
+  alertSuccess(){
+    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
+  }
+  alertError(message: string = "Nepoznati error"){
+    this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(message)}`});
   }
 
 }
