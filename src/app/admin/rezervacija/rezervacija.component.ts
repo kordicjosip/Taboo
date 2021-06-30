@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Rezervacija} from "@app/_models/rezervacija";
 import {MessageService} from "primeng/api";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
@@ -17,29 +17,30 @@ export class RezervacijaComponent implements OnInit {
   sveRezervacije: Rezervacija[];
   dogadaji: Dogadaj[];
   rezervacije: Rezervacija[];
-  nazivdogadaja: string="";
-  filterIzraz: string="";
+  nazivdogadaja: string = "";
+  filterIzraz: string = "";
 
   constructor(private messageService: MessageService,
               private rezervacijaService: RezervacijeService,
               private logger: NGXLogger,
               private activatedRoute: ActivatedRoute,
               private dogadajiService: DogadajiService) {
-    this.sveRezervacije=[];
-    this.dogadaji=[];
-    this.rezervacije=[];
-    this.eventid=activatedRoute.snapshot.paramMap.get("id");
+    this.sveRezervacije = [];
+    this.dogadaji = [];
+    this.rezervacije = [];
+    this.eventid = activatedRoute.snapshot.paramMap.get("id");
   }
+
   ngOnInit(): void {
     this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(rezervacije => {
-      this.sveRezervacije=rezervacije;
-      this.rezervacije=rezervacije;
+      this.sveRezervacije = rezervacije;
+      this.rezervacije = rezervacije;
       this.logger.debug(this.sveRezervacije);
     });
-    this.dogadajiService.getDogadaji(true).subscribe(dogadaji=> {
-      this.dogadaji=dogadaji;
+    this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
+      this.dogadaji = dogadaji;
       this.logger.debug(this.dogadaji);
-      if(this.eventid!=null) {
+      if (this.eventid != null) {
         this.getDogadajById();
       }
     });
@@ -47,27 +48,27 @@ export class RezervacijaComponent implements OnInit {
 
   }
 
-  getDogadajById(){
-    for(let dogadaj of this.dogadaji){
+  getDogadajById() {
+    for (let dogadaj of this.dogadaji) {
       this.logger.debug(`Dogadaj ID: ${dogadaj.uid}`);
       this.logger.debug(`Event ID: ${this.eventid}`);
-      if(dogadaj.uid == this.eventid){
-        this.nazivdogadaja=dogadaj.naziv;
+      if (dogadaj.uid == this.eventid) {
+        this.nazivdogadaja = dogadaj.naziv;
         this.logger.debug(`Pronađen dogadaj sa nazivom: ${this.nazivdogadaja}`);
         break;
       }
 
     }
   }
- //TODO Skontat s Matom zasto PotvrdiRezervaciju i OtkaziRezervaciju ne rade trenutno
+
+  //TODO Skontat s Matom zasto PotvrdiRezervaciju i OtkaziRezervaciju ne rade trenutno
 
   PotvrdiRezervaciju(uid: string) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=1;
+    for (let rezervacija of this.rezervacije) {
+      if (rezervacija.uid == uid) {
         this.rezervacijaService.confirmRezervacija(uid).subscribe(
-          rezervacij => {
-            this.logger.debug(`Potvrdi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`)
+          res => {
+            rezervacija = res;
             this.alertSuccess("Uspješno ste potvrdili rezervaciju.");
           },
           error => {
@@ -81,12 +82,11 @@ export class RezervacijaComponent implements OnInit {
   }
 
   OtkaziRezervaciju(uid: string) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=0;
+    for (let rezervacija of this.rezervacije) {
+      if (rezervacija.uid == uid) {
         this.rezervacijaService.cancelRezervacija(uid).subscribe(
-          rezervacij => {
-            this.logger.debug(`Otkazi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`);
+          res => {
+            rezervacija = res;
             this.alertSuccess("Uspješno ste otkazali rezervaciju.");
           },
           error => {
@@ -99,18 +99,27 @@ export class RezervacijaComponent implements OnInit {
       }
     }
   }
-  alertSuccess(message: string){
-    this.messageService.add({severity:'success',key:"glavnitoast" ,summary:'Uspješno!', detail:message});
+
+  alertSuccess(message: string) {
+    this.messageService.add({severity: 'success', key: "glavnitoast", summary: 'Uspješno!', detail: message});
   }
-  alertError(message: string){
-    this.messageService.add({severity:'error', key:"glavnitoast" ,summary:'Greška!', detail:JSON.stringify(message)});
+
+  alertError(message: string) {
+    this.messageService.add({
+      severity: 'error',
+      key: "glavnitoast",
+      summary: 'Greška!',
+      detail: JSON.stringify(message)
+    });
   }
-  filtriraj(){
+
+  filtriraj() {
     setTimeout(() => {
       this.logger.debug("Trazim filter");
       this.filter(this.filterIzraz);
     })
   }
+
   filter(filter: string) {
     this.logger.debug(`Vrijednost filtera je: ${filter}`);
     this.rezervacije = [];

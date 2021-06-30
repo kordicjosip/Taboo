@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Rezervacija} from "@app/_models/rezervacija";
 import {MessageService} from "primeng/api";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
@@ -17,51 +17,58 @@ export class OtkazaniComponent implements OnInit {
   constructor(private messageService: MessageService,
               private rezervacijaService: RezervacijeService,
               private logger: NGXLogger,
-              private activatedRoute: ActivatedRoute)
-  {
-    this.rezervacije=[];
-    this.eventid=activatedRoute.snapshot.paramMap.get("id");
+              private activatedRoute: ActivatedRoute) {
+    this.rezervacije = [];
+    this.eventid = activatedRoute.snapshot.paramMap.get("id");
   }
 
 
   ngOnInit(): void {
     this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(rezervacije => {
-      this.rezervacije=rezervacije;
+      this.rezervacije = rezervacije;
       this.logger.debug(this.rezervacije);
     })
   }
 
   PotvrdiRezervaciju(uid: string) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=1;
+    for (let rezervacija of this.rezervacije) {
+      if (rezervacija.uid == uid) {
         this.rezervacijaService.confirmRezervacija(uid).subscribe(
-          rezervacij => {
-            this.logger.debug(`Potvrdi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`)
+          res => {
+            rezervacija = res;
+            this.logger.debug(`Potvrdi Rezervaciju pozvano za rezervaciju: ${rezervacija.uid}`)
           },
           error => {
             this.logger.error(`Greška prilikom poziva Potvrdi Rezervaciju`);
           }
         )
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste potvrdili rezervaciju!'});
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uspješno!',
+          detail: 'Uspješno ste potvrdili rezervaciju!'
+        });
         break;
       }
     }
   }
 
   OtkaziRezervaciju(uid: string) {
-    for(let rezervacija of this.rezervacije){
-      if(rezervacija.uid == uid){
-        rezervacija.status=0;
+    for (let rezervacija of this.rezervacije) {
+      if (rezervacija.uid == uid) {
         this.rezervacijaService.cancelRezervacija(uid).subscribe(
-          rezervacij => {
-            this.logger.debug(`Otkazi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`);
+          res => {
+            rezervacija = res;
+            this.logger.debug(`Otkazi Rezervaciju pozvano za rezervaciju: ${rezervacija.uid}`);
           },
           error => {
             this.logger.error(`Greška prilikom poziva OtkaziRezervaciju za rezervaciju`)
           }
         )
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste otkazali rezervaciju!'});
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uspješno!',
+          detail: 'Uspješno ste otkazali rezervaciju!'
+        });
         break;
       }
     }
