@@ -1,21 +1,32 @@
+
+<h1 class="naslov">Gledate rezervacije za dogadaj: {{nazivdogadaja}}</h1>
+
+<div class="wrap">
+  <div class="search">
+    <input (ngModelChange)="filtriraj($event)" [(ngModel)]="filterIzraz" id="filter" placeholder="Pretraži.."
+           type="text">
+    <button type="submit" class="searchButton">
+      <i class="pi pi-search"></i>
+    </button>
+  </div>
+</div>
+
 <p-table [value]="rezervacije">
   <ng-template pTemplate="header">
     <tr>
-      <th>Ime i prezime</th>
-      <th>Broj stola</th>
-      <th>Napomena</th>
-      <th>Potvrđena</th>
-      <th>Akcije</th>
+      <th style="background-color: lightgrey; font-weight: bold">Ime i prezime</th>
+      <th style="background-color: lightgrey; font-weight: bold">Broj stola</th>
+      <th style="background-color: lightgrey; font-weight: bold">Napomena</th>
+      <th style="background-color: lightgrey; font-weight: bold">Potvrđena</th>
+      <th style="background-color: lightgrey; font-weight: bold">Akcije</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rezervacija>
     <tr>
-      <td >{{rezervacija.customer.ime + " " + rezervacija.customer.prezime}}</td>
+      <td>{{rezervacija.customer.ime + " " + rezervacija.customer.prezime}}</td>
       <td>{{rezervacija.table_number}}</td>
       <td>{{rezervacija.napomena}}</td>
-      <td *ngIf="rezervacija.status == 1">Potvrđeno</td>
-      <td *ngIf="rezervacija.status == 0">Otkazano</td>
-      <td *ngIf="rezervacija.status != 1 && rezervacija.status != 0">/</td>
+      <td>{{rezervacija.status.naziv}}</td>
 
       <td>
         <button  (click)="PotvrdiRezervaciju(rezervacija.uid)" pButton type="button" class="p-button-rounded p-button-success" icon="pi pi-check"></button>

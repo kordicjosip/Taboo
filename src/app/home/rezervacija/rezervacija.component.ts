@@ -38,7 +38,6 @@ export class RezervacijaComponent implements OnInit {
   }
 
   ngOnInit() {
-    //TODO Vidit zasto ovdje izbacuje error "Not Authenticated" kad je user vec logiran ( ne kupi podatke o vec rezerviranim dogadajima i ime prezime itd.)
     if(this.isLoggedIn()) {
       this.userService.getUserDetails().subscribe(
         (user: User) => {
@@ -68,6 +67,7 @@ export class RezervacijaComponent implements OnInit {
   }
 
   rezerviraj() {
+    //TODO napraviti da kad rezervira user, da mu odmah refresha dogadaje(tj da taj dogadaj za koji je rezervirao odmah dobije klasu alreadyReserved) ( SADA JE POTREBAN REFRESH)
     this.rezervacijeService.ime.next(this.ime);
     this.rezervacijeService.prezime.next(this.prezime);
     this.rezervacijeService.brojtelefona.next(this.brojtelefona);

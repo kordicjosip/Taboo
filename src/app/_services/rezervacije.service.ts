@@ -35,8 +35,21 @@ export class RezervacijeService {
     )
   }
 
-  getRezervacijeByEvent(uid: string): Observable<Rezervacija[]> {
-    return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`).pipe(
+  getRezervacijeByEvent(uid: string, status: number | null = null): Observable<Rezervacija[]> {
+    if(status!=null){
+      return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`, {params: {status} }).pipe(
+        map((res: any[]) => {
+          const rezervacije: Rezervacija[] = [];
+          res.forEach((rezervacija: any) => {
+            rezervacije.push(new Rezervacija(rezervacija));
+          });
+          this.logger.debug(JSON.stringify(rezervacije, null, 2));
+          return rezervacije;
+        })
+      )
+    }
+    else
+      return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`, {params: {} }).pipe(
       map((res: any[]) => {
         const rezervacije: Rezervacija[] = [];
         res.forEach((rezervacija: any) => {
@@ -61,7 +74,6 @@ export class RezervacijeService {
       })
     )
   }
-  //TODO dodati endpoint koji ce dobavljati samo otkazane rezervacije po eventid
 
 }
 
