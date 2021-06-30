@@ -48,7 +48,6 @@ export class RezervacijaComponent implements OnInit {
   }
 
   getDogadajById(){
-    this.logger.debug("prva linija funkcije");
     for(let dogadaj of this.dogadaji){
       this.logger.debug(`Dogadaj ID: ${dogadaj.uid}`);
       this.logger.debug(`Event ID: ${this.eventid}`);
@@ -69,12 +68,13 @@ export class RezervacijaComponent implements OnInit {
         this.rezervacijaService.confirmRezervacija(uid).subscribe(
           rezervacij => {
             this.logger.debug(`Potvrdi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`)
+            this.alertSuccess("Uspješno ste potvrdili rezervaciju.");
           },
           error => {
             this.logger.error(`Greška prilikom poziva Potvrdi Rezervaciju`);
+            this.alertError(error);
           }
         )
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste potvrdili rezervaciju!'});
         break;
       }
     }
@@ -87,15 +87,23 @@ export class RezervacijaComponent implements OnInit {
         this.rezervacijaService.cancelRezervacija(uid).subscribe(
           rezervacij => {
             this.logger.debug(`Otkazi Rezervaciju pozvano za rezervaciju: ${rezervacij.uid}`);
+            this.alertSuccess("Uspješno ste otkazali rezervaciju.");
           },
           error => {
-            this.logger.error(`Greška prilikom poziva OtkaziRezervaciju za rezervaciju`)
+            this.logger.error(`Greška prilikom poziva OtkaziRezervaciju za rezervaciju`);
+            this.alertError(error);
           }
         )
-        this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste otkazali rezervaciju!'});
+
         break;
       }
     }
+  }
+  alertSuccess(message: string){
+    this.messageService.add({severity:'success',key:"glavnitoast" ,summary:'Uspješno!', detail:message});
+  }
+  alertError(message: string){
+    this.messageService.add({severity:'error', key:"glavnitoast" ,summary:'Greška!', detail:JSON.stringify(message)});
   }
   filtriraj(){
     setTimeout(() => {
@@ -110,7 +118,6 @@ export class RezervacijaComponent implements OnInit {
       this.rezervacije = this.sveRezervacije;
     } else {
       for (const rezervacija of this.sveRezervacije) {
-        // TODO spasiti pretvaranje za ponovu upotrebu
         const word = `${JSON.stringify(rezervacija.customer.ime + " " + rezervacija.customer.prezime).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
         const filteri = filter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ');
         let includesAll = true;
