@@ -47,7 +47,7 @@ export class AuthService {
           if (jwtSubject.accessTokenIsValid()) {
             this.startRefreshTokenTimer();
           } else {
-            this.refreshToken();
+            this.refreshToken().subscribe();
           }
         }
       }

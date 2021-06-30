@@ -12,7 +12,7 @@ export function appInitializer(authService: AuthService, logger: NGXLogger, user
       (token: AuthJWTToken | null) => {
         if (token != null && !token.accessTokenIsValid()) {
           logger.debug('JWT expired');
-          authService.refreshToken();
+          authService.refreshToken().subscribe();
         }
         if (token != null && token.accessTokenIsValid()) {
           userService.getUserDetails().subscribe(
