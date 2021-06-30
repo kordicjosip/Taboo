@@ -12,18 +12,28 @@ export function appInitializer(authService: AuthService, logger: NGXLogger, user
       (token: AuthJWTToken | null) => {
         if (token != null && !token.accessTokenIsValid()) {
           logger.debug('JWT expired');
-          authService.refreshToken().subscribe();
-        }
-        if (token != null && token.accessTokenIsValid()) {
-          userService.getUserDetails().subscribe(
+          return authService.refreshToken().subscribe(
+            () => {
+              return userService.getUserDetails().subscribe(
+                (user: User) => {
+                  authService.korisnikSubject.next(user);
+                  logger.debug("Got user: " + JSON.stringify(user));
+                  return EMPTY.subscribe().add(resolve);
+                });
+            }
+          );
+        } else if (token != null && token.accessTokenIsValid()) {
+          return userService.getUserDetails().subscribe(
             (user: User) => {
               authService.korisnikSubject.next(user);
               logger.debug("Got user: " + JSON.stringify(user));
+              return EMPTY.subscribe().add(resolve);
             }
           );
+        } else {
+          logger.debug('Initialized app');
+          return EMPTY.subscribe().add(resolve);
         }
-        logger.debug('Initialized app');
-        return EMPTY.subscribe().add(resolve);
       }
     )
   });
