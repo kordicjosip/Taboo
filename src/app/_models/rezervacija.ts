@@ -25,12 +25,12 @@ export enum RezervacijaStatusi {
 
 export class RezervacijaStatus {
   naziv: string;
-  tip: RezervacijaStatusi;
+  vrijednost: RezervacijaStatusi;
 
-  constructor(tip: number) {
-    this.tip = tip;
+  constructor(vrijednost: number) {
+    this.vrijednost = vrijednost;
 
-    switch (this.tip) {
+    switch (this.vrijednost) {
       case RezervacijaStatusi.KREIRANA: {
         this.naziv = 'Kreirana';
         break;

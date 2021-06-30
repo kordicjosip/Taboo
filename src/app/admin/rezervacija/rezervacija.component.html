@@ -3,7 +3,8 @@
 
 <div class="wrap">
   <div class="search">
-    <input type="text" id="filter" (ngModelChange)="filtriraj()" [(ngModel)]="filterIzraz" placeholder="Pretraži..">
+    <input (ngModelChange)="filtriraj($event)" [(ngModel)]="filterIzraz" id="filter" placeholder="Pretraži.."
+           type="text">
     <button type="submit" class="searchButton">
       <i class="pi pi-search"></i>
     </button>

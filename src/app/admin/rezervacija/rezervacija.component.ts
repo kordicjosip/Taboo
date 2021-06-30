@@ -61,14 +61,12 @@ export class RezervacijaComponent implements OnInit {
     }
   }
 
-  //TODO Skontat s Matom zasto PotvrdiRezervaciju i OtkaziRezervaciju ne rade trenutno
-
   PotvrdiRezervaciju(uid: string) {
     for (let rezervacija of this.rezervacije) {
       if (rezervacija.uid == uid) {
         this.rezervacijaService.confirmRezervacija(uid).subscribe(
           res => {
-            rezervacija = res;
+            rezervacija.status = res.status;
             this.alertSuccess("Uspješno ste potvrdili rezervaciju.");
           },
           error => {
@@ -86,7 +84,7 @@ export class RezervacijaComponent implements OnInit {
       if (rezervacija.uid == uid) {
         this.rezervacijaService.cancelRezervacija(uid).subscribe(
           res => {
-            rezervacija = res;
+            rezervacija.status = res.status;
             this.alertSuccess("Uspješno ste otkazali rezervaciju.");
           },
           error => {
@@ -113,15 +111,11 @@ export class RezervacijaComponent implements OnInit {
     });
   }
 
-  filtriraj() {
-    setTimeout(() => {
-      this.logger.debug("Trazim filter");
-      this.filter(this.filterIzraz);
-    })
+  filtriraj(value: string) {
+    this.filter(value);
   }
 
   filter(filter: string) {
-    this.logger.debug(`Vrijednost filtera je: ${filter}`);
     this.rezervacije = [];
     if (filter == '') {
       this.rezervacije = this.sveRezervacije;
