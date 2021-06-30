@@ -36,7 +36,6 @@ export class AdminComponent implements OnInit {
     ];
     this.activeItem=this.items[0];
     if(!this.isLoggedInAdmin()) {
-      this.logger.debug("Je li provjeravas ovo");
       this.router.navigate(["/admin/login"])
     }
   }
