@@ -29,12 +29,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password, true).subscribe(
       () => {
         this.logger.debug("Successful login");
+        this.router.navigate(["/admin"]);
       },
       error => {
         this.logger.debug(`Error while logging in: ${JSON.stringify(error, null, 2)}`)
       }
     );
-    this.router.navigate(["/admin"])
   }
 
   isLoggedIn() {
