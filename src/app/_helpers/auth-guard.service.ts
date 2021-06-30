@@ -24,8 +24,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const user = this.authService.korisnikSubject.getValue();
-
-    return user != null && user.admin;
+    return user!=null && user.admin;
   }
 
 }

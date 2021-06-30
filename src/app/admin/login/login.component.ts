@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "@app/_services/auth.service";
 import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private logger: NGXLogger,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
   }
 
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
         )
       },
       error => {
+        this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(error)}`});
         this.logger.debug(`Error while logging in: ${JSON.stringify(error, null, 2)}`)
       }
     );

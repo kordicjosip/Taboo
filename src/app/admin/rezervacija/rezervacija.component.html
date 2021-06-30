@@ -1,5 +1,6 @@
 
 <h1 class="naslov">Gledate rezervacije za dogadaj: {{nazivdogadaja}}</h1>
+<input type="text" id="filter" (ngModelChange)="filtriraj()" [(ngModel)]="filterIzraz" placeholder="Search..">
 <p-table [value]="rezervacije">
   <ng-template pTemplate="header">
     <tr>

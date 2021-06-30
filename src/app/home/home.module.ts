@@ -16,6 +16,7 @@ import {TablesComponent} from "@app/home/tables/tables.component";
 import {DogadajComponent} from './dogadaj/dogadaj.component';
 import {RippleModule} from "primeng/ripple";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {MessageService} from "primeng/api";
 
 
 
@@ -44,6 +45,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     TablesComponent,
     RezervacijaComponent
   ]
+
 })
 export class HomeModule {
 }

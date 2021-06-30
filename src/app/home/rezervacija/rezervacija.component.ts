@@ -67,7 +67,6 @@ export class RezervacijaComponent implements OnInit {
     this.brojtelefona=brojtelefona;
   }
 
- // TODO Napraviti success view za svaku uspješnu rezervaciju(i u mobileu)
   rezerviraj() {
     this.rezervacijeService.ime.next(this.ime);
     this.rezervacijeService.prezime.next(this.prezime);
@@ -85,7 +84,7 @@ export class RezervacijaComponent implements OnInit {
           this.alertSuccess();
         },
         error => {
-          this.alertError();
+          this.alertError(error);
           this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
         }
       )
@@ -109,6 +108,9 @@ export class RezervacijaComponent implements OnInit {
               this.authService.smsAuthToken.next(null);
             }
           });
+        },
+        error => {
+          this.alertError(error);
         }
       )
     }
@@ -143,12 +145,13 @@ export class RezervacijaComponent implements OnInit {
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
-//TODO vidit zasto ne radi messageservice (ne izbacuje popup)
+
   alertSuccess(){
-    this.messageService.add({severity: 'success', summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
+    this.logger.debug("Doslo je do alertSucces");
+    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
   }
-  alertError(){
-    this.messageService.add({severity: 'danger', summary: 'Greška', key:"glavnitoast" ,detail: 'Greška prilikom kreiranja rezervacije. Taj stol je već zauzet.'});
+  alertError(message: string = "Nepoznati error"){
+    this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(message)}`});
   }
 
 }

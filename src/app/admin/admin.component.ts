@@ -5,6 +5,8 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {NgForm} from "@angular/forms";
 import {AuthService} from "@app/_services/auth.service";
+import {Router} from "@angular/router";
+import {NGXLogger} from "ngx-logger";
 
 
 @Component({
@@ -18,7 +20,9 @@ export class AdminComponent implements OnInit {
   activeItem: MenuItem;
   constructor(rezervacijeService: RezervacijeService,
               private messageService: MessageService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private router: Router,
+              private logger: NGXLogger) {
     this.items=[];
     this.rezervacije=[];
     this.activeItem=this.items[0];
@@ -31,12 +35,14 @@ export class AdminComponent implements OnInit {
       {label: 'Otkazani', routerLink:'/admin/dogadajiOtkazani', icon:'pi pi-fw pi-trash'},
     ];
     this.activeItem=this.items[0];
-
+    if(!this.isLoggedInAdmin()) {
+      this.logger.debug("Je li provjeravas ovo");
+      this.router.navigate(["/admin/login"])
+    }
   }
 
- //TODO staviti ovdje da provjerava je li role admin isto
   isLoggedInAdmin() {
-    return this.authService.jwtSubject.getValue() != null;
+    return this.authService.jwtSubject.getValue() != null && this.authService.korisnikSubject.getValue()?.admin;
   }
   //TODO implementirati websocket da refresha i search bar za rezervacije po imenu
 }

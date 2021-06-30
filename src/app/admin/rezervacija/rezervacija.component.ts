@@ -14,23 +14,27 @@ import {DogadajiService} from "@app/_services/dogadaji.service";
 })
 export class RezervacijaComponent implements OnInit {
   eventid: string | null;
-  rezervacije: Rezervacija[];
+  sveRezervacije: Rezervacija[];
   dogadaji: Dogadaj[];
+  rezervacije: Rezervacija[];
   nazivdogadaja: string="";
+  filterIzraz: string="";
 
   constructor(private messageService: MessageService,
               private rezervacijaService: RezervacijeService,
               private logger: NGXLogger,
               private activatedRoute: ActivatedRoute,
               private dogadajiService: DogadajiService) {
-    this.rezervacije=[];
+    this.sveRezervacije=[];
     this.dogadaji=[];
+    this.rezervacije=[];
     this.eventid=activatedRoute.snapshot.paramMap.get("id");
   }
   ngOnInit(): void {
     this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(rezervacije => {
+      this.sveRezervacije=rezervacije;
       this.rezervacije=rezervacije;
-      this.logger.debug(this.rezervacije);
+      this.logger.debug(this.sveRezervacije);
     });
     this.dogadajiService.getDogadaji(true).subscribe(dogadaji=> {
       this.dogadaji=dogadaji;
@@ -90,6 +94,35 @@ export class RezervacijaComponent implements OnInit {
         )
         this.messageService.add({severity:'success', summary:'Uspješno!', detail:'Uspješno ste otkazali rezervaciju!'});
         break;
+      }
+    }
+  }
+  filtriraj(){
+    setTimeout(() => {
+      this.logger.debug("Trazim filter");
+      this.filter(this.filterIzraz);
+    })
+  }
+  filter(filter: string) {
+    this.logger.debug(`Vrijednost filtera je: ${filter}`);
+    this.rezervacije = [];
+    if (filter == '') {
+      this.rezervacije = this.sveRezervacije;
+    } else {
+      for (const rezervacija of this.sveRezervacije) {
+        // TODO spasiti pretvaranje za ponovu upotrebu
+        const word = `${JSON.stringify(rezervacija.customer.ime + " " + rezervacija.customer.prezime).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
+        const filteri = filter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ');
+        let includesAll = true;
+        for (const i of filteri) {
+          if (!word.includes(i)) {
+            includesAll = false;
+            break;
+          }
+        }
+        if (includesAll) {
+          this.rezervacije.push(rezervacija);
+        }
       }
     }
   }
