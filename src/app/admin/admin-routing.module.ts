@@ -10,27 +10,27 @@ import {AuthGuard} from "@app/_helpers/auth-guard.service";
 
 const routes: Routes = [
   {
-    path: '', component: AdminComponent,
+    path: '', component: AdminComponent, canActivate: [AuthGuard],
     children: [
       {
-        path: 'dogadaji', component: DogadajiComponent, canActivate: [AuthGuard]
+        path: 'dogadaji', component: DogadajiComponent
       },
       {
-        path: 'dogadajiOtkazani', component: DogadajiotkazaniComponent, canActivate: [AuthGuard]
+        path: 'dogadajiOtkazani', component: DogadajiotkazaniComponent
       },
       {
-        path: 'dogadaji/:id/rezervacija', component: RezervacijaComponent, canActivate: [AuthGuard]
+        path: 'dogadaji/:id/rezervacija', component: RezervacijaComponent
       },
       {
-        path: 'dogadaji/:id', component: DogadajiComponent, canActivate: [AuthGuard]
+        path: 'dogadaji/:id', component: DogadajiComponent
       },
       {
-        path: 'dogadaji/:id/otkazani', component: OtkazaniComponent, canActivate: [AuthGuard]
-      },
-      {
-        path: 'login', component: LoginComponent
+        path: 'dogadaji/:id/otkazani', component: OtkazaniComponent
       }
     ],
+  },
+  {
+    path: 'login', component: LoginComponent
   }
 ];
 
