@@ -77,12 +77,12 @@ export class AuthService {
       key: key,
       token: this.smsAuthToken.getValue()?.token
     }
-    this.http.post<any>(`${environment.apiURL}auth/sms/confirm`, req, {withCredentials: false})
+    return this.http.post<any>(`${environment.apiURL}auth/sms/confirm`, req, {withCredentials: false})
       .pipe(map(jwt => {
         this.jwtSubject.next(new AuthJWTToken(jwt));
         this.saveCredidentials(this.jwtSubject.getValue());
         localStorage.removeItem('smsAuthToken');
-      })).subscribe();
+      }));
   }
 
   saveCredidentials(token: AuthJWTToken | null) {

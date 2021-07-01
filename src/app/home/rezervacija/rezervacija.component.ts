@@ -47,6 +47,7 @@ export class RezervacijaComponent implements OnInit {
         }
       )
     }
+    //TODO vidit sta se ovdje dogodi kad user cancela klikom izvan boxa ili kad upre X gore desno
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {
@@ -118,7 +119,25 @@ export class RezervacijaComponent implements OnInit {
 
   smsConfirm(key: string) {
     if (this.authService.smsAuthToken.getValue() != null) {
-      this.authService.confirmSMSAuth(key);
+      this.authService.confirmSMSAuth(key).subscribe(
+        () => {
+            this.logger.debug("Uspješna potvrda SMS-a.");
+            this.alertSuccessMessage("Uspješno ste potvrdili SMS.");
+        },
+        error => {
+          this.logger.debug("Neuspješna potvrda SMS-a. Neispravno unešen ključ.")
+          this.alertError(error);
+          //TODO ovdje prikazujem popup za confirm opet(Provjeri ovo Mate)
+          this.confirmationService.confirm({
+            accept: () => {
+              this.smsConfirm(this.smskey);
+            },
+            reject: () => {
+              this.authService.smsAuthToken.next(null);
+            }
+          });
+        }
+      )
     }
   }
 
@@ -131,10 +150,7 @@ export class RezervacijaComponent implements OnInit {
   }
 
   isBrojFull() {
-    if(this.brojtelefona.length == 15 || this.brojtelefona.length == 16)
-      return true;
-    else
-      return false;
+    return this.brojtelefona.length == 15 || this.brojtelefona.length == 16;
   }
   isDogadajEmpty(){
     return this.rezervacijeService.selectedEvent.getValue() == null;
@@ -147,11 +163,13 @@ export class RezervacijaComponent implements OnInit {
   }
 
   alertSuccess(){
-    this.logger.debug("Doslo je do alertSucces");
     this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
   }
   alertError(message: string = "Nepoznati error"){
     this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(message)}`});
+  }
+  alertSuccessMessage(message: string){
+    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: message});
   }
 
 }
