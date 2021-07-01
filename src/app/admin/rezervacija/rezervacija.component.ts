@@ -4,7 +4,6 @@ import {MessageService} from "primeng/api";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute} from "@angular/router";
-import {Dogadaj} from "@app/_models/dogadaj";
 import {DogadajiService} from "@app/_services/dogadaji.service";
 
 @Component({
@@ -14,8 +13,7 @@ import {DogadajiService} from "@app/_services/dogadaji.service";
 })
 export class RezervacijaComponent implements OnInit {
   eventid: string | null;
-  sveRezervacije: Rezervacija[];
-  dogadaji: Dogadaj[];
+  rezervacijeForEvent: Rezervacija[] = [];
   rezervacije: Rezervacija[];
   nazivdogadaja: string = "";
   filterIzraz: string = "";
@@ -23,42 +21,22 @@ export class RezervacijaComponent implements OnInit {
   constructor(private messageService: MessageService,
               private rezervacijaService: RezervacijeService,
               private logger: NGXLogger,
-              private activatedRoute: ActivatedRoute,
-              private dogadajiService: DogadajiService) {
-    this.sveRezervacije = [];
-    this.dogadaji = [];
+              private activatedRoute: ActivatedRoute) {
     this.rezervacije = [];
     this.eventid = activatedRoute.snapshot.paramMap.get("id");
   }
 
   ngOnInit(): void {
-    this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(rezervacije => {
-      this.sveRezervacije = rezervacije;
-      this.rezervacije = rezervacije;
-      this.logger.debug(this.sveRezervacije);
-    });
-    this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
-      this.dogadaji = dogadaji;
-      this.logger.debug(this.dogadaji);
-      if (this.eventid != null) {
-        this.getDogadajById();
-      }
+    this.rezervacijaService.getRezervacijeByEvent(this.eventid!).subscribe(() => {
+      this.rezervacijaService.rezervacijeEvent.get(this.eventid!!)!!.subscribe(
+        (rezervacije: Rezervacija[]) => {
+          this.logger.debug("Nova rezervacija")
+          this.rezervacijeForEvent = rezervacije;
+          this.filter(this.filterIzraz);
+        }
+      );
     });
     this.logger.debug(`Vrijednost eventid je: ${this.eventid}`);
-
-  }
-
-  getDogadajById() {
-    for (let dogadaj of this.dogadaji) {
-      this.logger.debug(`Dogadaj ID: ${dogadaj.uid}`);
-      this.logger.debug(`Event ID: ${this.eventid}`);
-      if (dogadaj.uid == this.eventid) {
-        this.nazivdogadaja = dogadaj.naziv;
-        this.logger.debug(`Pronađen dogadaj sa nazivom: ${this.nazivdogadaja}`);
-        break;
-      }
-
-    }
   }
 
   PotvrdiRezervaciju(uid: string) {
@@ -111,16 +89,16 @@ export class RezervacijaComponent implements OnInit {
     });
   }
 
-  filtriraj(value: string) {
+  filterEvent(value: string) {
     this.filter(value);
   }
 
   filter(filter: string) {
     this.rezervacije = [];
     if (filter == '') {
-      this.rezervacije = this.sveRezervacije;
+      this.rezervacije = this.rezervacijeForEvent;
     } else {
-      for (const rezervacija of this.sveRezervacije) {
+      for (const rezervacija of this.rezervacijeForEvent) {
         const word = `${JSON.stringify(rezervacija.customer.ime + " " + rezervacija.customer.prezime).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
         const filteri = filter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ');
         let includesAll = true;

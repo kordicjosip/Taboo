@@ -5,7 +5,7 @@ import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {catchError, map} from "rxjs/operators";
 import {Rezervacija, RezervacijaCreateInterface} from "@app/_models/rezervacija";
-import {Table} from "@app/_models/table";
+import {Table, TableReference} from "@app/_models/table";
 import {Dogadaj} from "@app/_models/dogadaj";
 
 
@@ -19,6 +19,8 @@ export class RezervacijeService {
   prezime = new BehaviorSubject<string | null>(null);
   brojtelefona = new BehaviorSubject<string | null>(null);
   napomena = new BehaviorSubject<string | null>(null);
+
+  rezervacijeEvent = new Map<string, BehaviorSubject<Rezervacija[]>>()
 
 
   constructor(
@@ -36,40 +38,37 @@ export class RezervacijeService {
   }
 
   getRezervacijeByEvent(uid: string, status: number | null = null): Observable<Rezervacija[]> {
-    if(status!=null){
-      return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`, {params: {status} }).pipe(
-        map((res: any[]) => {
-          const rezervacije: Rezervacija[] = [];
-          res.forEach((rezervacija: any) => {
-            rezervacije.push(new Rezervacija(rezervacija));
-          });
-          this.logger.debug(JSON.stringify(rezervacije, null, 2));
-          return rezervacije;
-        })
-      )
+    const params: any = {}
+    if (status != null) {
+      params.status = status;
     }
-    else
-      return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`, {params: {} }).pipe(
+    return this.http.get<any>(`${environment.apiURL}reservations/events/${uid}`, {params: params}).pipe(
       map((res: any[]) => {
         const rezervacije: Rezervacija[] = [];
         res.forEach((rezervacija: any) => {
           rezervacije.push(new Rezervacija(rezervacija));
         });
-        this.logger.debug(JSON.stringify(rezervacije, null, 2));
+
+        if (this.rezervacijeEvent.has(uid)) {
+          this.rezervacijeEvent.get(uid)!!.next(rezervacije);
+        } else this.rezervacijeEvent.set(uid, new BehaviorSubject<Rezervacija[]>(rezervacije))
+
         return rezervacije;
       })
     )
   }
-  confirmRezervacija(uid: string): Observable<Rezervacija>{
+
+  confirmRezervacija(uid: string): Observable<Rezervacija> {
     return this.http.post(`${environment.apiURL}reservations/${uid}/confirm`, {}).pipe(
-      map((res: any) =>{
+      map((res: any) => {
         return new Rezervacija(res);
       })
     )
   }
-  cancelRezervacija(uid: string): Observable<Rezervacija>{
+
+  cancelRezervacija(uid: string): Observable<Rezervacija> {
     return this.http.post(`${environment.apiURL}reservations/${uid}/cancel`, {}).pipe(
-      map((res: any) =>{
+      map((res: any) => {
         return new Rezervacija(res);
       })
     )

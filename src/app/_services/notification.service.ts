@@ -6,6 +6,7 @@ import {AuthService} from "@app/_services/auth.service";
 import {AuthJWTToken} from "@app/_models/auth";
 import {Notification} from "@app/_models/notification";
 import {TableService} from "@app/_services/table.service";
+import {RezervacijeService} from "@app/_services/rezervacije.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,14 @@ export class NotificationService implements OnDestroy {
   constructor(
     private logger: NGXLogger,
     private authService: AuthService,
-    private tableService: TableService) {
+    private tableService: TableService,
+    private rezervacijeService: RezervacijeService) {
+
+    if (authService.korisnikSubject.getValue()?.admin) {
+      this.wsURL = this.wsURL + '-admin'
+      this.socket$ = webSocket(this.wsURL);
+    }
+
     this.connect();
 
     authService.jwtSubject.subscribe(
@@ -38,7 +46,8 @@ export class NotificationService implements OnDestroy {
             break;
           }
           case 'table_reservation': {
-            this.tableService.loadTables(message.message.event_id);
+            this.tableService.loadTables(message.message.event_id).subscribe();
+            this.rezervacijeService.getRezervacijeByEvent(message.message.event_id).subscribe();
             break;
           }
           case 'table_new_layout': {
@@ -63,10 +72,8 @@ export class NotificationService implements OnDestroy {
   }
 
   authenticate() {
-    const user = this.authService.korisnikSubject.getValue();
     const token: AuthJWTToken | null = this.authService.jwtSubject.getValue();
-    if (token != null && token.accessTokenIsValid() &&
-      user != null && user.customer == null) {
+    if (token != null && token.accessTokenIsValid()) {
       this.socket$.next({access_token: token.access_token});
     }
   }
