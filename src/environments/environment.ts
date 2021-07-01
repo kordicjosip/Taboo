@@ -6,8 +6,8 @@ import {NgxLoggerLevel} from "ngx-logger";
 
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:8000/api/',
-  wsURL: 'ws://localhost:8000/api/ws/',
+  apiURL: 'https://api.dalekaobala.ba/api/',
+  wsURL: 'wss://api.dalekaobala.ba/api/ws/',
   logLevel: NgxLoggerLevel.DEBUG
 };
 
