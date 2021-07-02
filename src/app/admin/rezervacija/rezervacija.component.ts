@@ -5,6 +5,7 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute} from "@angular/router";
 import {DogadajiService} from "@app/_services/dogadaji.service";
+import {Dogadaj} from "@app/_models/dogadaj";
 
 @Component({
   selector: 'app-rezervacija',
@@ -15,14 +16,17 @@ export class RezervacijaComponent implements OnInit {
   eventid: string | null;
   rezervacijeForEvent: Rezervacija[] = [];
   rezervacije: Rezervacija[];
+  dogadaji: Dogadaj[];
   nazivdogadaja: string = "";
   filterIzraz: string = "";
 
   constructor(private messageService: MessageService,
               private rezervacijaService: RezervacijeService,
               private logger: NGXLogger,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private dogadajiService: DogadajiService) {
     this.rezervacije = [];
+    this.dogadaji= [];
     this.eventid = activatedRoute.snapshot.paramMap.get("id");
   }
 
@@ -36,9 +40,27 @@ export class RezervacijaComponent implements OnInit {
         }
       );
     });
+    this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
+      this.dogadaji = dogadaji;
+      this.logger.debug(this.dogadaji);
+      if (this.eventid != null) {
+        this.getDogadajById();
+      }
+    });
     this.logger.debug(`Vrijednost eventid je: ${this.eventid}`);
   }
+  getDogadajById() {
+    for (let dogadaj of this.dogadaji) {
+      this.logger.debug(`Dogadaj ID: ${dogadaj.uid}`);
+      this.logger.debug(`Event ID: ${this.eventid}`);
+      if (dogadaj.uid == this.eventid) {
+        this.nazivdogadaja = dogadaj.naziv;
+        this.logger.debug(`Pronađen dogadaj sa nazivom: ${this.nazivdogadaja}`);
+        break;
+      }
 
+    }
+  }
   PotvrdiRezervaciju(uid: string) {
     for (let rezervacija of this.rezervacije) {
       if (rezervacija.uid == uid) {

@@ -47,7 +47,6 @@ export class RezervacijaComponent implements OnInit {
         }
       )
     }
-    //TODO vidit sta se ovdje dogodi kad user cancela klikom izvan boxa ili kad upre X gore desno
     if (this.authService.smsAuthToken.getValue() != null) {
       this.confirmationService.confirm({
         accept: () => {
@@ -68,7 +67,6 @@ export class RezervacijaComponent implements OnInit {
   }
 
   rezerviraj() {
-    //TODO napraviti da kad rezervira user, da mu odmah refresha dogadaje(tj da taj dogadaj za koji je rezervirao odmah dobije klasu alreadyReserved) ( SADA JE POTREBAN REFRESH)
     this.rezervacijeService.ime.next(this.ime);
     this.rezervacijeService.prezime.next(this.prezime);
     this.rezervacijeService.brojtelefona.next(this.brojtelefona);
