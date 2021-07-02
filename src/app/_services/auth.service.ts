@@ -7,7 +7,6 @@ import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {catchError, map} from "rxjs/operators";
 import {User} from "@app/_models/user";
-import {UserService} from "@app/_services/user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +22,7 @@ export class AuthService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private logger: NGXLogger,
-    private userService: UserService
+    private logger: NGXLogger
   ) {
     const token = localStorage.getItem(this.jwt_token_key);
 
@@ -51,9 +49,6 @@ export class AuthService {
         if (jwtSubject != null) {
           if (jwtSubject.accessTokenIsValid()) {
             this.startRefreshTokenTimer();
-            this.userService.getUserDetails('me').subscribe(
-              user => this.korisnikSubject.next(user)
-            )
           } else {
             this.refreshToken().subscribe();
           }
