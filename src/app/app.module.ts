@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {JwtInterceptor} from "@app/_helpers/jwt.interceptor";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {AuthService} from "@app/_services/auth.service";
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from "ngx-logger";
 import {environment} from "@environments/environment";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -13,10 +12,8 @@ import {appInitializer} from "@app/_helpers/app.initializer";
 import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
 import {NotFoundComponent} from './not-found/not-found.component';
 import {HomeMobileComponent} from './home-mobile/home-mobile.component';
-import {UserService} from "@app/_services/user.service";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
-
 
 
 @NgModule({
@@ -37,7 +34,7 @@ import {MessageService} from "primeng/api";
         ToastModule,
     ],
   providers: [
-    {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService, NGXLogger, UserService]},
+    {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [NGXLogger]},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     MessageService

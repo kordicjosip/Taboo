@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {Rezervacija} from "@app/_models/rezervacija";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
-import {NgForOf, NgIf} from "@angular/common";
-import {NgForm} from "@angular/forms";
 import {AuthService} from "@app/_services/auth.service";
 import {Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
@@ -43,5 +41,4 @@ export class AdminComponent implements OnInit {
   isLoggedInAdmin() {
     return this.authService.jwtSubject.getValue() != null && this.authService.korisnikSubject.getValue()?.admin;
   }
-  //TODO implementirati websocket da refresha
 }

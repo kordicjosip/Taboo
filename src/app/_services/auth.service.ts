@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, throwError} from "rxjs";
 import {AuthJWTToken, Token} from "@app/_models/auth";
 import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
-import {map} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 import {User} from "@app/_models/user";
 import {UserService} from "@app/_services/user.service";
 
@@ -27,6 +27,11 @@ export class AuthService {
     private userService: UserService
   ) {
     const token = localStorage.getItem(this.jwt_token_key);
+
+    if (token != null)
+      this.jwtSubject.next(new AuthJWTToken(JSON.parse(token)));
+    else this.jwtSubject.next(null);
+
     const smsAuthToken = localStorage.getItem('smsAuthToken');
     if (smsAuthToken != null)
       this.smsAuthToken = new BehaviorSubject<Token | null>(JSON.parse(smsAuthToken));
@@ -46,15 +51,15 @@ export class AuthService {
         if (jwtSubject != null) {
           if (jwtSubject.accessTokenIsValid()) {
             this.startRefreshTokenTimer();
+            this.userService.getUserDetails('me').subscribe(
+              user => this.korisnikSubject.next(user)
+            )
           } else {
             this.refreshToken().subscribe();
           }
         }
       }
     )
-    if (token != null)
-      this.jwtSubject.next(new AuthJWTToken(JSON.parse(token)));
-    else this.jwtSubject.next(null);
   }
 
   login(username: string, password: string, saveLogin: boolean) {
@@ -72,7 +77,6 @@ export class AuthService {
   }
 
   confirmSMSAuth(key: string) {
-    // TODO U slučaju da nije uspjelo spremiti novi token
     const req = {
       key: key,
       token: this.smsAuthToken.getValue()?.token
@@ -82,7 +86,20 @@ export class AuthService {
         this.jwtSubject.next(new AuthJWTToken(jwt));
         this.saveCredidentials(this.jwtSubject.getValue());
         localStorage.removeItem('smsAuthToken');
-      }));
+      })).pipe(
+        catchError((err: HttpErrorResponse, caught) => {
+          this.logger.debug("Caught");
+          this.logger.debug(err);
+          this.logger.debug(caught);
+          if (err.error != null) {
+            if (err.status == 429) {
+              this.smsAuthToken.next(null);
+            } else {
+              this.smsAuthToken.next(err.error);
+            }
+          }
+          return throwError(err)
+        }));
   }
 
   saveCredidentials(token: AuthJWTToken | null) {

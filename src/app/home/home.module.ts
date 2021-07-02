@@ -16,8 +16,7 @@ import {TablesComponent} from "@app/home/tables/tables.component";
 import {DogadajComponent} from './dogadaj/dogadaj.component';
 import {RippleModule} from "primeng/ripple";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {MessageService} from "primeng/api";
-
+import {DialogModule} from "primeng/dialog";
 
 
 @NgModule({
@@ -39,7 +38,8 @@ import {MessageService} from "primeng/api";
     ButtonModule,
     InputTextareaModule,
     RippleModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DialogModule
   ],
   exports: [
     TablesComponent,

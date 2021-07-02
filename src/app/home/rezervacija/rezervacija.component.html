@@ -17,7 +17,7 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input  [(ngModel)]="ime" id="firstname2" pInputText value="{{ime}}" [disabled]="true">
+      <input [(ngModel)]="ime" [disabled]="true" id="firstname2" pInputText value="{{ime}}">
     </div>
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
@@ -35,7 +35,7 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input [(ngModel)]="prezime" id="lastname2" pInputText value="{{prezime}}" [disabled]="true">
+      <input [(ngModel)]="prezime" [disabled]="true" id="lastname2" pInputText value="{{prezime}}">
     </div>
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
@@ -46,10 +46,12 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input [(ngModel)]="brojtelefona" id="phonenumber2" pInputText value="{{brojtelefona}}" [disabled]="true">
+      <input [(ngModel)]="brojtelefona" [disabled]="true" id="phonenumber2" pInputText value="{{brojtelefona}}">
     </div>
   </div>
-  <div style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">3. ODABERITE STOL --->
+  <div
+    style="color: white; margin-top: 20px; margin-bottom: 5px; text-align: center; font-weight: 700; font-size: 18px; user-select: none">
+    3. ODABERITE STOL --->
   </div>
   <div class="p-field p-grid" id="napomena">
       <textarea [(ngModel)]="napomena" pInputTextarea
@@ -58,32 +60,32 @@
   </div>
 
   <div class="tipka">
-    <button *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isStolEmpty())" (click)="rezerviraj()"
+    <button (click)="rezerviraj()"
+            *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isStolEmpty())"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>
-    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isStolEmpty())" [disabled]="true"
+    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isStolEmpty())"
+            [disabled]="true"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
             pRipple></button>
   </div>
 </div>
 
-<p-confirmDialog #cd [closeOnEscape]="true" [dismissableMask]="true" [style]="{width: '50vw'}">
-  <ng-template pTemplate="header">
-    <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
-  </ng-template>
-  <ng-template pTemplate="footer">
-    <p-inputMask #sms [(ngModel)]="smskey" mask="999999" placeholder="SMS ključ"
-                 styleClass="p-inputtext-confirmdialog"></p-inputMask>
-    <div style="float: right">
-      <button (click)="cd.reject()" class="p-button-warning p-button-text" icon="pi pi-check"
-              label="Nisam dobio/dobila poruku"
-              pButton
-              type="button"></button>
-      <button (click)="cd.accept()" icon="pi pi-check" label="Potvrdi" pButton
-              type="button"></button>
-    </div>
-  </ng-template>
-</p-confirmDialog>
+<p-dialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+  <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
+
+  <!-- TODO Srediti izgled -->
+  <p-inputMask #sms [(ngModel)]="smskey" mask="999999" placeholder="SMS ključ"
+               styleClass="p-inputtext-confirmdialog"></p-inputMask>
+  <div style="float: right">
+    <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-check"
+            label="Nisam dobio/dobila poruku"
+            pButton
+            type="button"></button>
+    <button (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton
+            type="button"></button>
+  </div>
+</p-dialog>
 

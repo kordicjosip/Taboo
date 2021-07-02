@@ -22,10 +22,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.logger.debug('Credentials expired or not logged in');
         this.authService.logout();
       }
-
-      const error = (err && err.error && err.error.message) || err.statusText;
       this.logger.error(err);
-      return throwError(error);
+      return throwError(err);
     }));
   }
 }

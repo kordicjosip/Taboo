@@ -31,7 +31,7 @@ export class UserService {
   registerAndReserve(req: RegisterAndReserve): Observable<Token> {
     return this.http.post<Token>(`${environment.apiURL}users/customers/register-reserve`, req, {withCredentials: false}).pipe(
       map((res: Token) => {
-        this.logger.debug("Got token: " + res.token);
+        this.logger.debug("Got token: " + JSON.stringify(res));
         return res;
       })
     );

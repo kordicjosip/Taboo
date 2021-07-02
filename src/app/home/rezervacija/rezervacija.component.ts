@@ -5,10 +5,11 @@ import {Router} from "@angular/router";
 import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
-import {User} from "@app/_models/user";
 import {Customer} from "@app/_models/customer";
 import {Dogadaj} from "@app/_models/dogadaj";
 import {Table} from "@app/_models/table";
+import {Token} from "@app/_models/auth";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-rezervacija',
@@ -21,42 +22,37 @@ export class RezervacijaComponent implements OnInit {
   prezime: string = "";
   brojtelefona: string = "";
   napomena: string = "";
-  smskey: string = "";
-  customer: Customer | null=null;
+  smskey: any
+  customer: Customer | null = null;
   selectedDogadaj: Dogadaj | null =null;
   selectedStol: Table | null = null;
+  smsToken: Token | null = null;
 
   constructor(
     private userService: UserService,
     private rezervacijeService: RezervacijeService,
     private router: Router,
     private authService: AuthService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private logger: NGXLogger
   ) {
+    this.authService.smsAuthToken.subscribe(
+      token => this.smsToken = token
+    )
+  }
+
+  get showSmsDialog(): boolean {
+    return this.smsToken != null
   }
 
   ngOnInit() {
-    if(this.isLoggedIn()) {
-      this.userService.getUserDetails().subscribe(
-        (user: User) => {
-          this.logger.debug("Fetched user: " + JSON.stringify(user));
-          if (user.customer != null)
-            this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
+    this.authService.korisnikSubject.subscribe(
+      korisnik => {
+        if (korisnik != null && korisnik.customer != null) {
+          this.CustomerToValues(korisnik.customer.ime, korisnik.customer.prezime, korisnik.customer.phone_number);
         }
-      )
-    }
-    if (this.authService.smsAuthToken.getValue() != null) {
-      this.confirmationService.confirm({
-        accept: () => {
-          this.smsConfirm(this.smskey);
-        },
-        reject: () => {
-          this.authService.smsAuthToken.next(null);
-        }
-      });
-    }
+      }
+    )
   }
 
   //Kupljenje vrijednosti logiranog usera da bi ih prikazali odmah
@@ -98,42 +94,20 @@ export class RezervacijaComponent implements OnInit {
       }).subscribe(
         token => {
           this.authService.smsAuthToken.next(token);
-
-          this.confirmationService.confirm({
-            accept: () => {
-              this.smsConfirm(this.smskey);
-            },
-            reject: () => {
-              this.authService.smsAuthToken.next(null);
-            }
-          });
-        },
-        error => {
-          this.alertError(error);
         }
       )
     }
   }
 
-  smsConfirm(key: string) {
+  smsConfirm() {
     if (this.authService.smsAuthToken.getValue() != null) {
-      this.authService.confirmSMSAuth(key).subscribe(
+      this.authService.confirmSMSAuth(this.smskey).subscribe(
         () => {
-            this.logger.debug("Uspješna potvrda SMS-a.");
-            this.alertSuccessMessage("Uspješno ste potvrdili SMS.");
+          this.logger.debug("Uspješna potvrda SMS-a.");
+          this.alertSuccessMessage("Uspješno ste potvrdili SMS.");
         },
-        error => {
-          this.logger.debug("Neuspješna potvrda SMS-a. Neispravno unešen ključ.")
-          this.alertError(error);
-          //TODO ovdje prikazujem popup za confirm opet(Provjeri ovo Mate)
-          this.confirmationService.confirm({
-            accept: () => {
-              this.smsConfirm(this.smskey);
-            },
-            reject: () => {
-              this.authService.smsAuthToken.next(null);
-            }
-          });
+        (error: HttpErrorResponse) => {
+          this.alertError(error.error);
         }
       )
     }
@@ -160,14 +134,29 @@ export class RezervacijaComponent implements OnInit {
     return this.authService.jwtSubject.getValue() != null;
   }
 
-  alertSuccess(){
-    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
-  }
-  alertError(message: string = "Nepoznati error"){
-    this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(message)}`});
-  }
-  alertSuccessMessage(message: string){
-    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: message});
+  alertSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Uspješno',
+      key: "glavnitoast",
+      detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`
+    });
   }
 
+  alertError(message: string = "Nepoznati error") {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Greška',
+      key: "glavnitoast",
+      detail: `${JSON.stringify(message)}`
+    });
+  }
+
+  alertSuccessMessage(message: string) {
+    this.messageService.add({severity: 'success', summary: 'Uspješno', key: "glavnitoast", detail: message});
+  }
+
+  smsDeny() {
+    this.authService.smsAuthToken.next(null);
+  }
 }
