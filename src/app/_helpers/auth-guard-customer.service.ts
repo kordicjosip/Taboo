@@ -24,7 +24,7 @@ export class AuthGuardCustomer implements CanActivate {
       return false;
     }
 
-    const isValid = jwt.isValid();
+    const isValid = jwt.refreshTokenIsValid();
     this.logger.debug(`User logged in? ${isValid}`);
     return isValid;
   }

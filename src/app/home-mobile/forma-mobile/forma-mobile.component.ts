@@ -7,7 +7,8 @@ import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
 import {Location} from "@angular/common";
-import {User} from "@app/_models/user";
+import {HttpErrorResponse} from "@angular/common/http";
+import {Token} from "@app/_models/auth";
 
 @Component({
   selector: 'app-forma-mobile',
@@ -25,9 +26,9 @@ export class FormaMobileComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: string = "";
-  korisnik: User | null = null;
 
   rezervacijeService: RezervacijeService;
+  smsToken: Token | null = null;
 
   constructor(
     private userService: UserService,
@@ -40,36 +41,36 @@ export class FormaMobileComponent implements OnInit {
     private _location: Location
   ) {
     this.rezervacijeService = rezervacijeService;
+
+    this.authService.smsAuthToken.subscribe(token => {
+        this.smsToken = token;
+        if (this.smsToken != null)
+          logger.debug("Got token: " + JSON.stringify(token));
+        else
+          logger.debug("smsToken is null")
+      }
+    )
+  }
+
+  get showSmsDialog(): boolean {
+    return this.smsToken != null
   }
 
   ngOnInit() {
-    if(this.isLoggedIn()) {
-      this.userService.getUserDetails().subscribe(
-        (user: User) => {
-          this.logger.debug("Fetched user: " + JSON.stringify(user));
-          if (user.customer != null)
-            this.CustomerToValues(user.customer.ime, user.customer.prezime, user.customer.phone_number);
+    this.authService.korisnikSubject.subscribe(
+      korisnik => {
+        if (korisnik != null && korisnik.customer != null) {
+          this.CustomerToValues(korisnik.customer.ime, korisnik.customer.prezime, korisnik.customer.phone_number);
         }
-      )
-    }
-    if (this.authService.smsAuthToken.getValue() != null) {
-      this.sms?.focus();
-      this.confirmationService.confirm({
-        accept: () => {
-          this.smsConfirm(this.smskey);
-        },
-        reject: () => {
-          this.authService.smsAuthToken.next(null);
-        }
-      });
-    }
+      }
+    )
   }
 
   //Kupljenje vrijednosti logiranog usera da bi ih prikazali odmah
-  CustomerToValues(ime: string, prezime: string, brojtelefona: string){
-    this.ime=ime;
-    this.prezime=prezime;
-    this.brojtelefona=brojtelefona;
+  CustomerToValues(ime: string, prezime: string, brojtelefona: string) {
+    this.ime = ime;
+    this.prezime = prezime;
+    this.brojtelefona = brojtelefona;
   }
 
   rezerviraj() {
@@ -90,7 +91,7 @@ export class FormaMobileComponent implements OnInit {
         },
         error => {
           this.alertError(error);
-          this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
+          this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null, 2));
         }
       )
     } else {
@@ -104,15 +105,6 @@ export class FormaMobileComponent implements OnInit {
       }).subscribe(
         token => {
           this.authService.smsAuthToken.next(token);
-
-          this.confirmationService.confirm({
-            accept: () => {
-              this.smsConfirm(this.smskey);
-            },
-            reject: () => {
-              this.authService.smsAuthToken.next(null);
-            }
-          });
         },
         error => {
           this.alertError(error);
@@ -121,20 +113,32 @@ export class FormaMobileComponent implements OnInit {
     }
   }
 
-  smsConfirm(key: string) {
+  smsConfirm() {
     if (this.authService.smsAuthToken.getValue() != null) {
-      this.authService.confirmSMSAuth(key);
+      this.authService.confirmSMSAuth(this.smskey).subscribe(
+        () => {
+          this.logger.debug("Uspješna potvrda SMS-a.");
+          this.alertSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertError(error.error);
+        }
+      )
     }
   }
+
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
+
   isImeEmpty() {
     return this.ime == "";
   }
+
   isPrezimeEmpty() {
     return this.prezime == "";
   }
+
   isBrojFull() {
     return this.brojtelefona.length == 15 || this.brojtelefona.length == 16
   }
@@ -143,11 +147,26 @@ export class FormaMobileComponent implements OnInit {
   back() {
     this._location.back();
   }
-  alertSuccess(){
-    this.messageService.add({severity: 'success',summary: 'Uspješno', key:"glavnitoast" ,detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`});
-  }
-  alertError(message: string = "Nepoznati error"){
-    this.messageService.add({severity: 'error',summary: 'Greška', key:"glavnitoast" ,detail: `${JSON.stringify(message)}`});
+
+  alertSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Uspješno',
+      key: "glavnitoast",
+      detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`
+    });
   }
 
+  alertError(message: string = "Nepoznati error") {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Greška',
+      key: "glavnitoast",
+      detail: `${JSON.stringify(message)}`
+    });
+  }
+
+  smsDeny() {
+    this.authService.smsAuthToken.next(null);
+  }
 }

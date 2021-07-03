@@ -27,5 +27,16 @@ export class AppComponent {
         }
       }
     )
+    this.authService.jwtSubject.subscribe(
+      jwtSubject => {
+        if (jwtSubject != null) {
+          if (jwtSubject.accessTokenIsValid()) {
+            this.authService.startRefreshTokenTimer();
+          } else {
+            this.authService.refreshToken().subscribe();
+          }
+        }
+      }
+    )
   }
 }

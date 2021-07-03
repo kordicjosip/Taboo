@@ -43,18 +43,6 @@ export class AuthService {
           localStorage.removeItem('smsAuthToken')
       }
     )
-    this.jwtSubject.subscribe(
-      jwtSubject => {
-        logger.debug("JWT: " + JSON.stringify(jwtSubject));
-        if (jwtSubject != null) {
-          if (jwtSubject.accessTokenIsValid()) {
-            this.startRefreshTokenTimer();
-          } else {
-            this.refreshToken().subscribe();
-          }
-        }
-      }
-    )
   }
 
   login(username: string, password: string, saveLogin: boolean) {
@@ -122,7 +110,7 @@ export class AuthService {
       }));
   }
 
-  private startRefreshTokenTimer() {
+  startRefreshTokenTimer() {
     const jwt: AuthJWTToken | null = this.jwtSubject.getValue();
     if (jwt != null) {
       // set a timeout to refresh the token a minute before it expires

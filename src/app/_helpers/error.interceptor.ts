@@ -16,11 +16,13 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      if ([401, 403].includes(err.status) &&
-        this.authService.jwtSubject.getValue() != null &&
-        this.authService.jwtSubject.getValue()!.accessTokenIsValid()) {
+      if ([401, 403].includes(err.status)) {
         this.logger.debug('Credentials expired or not logged in');
-        this.authService.logout();
+        if (this.authService.jwtSubject.getValue()?.accessTokenIsValid()) {
+          this.authService.logout();
+        } else {
+          this.authService.refreshToken().subscribe();
+        }
       }
       this.logger.error(err);
       return throwError(err);

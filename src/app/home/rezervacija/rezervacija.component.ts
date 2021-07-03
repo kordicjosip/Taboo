@@ -5,9 +5,6 @@ import {Router} from "@angular/router";
 import {AuthService} from "@app/_services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
-import {Customer} from "@app/_models/customer";
-import {Dogadaj} from "@app/_models/dogadaj";
-import {Table} from "@app/_models/table";
 import {Token} from "@app/_models/auth";
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -23,9 +20,6 @@ export class RezervacijaComponent implements OnInit {
   brojtelefona: string = "";
   napomena: string = "";
   smskey: any
-  customer: Customer | null = null;
-  selectedDogadaj: Dogadaj | null =null;
-  selectedStol: Table | null = null;
   smsToken: Token | null = null;
 
   constructor(
