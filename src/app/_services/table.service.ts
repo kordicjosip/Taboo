@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
 import {BehaviorSubject, Observable} from "rxjs";
-import {Table, TableEventHolder} from "@app/_models/table";
+import {Table, TableEventHolder, TableInterface} from "@app/_models/table";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
 import {Dogadaj} from "@app/_models/dogadaj";
@@ -43,5 +43,25 @@ export class TableService {
         }
         this.tablesSubject.next(new TableEventHolder(tables, event));
       }));
+  }
+
+  /** Ažuriranje stola */
+  updateTable(table: Table): Observable<any> {
+    const req: TableInterface = {
+      id: table.id,
+      number: table.number,
+      position_left: table.x,
+      position_top: table.y,
+      rotation: table.rotation,
+      status: table.status,
+      type: table.type
+    }
+
+    return this.http.put<any>(`${environment.apiURL}tables/${table.id}`, req);
+  }
+
+  /** Brisanje stola */
+  deleteTable(table: Table): Observable<any> {
+    return this.http.delete<any>(`${environment.apiURL}tables/${table.id}`);
   }
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
-import {Table, TableEventHolder, TableReference} from "@app/_models/table";
+import {Table, TableEventHolder, TableReference, TableShape, TableStatus} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
 import {Dogadaj} from "@app/_models/dogadaj";
@@ -14,10 +14,18 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 })
 export class TablesComponent implements OnInit {
   event: Dogadaj | null = null;
+  /**
+   * ako je admin=true prikazuje se kontrola za uredivanje stolova
+   */
+  @Input('admin')
+  admin = false;
 
   private selectedTableSubject = new BehaviorSubject<Table | null>(null);
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
   private tableReferences = new Map<number, TableReference>();
+
+  private trapezoidPoints = "-30,-40 -50,40 50,40 30,-40";
+  private save: d3.Selection<any, unknown, HTMLElement, any> | null = null;
 
   constructor(
     private logger: NGXLogger,
@@ -46,22 +54,22 @@ export class TablesComponent implements OnInit {
 
     const fixedLayout = svg.append("g");
 
-    fixedLayout.append('circle')
-      .attr('cx', 20)
-      .attr('cy', 20)
-      .attr('r', 15)
-      .attr('fill', '#000')
-      .on('mouseover', function (d, _) {
-        d3.select(this).transition()
-          .duration(500)
-          .attr('opacity', '.1');
-      })
-      .on('mouseout', function (d, _) {
-        d3.select(this).transition()
-          .duration(500)
-          .attr('opacity', '1');
-      })
+    if (this.admin) {
+      // TODO ikona za spasiti
+      this.save = fixedLayout.append('circle')
+        .attr('cx', 'calc(100% - 50px)')
+        .attr('cy', 'calc(100% - 50px)')
+        .attr('r', 40)
+        .attr('fill', '#00ff00')
+        .attr('visibility', 'hidden')
+        .on('click', function (d, _) {
+          d3.select(this).transition()
+            .duration(500)
+            .attr('opacity', '.1');
+        })
+    }
 
+    /*
     fixedLayout.append('rect')
       .attr('fill', 'rgba(0,0,0,0.01)')
       .attr('x', 0)
@@ -72,23 +80,33 @@ export class TablesComponent implements OnInit {
       .attr('stroke-dasharray', '10,5')
       .attr('stroke-linecap', 'butt')
       .attr('stroke-width', '3');
-
+     */
 
     const g = svg.append("g");
     this.tablesHolder = g;
-
-    svg.call(d3.zoom<any, any>()
-      .extent([[0, 0], [1200, 800]])
-      .scaleExtent([0.25, 4])
-      .on("zoom", function (event: any) {
-        g.attr("transform", event.transform)
-      }));
+    if (!this.admin) {
+      svg.call(d3.zoom<any, any>()
+        .extent([[0, 0], [1200, 800]])
+        .scaleExtent([0.5, 2])
+        .on("zoom", function (event: any) {
+          g.attr("transform", event.transform)
+        }));
+    }
+    g.append('svg:image')
+      .attr("xlink:href", "assets/img/stolovi.png")
+      .attr('x', '0')
+      .attr('y', '-100px')
+      .attr('width', '1200px')
+      .attr('height', '1200px')
 
     this.logger.debug("Initialized tables");
 
+    // Ažuriranja stolova
     this.tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
         if (tableEventHolder != null && this.event == tableEventHolder.event) {
+          this.logger.debug("Ažuriranje stolova u tijeku");
+          // Izmjenjene stolove uklanjamo i ponovo dodajemo, nove stolove samo dodajemo
           for (const table of tableEventHolder.tables) {
             const originalTable = this.tableReferences.get(table.id)
             if (originalTable == undefined) {
@@ -100,7 +118,8 @@ export class TablesComponent implements OnInit {
               }
             }
           }
-          // TODO Optimizirati
+
+          // One koji su uklonjeni uklanjamo
           for (const insertedTable of this.tableReferences.entries()) {
             let remove = true;
             for (const table of tableEventHolder.tables) {
@@ -112,47 +131,125 @@ export class TablesComponent implements OnInit {
               this.removeTable(this.tableReferences.get(insertedTable[0])!.table);
             }
           }
+          this.logger.debug("Ažurirani stolovi");
         }
       });
   }
 
   addTable(table: Table) {
-    this.logger.debug("Adding table: " + JSON.stringify(table));
-    // TODO Drugačiji tipovi stola
+    this.logger.debug("Dodavanje stola: " + JSON.stringify(table));
+
     const selectedTableSubject = this.selectedTableSubject;
     const tableReferences = this.tableReferences;
 
+    // Crtanje stola zavisno od oblika
     const g = this.tablesHolder!.append("g");
+    let tableHolder: any;
+    switch (table.shape) {
+      case TableShape.CIRCLE:
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+          .append(table.shape)
+          .attr('r', 40)
+          .attr('fill', table.color);
 
-    const circle = g.append('circle')
-      .attr('cx', table.x)
-      .attr('cy', table.y)
-      .attr('r', 50)
-      .attr('fill', 'rgba(105,163,178,1)');
+        g.append('text')
+          .text(table.number)
+          .attr('x', 0)
+          .attr('y', 5)
+          .attr("text-anchor", "middle");
+        break;
+      case TableShape.RECT:
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+          .append(table.shape)
+          .attr('x', -40)
+          .attr('y', -40)
+          .attr('width', 80)
+          .attr('height', 80)
+          .attr('fill', table.color);
 
-    g.append('text')
-      .text(table.number)
-      .attr('x', table.x)
-      .attr('y', table.y + 5)
-      .attr("text-anchor", "middle");
+        g.append('text')
+          .text(table.number)
+          .attr('x', 0)
+          .attr('y', 5)
+          .attr("text-anchor", "middle");
+        break;
+      case TableShape.TRAPEZOID:
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+          .append('polygon')
+          .attr('points', this.trapezoidPoints)
+          .attr('fill', table.color);
 
-    g.on('click', function () {
-      const selectedTable = selectedTableSubject.getValue();
-      if (selectedTable != null) {
-        tableReferences.get(selectedTable.id)?.g.select('circle').attr('fill', 'rgba(105,163,178,1)');
-      }
-      selectedTableSubject.next(table);
-      // TODO Vratiti na boju koja odgovara tom statusu
-      circle
-        .transition()
-        .duration(200)
-        .attr('fill', 'rgba(48,255,49,0.72)');
-    });
+        g.append('text')
+          .text(table.number)
+          .attr('x', 0)
+          .attr('y', 5)
+          .attr("text-anchor", "middle");
+        break;
+    }
+
+    // Funkcije stolova, on click, mouseover, etc.
+    if (this.admin) {
+      g.call(d3.drag<any, any>()
+        .on("drag", function (event: any) {
+          g.attr("transform", `translate(${event.x},${event.y})`);
+        })
+      )
+      g.on('click', function () {
+        const selectedTable = selectedTableSubject.getValue();
+        if (selectedTable != null) {
+          tableReferences.get(selectedTable.id)?.g.select(selectedTable.shape).attr('fill', selectedTable.color);
+
+          // TODO prikazati management sučelje za uklanjanje
+          // TODO sa drugog stola skinuti d3.drag i management sučelje
+
+        }
+        selectedTableSubject.next(table);
+        tableHolder
+          .transition()
+          .duration(200)
+          .attr('fill', 'rgb(24,255,0)');
+      });
+      /*
+      let div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style('position', 'absolute');
+
+      g.on("mouseover", function (d, _) {
+        div.transition()
+          .duration(1000)
+          .style("opacity", .9);
+        div.html("TODO informacije o stolu, i izgled")
+          .style("left", (d.pageX) + "px")
+          .style("top", (d.pageY - 28) + "px");
+      })
+        .on("mouseout", function (d) {
+          div.transition()
+            .duration(500)
+            .style("opacity", 0);
+        });
+       */
+    } else {
+      g.on('click', function () {
+        if (table.status == TableStatus.OPEN) {
+          const selectedTable = selectedTableSubject.getValue();
+          if (selectedTable != null) {
+            tableReferences.get(selectedTable.id)?.g.select(selectedTable.shape).attr('fill', selectedTable.color);
+          }
+          selectedTableSubject.next(table);
+          tableHolder
+            .transition()
+            .duration(200)
+            .attr('fill', 'rgb(24,255,0)');
+        }
+      });
+    }
 
     this.tableReferences.set(table.id, new TableReference({g, table}));
   }
 
   removeTable(table: Table) {
+    this.logger.debug("Uklanjanje stola: " + JSON.stringify(table));
     const reference = this.tableReferences.get(table.id)!;
     reference.g.remove();
   }
