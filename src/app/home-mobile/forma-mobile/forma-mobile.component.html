@@ -56,7 +56,7 @@
 
   <div class="tipka">
     <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
-            label="<- Back" pButton
+            label="<- Natrag" pButton
             pRipple></button>
     <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
@@ -69,7 +69,7 @@
 
 
 
-<p-dialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="true">
+<p-dialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
   <!-- TODO Srediti izgled -->

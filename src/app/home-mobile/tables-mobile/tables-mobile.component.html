@@ -8,13 +8,13 @@
 </app-tables>
 <div id="tipka">
   <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
-          label="<- Back" pButton
+          label="<- Natrag" pButton
           pRipple></button>
   <button *ngIf="this.rezervacijeService.selectedTable.getValue()==null" [disabled]="true"class="p-button-raised p-button-success p-button-text" id="nexttipka"
-          label="Next ->" pButton
+          label="Dalje ->" pButton
           pRipple></button>
   <button *ngIf="this.rezervacijeService.selectedTable.getValue()!=null" (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipkaActive"
-          label="Next ->" pButton
+          label="Dalje ->" pButton
           pRipple></button>
 </div>
 </div>

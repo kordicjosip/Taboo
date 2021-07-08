@@ -16,12 +16,12 @@
 
 
     <button  [disabled]="true" class="p-button-raised p-button-success p-button-text" id="nexttipka"
-            label="Next ->" pButton
+            label="Dalje ->" pButton
             pRipple></button>
   </div>
   <div *ngIf="rezervacijeService.selectedEvent.getValue()!=undefined" id="tipkaActive">
   <button (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipkaActive"
-          label="Next ->" pButton
+          label="Dalje ->" pButton
           pRipple></button>
   </div>
 </div>
