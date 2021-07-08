@@ -5,7 +5,6 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {Table, TableEventHolder, TableInterface} from "@app/_models/table";
 import {environment} from "@environments/environment";
 import {map} from "rxjs/operators";
-import {Dogadaj} from "@app/_models/dogadaj";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
 
 @Injectable({
@@ -24,7 +23,7 @@ export class TableService {
       event => {
         if (event != null) {
           logger.debug("Učitavanje stolova za događaj: " + event?.uid)
-          this.loadTables(event).subscribe();
+          this.loadTables(event.uid).subscribe();
         } else
           logger.debug("Potrebno ručno pozivanje loadTables za event null")
       }
@@ -33,10 +32,10 @@ export class TableService {
 
   /** Učitava popis stolova u tablesSubject(po defaultu je null).
    * Moguće filtriranje po događaju putem eventId parametra */
-  loadTables(event: Dogadaj | null = null): Observable<any> {
-    return this.http.get<any>(`${environment.apiURL}tables${event?.uid ? '?event_id=' + event.uid : ''}`)
+  loadTables(event: string | null): Observable<any> {
+    return this.http.get<any>(`${environment.apiURL}tables${event ? '?event_id=' + event : ''}`)
       .pipe(map((resTables: any[]) => {
-        this.logger.debug("Učitani stolovi za događaj id: " + event?.uid)
+        this.logger.debug("Učitani stolovi za događaj id: " + event)
         const tables: Table[] = [];
         for (const resTable of resTables) {
           tables.push(new Table(resTable))
@@ -58,6 +57,23 @@ export class TableService {
     }
 
     return this.http.put<any>(`${environment.apiURL}tables/${table.id}`, req);
+  }
+
+  /** Stvaranje novog stola */
+  createTable(table: Table, event_id: string | null = null): Observable<any> {
+    const req: TableInterface | any = {
+      id: table.id,
+      number: table.number,
+      position_left: table.x,
+      position_top: table.y,
+      rotation: table.rotation,
+      status: table.status,
+      type: table.type
+    }
+
+    req.event_id = event_id;
+
+    return this.http.post<any>(`${environment.apiURL}tables`, req);
   }
 
   /** Brisanje stola */

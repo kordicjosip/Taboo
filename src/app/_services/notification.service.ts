@@ -51,7 +51,7 @@ export class NotificationService implements OnDestroy {
             break;
           }
           case 'table_new_layout': {
-            this.tableService.loadTables(message.message.event_id);
+            this.tableService.loadTables(message.message.event_id).subscribe();
             break;
           }
           default: {

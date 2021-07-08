@@ -16,6 +16,8 @@ import {OtkazaniComponent} from './otkazani/otkazani.component';
 import {DogadajiotkazaniComponent} from './dogadajiotkazani/dogadajiotkazani.component';
 import {TablesAdminComponent} from 'src/app/admin/tables/tables-admin.component';
 import {HomeModule} from "@app/home/home.module";
+import {DialogModule} from "primeng/dialog";
+import {InputTextModule} from "primeng/inputtext";
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import {HomeModule} from "@app/home/home.module";
     ToastModule,
     FormsModule,
     HomeModule,
+    DialogModule,
+    InputTextModule,
   ]
 })
 export class AdminModule {

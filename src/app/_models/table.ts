@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import {Dogadaj} from "@app/_models/dogadaj";
 
 export interface TableInterface {
   id: number;
@@ -113,9 +112,9 @@ export class Table {
 
 export class TableEventHolder {
   tables: Table[];
-  event: Dogadaj | null;
+  event: string | null;
 
-  constructor(tables: Table[], event: Dogadaj | null) {
+  constructor(tables: Table[], event: string | null) {
     this.tables = tables;
     this.event = event;
   }
