@@ -99,8 +99,8 @@ export class TablesComponent implements OnInit {
 
     g.append('svg:image')
       .attr("xlink:href", imageHref)
-      .attr('x', '0')
-      .attr('y', '-100px')
+      .attr('x', '200')
+      .attr('y', '-150px')
       .attr('width', '1200px')
       .attr('height', '1200px')
 
