@@ -15,7 +15,7 @@ export class TablesAdminComponent implements OnInit {
   defaultniDogadaj = new Dogadaj({
     id: "",
     title: "Zadani raspored stolova",
-    date: "",
+    date: "1970-01-01",
     description: ""
   })
 
