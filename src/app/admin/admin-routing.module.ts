@@ -13,6 +13,9 @@ const routes: Routes = [
     path: '', component: AdminComponent, canActivate: [AuthGuard],
     children: [
       {
+        path: '', component: DogadajiComponent
+      },
+      {
         path: 'dogadaji', component: DogadajiComponent
       },
       {
