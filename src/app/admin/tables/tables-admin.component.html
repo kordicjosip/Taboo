@@ -1,0 +1,14 @@
+<div id="wrapper" style="height: 100%">
+  <div id="left">
+    <div *ngFor="let dogadaj of dogadaji" class="dogadaj">
+      <app-dogadaj (click)="rezervacijeService.selectedEvent.next(dogadaj)"
+                   [dogadaj]=dogadaj
+                   [selected]="dogadaj.selected"></app-dogadaj>
+    </div>
+    <button (click)="tables.saveLayout()" label="Spasi raspored stolova" pButton type="button"></button>
+
+  </div>
+  <div id="right">
+    <app-tables #tables [admin]="true"></app-tables>
+  </div>
+</div>

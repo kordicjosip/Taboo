@@ -8,13 +8,14 @@ import {MenuModule} from 'primeng/menu';
 import {TableModule} from "primeng/table";
 import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
-import { RezervacijaComponent } from './rezervacija/rezervacija.component';
-import { DogadajiComponent } from './dogadaji/dogadaji.component';
-import { LoginComponent } from './login/login.component';
+import {RezervacijaComponent} from './rezervacija/rezervacija.component';
+import {DogadajiComponent} from './dogadaji/dogadaji.component';
+import {LoginComponent} from './login/login.component';
 import {FormsModule} from "@angular/forms";
-import { OtkazaniComponent } from './otkazani/otkazani.component';
-import { DogadajiotkazaniComponent } from './dogadajiotkazani/dogadajiotkazani.component';
-
+import {OtkazaniComponent} from './otkazani/otkazani.component';
+import {DogadajiotkazaniComponent} from './dogadajiotkazani/dogadajiotkazani.component';
+import {TablesAdminComponent} from 'src/app/admin/tables/tables-admin.component';
+import {HomeModule} from "@app/home/home.module";
 
 
 @NgModule({
@@ -25,19 +26,19 @@ import { DogadajiotkazaniComponent } from './dogadajiotkazani/dogadajiotkazani.c
     LoginComponent,
     OtkazaniComponent,
     DogadajiotkazaniComponent,
-
+    TablesAdminComponent,
   ],
-    imports: [
-        CommonModule,
-        AdminRoutingModule,
-        TabMenuModule,
-        MenuModule,
-        TableModule,
-        ButtonModule,
-        ToastModule,
-        FormsModule,
-
-    ]
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    TabMenuModule,
+    MenuModule,
+    TableModule,
+    ButtonModule,
+    ToastModule,
+    FormsModule,
+    HomeModule,
+  ]
 })
 export class AdminModule {
 }

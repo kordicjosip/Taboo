@@ -43,7 +43,8 @@ import {DialogModule} from "primeng/dialog";
   ],
   exports: [
     TablesComponent,
-    RezervacijaComponent
+    RezervacijaComponent,
+    DogadajComponent
   ]
 
 })

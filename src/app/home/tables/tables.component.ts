@@ -92,8 +92,13 @@ export class TablesComponent implements OnInit {
           g.attr("transform", event.transform)
         }));
     }
+    let imageHref = "assets/img/stolovi.png";
+    if (this.admin) {
+      imageHref = "assets/img/stolovi-inverted.png"
+    }
+
     g.append('svg:image')
-      .attr("xlink:href", "assets/img/stolovi.png")
+      .attr("xlink:href", imageHref)
       .attr('x', '0')
       .attr('y', '-100px')
       .attr('width', '1200px')
@@ -192,6 +197,8 @@ export class TablesComponent implements OnInit {
       g.call(d3.drag<any, any>()
         .on("drag", function (event: any) {
           g.attr("transform", `translate(${event.x},${event.y})`);
+          table.x = event.x;
+          table.y = event.y;
         })
       )
       g.on('click', function () {
@@ -252,5 +259,11 @@ export class TablesComponent implements OnInit {
     this.logger.debug("Uklanjanje stola: " + JSON.stringify(table));
     const reference = this.tableReferences.get(table.id)!;
     reference.g.remove();
+  }
+
+  saveLayout() {
+    for (const tableReference of this.tableReferences.values()) {
+      this.tableService.updateTable(tableReference.table).subscribe();
+    }
   }
 }

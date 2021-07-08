@@ -7,6 +7,7 @@ import {LoginComponent} from "@app/admin/login/login.component";
 import {OtkazaniComponent} from "@app/admin/otkazani/otkazani.component";
 import {DogadajiotkazaniComponent} from "@app/admin/dogadajiotkazani/dogadajiotkazani.component";
 import {AuthGuard} from "@app/_helpers/auth-guard.service";
+import {TablesAdminComponent} from "@app/admin/tables/tables-admin.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,9 @@ const routes: Routes = [
       },
       {
         path: 'dogadaji', component: DogadajiComponent
+      },
+      {
+        path: 'tables', component: TablesAdminComponent
       },
       {
         path: 'dogadajiOtkazani', component: DogadajiotkazaniComponent
