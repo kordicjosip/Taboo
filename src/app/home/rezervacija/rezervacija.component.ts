@@ -102,6 +102,7 @@ export class RezervacijaComponent implements OnInit {
         () => {
           this.logger.debug("Uspješna potvrda SMS-a.");
           this.alertSuccessMessage("Uspješno ste potvrdili SMS.");
+          this.alertSuccess();
         },
         (error: HttpErrorResponse) => {
           this.alertError(error.error);
@@ -136,7 +137,7 @@ export class RezervacijaComponent implements OnInit {
       severity: 'success',
       summary: 'Uspješno',
       key: "glavnitoast",
-      detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`
+      detail: `Uspješno ste rezervirali stol sa brojem ${this.rezervacijeService.selectedTable.getValue()?.number} na ime: ${this.ime + " " + this.prezime}`
     });
   }
 

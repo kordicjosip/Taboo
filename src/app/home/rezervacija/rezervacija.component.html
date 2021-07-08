@@ -3,6 +3,10 @@
        style="color: white; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE
     PODATKE
   </div>
+  <div *ngIf="isLoggedIn()" class=drugikorak
+       style="color: grey; text-align: center; font-weight: 700; font-size: 18px;">2. UNESITE VAŠE
+    PODATKE
+  </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <input #name="ngModel" [(ngModel)]="ime" class="form-control"
