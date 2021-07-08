@@ -88,6 +88,9 @@ export class RezervacijaComponent implements OnInit {
       }).subscribe(
         token => {
           this.authService.smsAuthToken.next(token);
+        },
+        error => {
+          this.alertError(error.error);
         }
       )
     }
