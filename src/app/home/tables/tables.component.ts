@@ -24,7 +24,7 @@ export class TablesComponent implements OnInit {
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
   private tableReferences = new Map<number, TableReference>();
 
-  private trapezoidPoints = "-30,-40 -50,40 50,40 30,-40";
+  private trapezoidPoints = "-20,-30 -40,30 40,30 20,-30";
   private save: d3.Selection<any, unknown, HTMLElement, any> | null = null;
 
   constructor(
@@ -154,7 +154,7 @@ export class TablesComponent implements OnInit {
       case TableShape.CIRCLE:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
           .append(table.shape)
-          .attr('r', 40)
+          .attr('r', 25)
           .attr('fill', table.color);
 
         g.append('text')
@@ -167,9 +167,9 @@ export class TablesComponent implements OnInit {
         tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
           .append(table.shape)
           .attr('x', -40)
-          .attr('y', -40)
+          .attr('y', -25)
           .attr('width', 80)
-          .attr('height', 80)
+          .attr('height', 50)
           .attr('fill', table.color);
 
         g.append('text')
