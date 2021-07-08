@@ -102,6 +102,7 @@ export class RezervacijaComponent implements OnInit {
         () => {
           this.logger.debug("Uspješna potvrda SMS-a.");
           this.alertSuccessMessage("Uspješno ste potvrdili SMS.");
+          this.authService.smsAuthToken.next(null);
           this.alertSuccess();
         },
         (error: HttpErrorResponse) => {

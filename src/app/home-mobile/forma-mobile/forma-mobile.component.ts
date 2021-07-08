@@ -118,6 +118,7 @@ export class FormaMobileComponent implements OnInit {
       this.authService.confirmSMSAuth(this.smskey).subscribe(
         () => {
           this.logger.debug("Uspješna potvrda SMS-a.");
+          this.authService.smsAuthToken.next(null);
           this.alertSuccess();
         },
         (error: HttpErrorResponse) => {
