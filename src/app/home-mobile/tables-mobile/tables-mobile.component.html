@@ -3,14 +3,14 @@
     style="color: white; text-align: center; font-weight: 700; font-size: 23px; margin-bottom: 20px; padding-top: 10px">
     2. ODABERITE STOL:
   </div>
-<app-tables>
+<app-tables [initialScale]="0.25" [initialX]="0" [initialY]="0">
 
 </app-tables>
 <div id="tipka">
   <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
           label="<- Natrag" pButton
           pRipple></button>
-  <button *ngIf="this.rezervacijeService.selectedTable.getValue()==null" [disabled]="true"class="p-button-raised p-button-success p-button-text" id="nexttipka"
+  <button *ngIf="this.rezervacijeService.selectedTable.getValue()==null" [disabled]="true" class="p-button-raised p-button-success p-button-text" id="nexttipka"
           label="Dalje ->" pButton
           pRipple></button>
   <button *ngIf="this.rezervacijeService.selectedTable.getValue()!=null" (click)="next()" class="p-button-raised p-button-success p-button-text" id="nexttipkaActive"
