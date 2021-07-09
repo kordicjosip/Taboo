@@ -154,7 +154,7 @@ export class FormaMobileComponent implements OnInit {
       severity: 'success',
       summary: 'Uspješno',
       key: "glavnitoast",
-      detail: `Uspješno ste rezervirali na ime: ${this.ime + " " + this.prezime}`
+      detail: `Uspješno ste rezervirali stol sa brojem ${this.rezervacijeService.selectedTable.getValue()?.number} na ime: ${this.ime + " " + this.prezime}`
     });
   }
 
