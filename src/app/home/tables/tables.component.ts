@@ -20,6 +20,15 @@ export class TablesComponent implements OnInit {
   @Input('admin')
   admin = false;
 
+  @Input('initialScale')
+  initialScale: number = 1;
+
+  @Input('initialX')
+  initialX: number = 0;
+
+  @Input('initialY')
+  initialY: number = 0;
+
   private selectedTableSubject = new BehaviorSubject<Table | null>(null);
   private tablesHolder: d3.Selection<SVGGElement, unknown, HTMLElement, any> | undefined;
   private tableReferences = new Map<number, TableReference>();
@@ -87,10 +96,11 @@ export class TablesComponent implements OnInit {
     if (!this.admin) {
       svg.call(d3.zoom<any, any>()
         .extent([[0, 0], [1200, 800]])
-        .scaleExtent([0.5, 2])
+        .scaleExtent([0.25, 4])
         .on("zoom", function (event: any) {
           g.attr("transform", event.transform)
         }));
+      svg.attr('transform', `translate(${this.initialX},${this.initialY}) scale(${this.initialScale})`)
     }
     let imageHref = "assets/img/stolovi.png";
     if (this.admin) {
