@@ -100,13 +100,15 @@ export class TablesComponent implements OnInit {
         .on("zoom", function (event: any) {
           g.attr("transform", event.transform)
         }));
+      svg.call(d3.zoom<any, any>()
+        .transform, d3.zoomIdentity.translate(this.initialX, this.initialY).scale(this.initialScale));
     }
     let imageHref = "assets/img/stolovi.png";
     if (this.admin) {
       imageHref = "assets/img/stolovi-inverted.png"
     }
 
-    svg.attr('transform', `translate(${this.initialX},${this.initialY}) scale(${this.initialScale})`)
+    g.attr('transform', `translate(${this.initialX},${this.initialY}) scale(${this.initialScale})`)
 
     g.append('svg:image')
       .attr("xlink:href", imageHref)
