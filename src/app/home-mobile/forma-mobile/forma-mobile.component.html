@@ -39,7 +39,7 @@
     <div class="p-col">
       <p-inputMask #phonenumber="ngModel" (ngModelChange)="rezervacijeService.brojtelefona.next(brojtelefona)"
                    [(ngModel)]="brojtelefona" class="form-control" id="phonenumber"
-                   mask="+387 99 999 999" placeholder="Broj telefona"></p-inputMask>
+                   mask="999999999?9999" placeholder="Broj telefona"></p-inputMask>
     </div>
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">

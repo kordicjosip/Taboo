@@ -141,7 +141,7 @@ export class FormaMobileComponent implements OnInit {
   }
 
   isBrojFull() {
-    return this.brojtelefona.length == 15 || this.brojtelefona.length == 16
+    return this.brojtelefona.length >= 9;
   }
 
 
