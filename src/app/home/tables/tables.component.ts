@@ -166,10 +166,10 @@ export class TablesComponent implements OnInit {
       case TableShape.RECT:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
           .append(table.shape)
-          .attr('x', -40)
-          .attr('y', -25)
-          .attr('width', 80)
-          .attr('height', 50)
+          .attr('x', -30)
+          .attr('y', -30)
+          .attr('width', 60)
+          .attr('height', 60)
           .attr('fill', table.color);
 
         g.append('text')
