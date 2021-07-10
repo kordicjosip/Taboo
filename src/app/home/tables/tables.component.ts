@@ -6,6 +6,7 @@ import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
 import {Dogadaj} from "@app/_models/dogadaj";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-tables',
@@ -39,7 +40,8 @@ export class TablesComponent implements OnInit {
   constructor(
     private logger: NGXLogger,
     private tableService: TableService,
-    private rezervacijeService: RezervacijeService
+    private rezervacijeService: RezervacijeService,
+    private messageService: MessageService
   ) {
     this.selectedTableSubject.subscribe(table => {
       this.rezervacijeService.selectedTable.next(table);
@@ -275,9 +277,22 @@ export class TablesComponent implements OnInit {
   }
 
   saveLayout() {
+    var proslo=true;
     for (const tableReference of this.tableReferences.values()) {
-      this.tableService.updateTable(tableReference.table).subscribe();
+      this.tableService.updateTable(tableReference.table).subscribe(
+        ()=> {
+
+        },
+        error => {
+          this.logger.debug(JSON.stringify(error));
+          proslo=false;
+        }
+      );
     }
+    if(proslo == true)
+      this.alertSuccess("Uspješno ste sačuvali raspored stolova. ")
+    else
+      this.alertError();
   }
 
   deleteSelected() {
@@ -286,5 +301,22 @@ export class TablesComponent implements OnInit {
       this.removeTable(tableToDelete);
       this.tableService.deleteTable(tableToDelete).subscribe();
     }
+  }
+
+  alertSuccess(message: string = "Uspješan proces. ") {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Uspješno',
+      key: "glavnitoast",
+      detail: message
+    });
+  }
+  alertError(message: string = "Greška na serveru. ") {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Greška',
+      key: "glavnitoast",
+      detail: `${JSON.stringify(message)}`
+    });
   }
 }
