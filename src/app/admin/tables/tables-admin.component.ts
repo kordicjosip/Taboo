@@ -5,6 +5,8 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {TablesComponent} from "@app/home/tables/tables.component";
 import {Table} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
+import {MessageService} from "primeng/api";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-tables-admin',
@@ -31,7 +33,9 @@ export class TablesAdminComponent implements OnInit {
   constructor(
     private dogadajiService: DogadajiService,
     rezervacijeService: RezervacijeService,
-    private tableService: TableService) {
+    private tableService: TableService,
+    private messageService: MessageService,
+    private logger: NGXLogger) {
     this.rezervacijeService = rezervacijeService;
   }
 
@@ -61,6 +65,30 @@ export class TablesAdminComponent implements OnInit {
       status: 0,
       type: parseInt(this.newTableType)
     })
-    this.tableService.createTable(newTable, eventId).subscribe();
+    this.tableService.createTable(newTable, eventId).subscribe(
+      ()=>{
+        this.alertSuccess();
+      },
+      error =>{
+        this.logger.debug(JSON.stringify(error))
+        this.alertError("Stol već postoji. ");
+      }
+    );
+  }
+  alertSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Uspješno',
+      key: "glavnitoast",
+      detail: `Uspješno ste dodali novi stol. `
+    });
+  }
+  alertError(message: string = "Greška u dodavanju.") {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Greška',
+      key: "glavnitoast",
+      detail: `${JSON.stringify(message)}`
+    });
   }
 }
