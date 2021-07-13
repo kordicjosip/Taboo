@@ -124,7 +124,7 @@ export class TablesComponent implements OnInit {
     // Ažuriranja stolova
     this.tableService.tablesSubject.subscribe(
       (tableEventHolder: TableEventHolder) => {
-        if (tableEventHolder != null && this.event?.uid == tableEventHolder.event) {
+        if (tableEventHolder != null && this.event?.uid == (tableEventHolder.event || "")) {
           this.logger.debug("Ažuriranje stolova u tijeku");
           // Izmjenjene stolove uklanjamo i ponovo dodajemo, nove stolove samo dodajemo
           for (const table of tableEventHolder.tables) {
