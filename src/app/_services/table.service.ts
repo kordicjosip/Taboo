@@ -70,8 +70,10 @@ export class TableService {
       status: table.status,
       type: table.type
     }
-
-    req.event_id = event_id;
+    if (event_id == "")
+      req.event_id = null;
+    else
+      req.event_id = event_id;
 
     return this.http.post<any>(`${environment.apiURL}tables`, req);
   }
