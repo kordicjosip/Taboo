@@ -16,22 +16,22 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-    const jwt = this.authService.jwtSubject.getValue();
-    if (jwt == null) {
-      this.logger.debug(`User not logged in`);
-      this.router.navigate(["/admin/login"])
-      return false;
-    }
-
     const user = this.authService.korisnikSubject.getValue();
-    if(user!=null && user.admin){
-      return true;
-    }
-    //navigate na home ako user nije admin
-    else{
-      this.router.navigate([""])
-      return false;
+
+    switch (user?.admin) {
+      case true: {
+        return true
+      }
+      case false: {
+        this.logger.debug(`User not admin`);
+        this.router.navigate([""])
+        return false
+      }
+      default: {
+        this.logger.debug(`User not logged in`);
+        this.router.navigate(["/admin/login"]);
+        return false
+      }
     }
   }
-
 }
