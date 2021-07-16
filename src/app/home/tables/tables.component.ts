@@ -98,9 +98,9 @@ export class TablesComponent implements OnInit {
     if (!this.admin) {
       svg.call(d3.zoom<any, any>()
         .extent([[0, 0], [1200, 800]])
-        .scaleExtent([0.25, 4])
-        .translateExtent([[-1000, -1000], [2200, 1800]])
+        .scaleExtent([0.1, 4])
         .on("zoom", function (event: any) {
+          // TODO implementirati maximalni pan
           g.attr("transform", event.transform)
         }));
       svg.call(d3.zoom<any, any>()
