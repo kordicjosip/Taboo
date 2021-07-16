@@ -99,6 +99,7 @@ export class TablesComponent implements OnInit {
       svg.call(d3.zoom<any, any>()
         .extent([[0, 0], [1200, 800]])
         .scaleExtent([0.25, 4])
+        .translateExtent([[-1000, -1000], [2200, 1800]])
         .on("zoom", function (event: any) {
           g.attr("transform", event.transform)
         }));
@@ -277,22 +278,20 @@ export class TablesComponent implements OnInit {
   }
 
   saveLayout() {
-    var proslo=true;
     for (const tableReference of this.tableReferences.values()) {
       this.tableService.updateTable(tableReference.table).subscribe(
-        ()=> {
+        () => {
 
         },
         error => {
           this.logger.debug(JSON.stringify(error));
-          proslo=false;
+          this.alertError();
         }
       );
     }
-    if(proslo == true)
-      this.alertSuccess("Uspješno ste sačuvali raspored stolova. ")
-    else
-      this.alertError();
+    // TODO updateTable().subscribe se izvršava asinhrono tako da će uvijek odgovoriti uspješno spašeno
+    //  potrebno preraditi nakon optimizacije spašavanja (sada svaki stol pošalje na server, slat ćse samo izmjenjeni stolovi)
+    this.alertSuccess("Uspješno ste sačuvali raspored stolova. ")
   }
 
   deleteSelected() {
@@ -311,6 +310,7 @@ export class TablesComponent implements OnInit {
       detail: message
     });
   }
+
   alertError(message: string = "Greška na serveru. ") {
     this.messageService.add({
       severity: 'error',

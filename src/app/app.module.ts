@@ -16,7 +16,7 @@ import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {AuthService} from "@app/_services/auth.service";
 import {UserService} from "@app/_services/user.service";
-import { ServiceWorkerModule } from '@angular/service-worker';
+import {ServiceWorkerModule} from '@angular/service-worker';
 
 
 @NgModule({
@@ -37,8 +37,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ToastModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:5000'
     }),
   ],
