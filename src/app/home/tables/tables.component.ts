@@ -167,7 +167,7 @@ export class TablesComponent implements OnInit {
     let tableHolder: any;
     switch (table.shape) {
       case TableShape.CIRCLE:
-        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append(table.shape)
           .attr('r', 25)
           .attr('fill', table.color);
@@ -179,7 +179,7 @@ export class TablesComponent implements OnInit {
           .attr("text-anchor", "middle");
         break;
       case TableShape.RECT:
-        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append(table.shape)
           .attr('x', -30)
           .attr('y', -30)
@@ -194,7 +194,7 @@ export class TablesComponent implements OnInit {
           .attr("text-anchor", "middle");
         break;
       case TableShape.TRAPEZOID:
-        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append('polygon')
           .attr('points', this.trapezoidPoints)
           .attr('fill', table.color);
@@ -211,7 +211,7 @@ export class TablesComponent implements OnInit {
     if (this.admin) {
       g.call(d3.drag<any, any>()
         .on("drag", function (event: any) {
-          g.attr("transform", `translate(${event.x},${event.y})`);
+          g.attr("transform", `translate(${event.x},${event.y}) rotate(${table.rotation})`);
           table.x = event.x;
           table.y = event.y;
         })

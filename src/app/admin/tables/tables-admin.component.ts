@@ -56,6 +56,7 @@ export class TablesAdminComponent implements OnInit {
     if (this.rezervacijeService.selectedEvent.getValue() != null) {
       eventId = this.rezervacijeService.selectedEvent.getValue()!.uid
     }
+    // TODO unos rotacije stola
     const newTable = new Table({
       id: 0,
       number: parseInt(this.newTableNumber),
