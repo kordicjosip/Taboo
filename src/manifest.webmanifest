@@ -1,0 +1,16 @@
+{
+  "name": "Daleka Obala - Rezervacije",
+  "short_name": "Daleka Obala",
+  "theme_color": "#f8fb74",
+  "background_color": "#1c1c1c",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "assets/icons/icon.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
