@@ -73,10 +73,9 @@
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
 
-  <p-inputMask #sms [(ngModel)]="smskey" mask="999999" placeholder="SMS ključ"
-               styleClass="p-inputtext-confirmdialog"></p-inputMask>
+  <input class="p-inputtext-confirmdialog" #sms [(ngModel)]="smskey" pInputText>
   <div style="float: right">
-    <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-check"
+    <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-times"
             label="Nisam dobio/dobila poruku"
             pButton
             type="button"></button>
