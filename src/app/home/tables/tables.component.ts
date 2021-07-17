@@ -206,6 +206,21 @@ export class TablesComponent implements OnInit {
           .attr('y', 5)
           .attr("text-anchor", "middle");
         break;
+      case TableShape.MALI:
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+          .append('rect')
+          .attr('x', -30)
+          .attr('y', -30)
+          .attr('width', 40)
+          .attr('height', 20)
+          .attr('fill', table.color);
+
+        g.append('text')
+          .text(table.number)
+          .attr('x', 0)
+          .attr('y', 5)
+          .attr("text-anchor", "middle");
+        break;
     }
 
     // Funkcije stolova, on click, mouseover, etc.

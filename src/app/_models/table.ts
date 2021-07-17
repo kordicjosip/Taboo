@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import {TAB} from "@angular/cdk/keycodes";
 
 export interface TableInterface {
   id: number;
@@ -19,7 +20,8 @@ export enum TableStatus {
 export enum TableType {
   CIRCLE = 1,
   RECT = 2,
-  TRAPEZOID = 3
+  TRAPEZOID = 3,
+  MALI= 4
 }
 
 export enum TableColor {
@@ -31,7 +33,8 @@ export enum TableColor {
 export enum TableShape {
   RECT = 'rect',
   CIRCLE = 'circle',
-  TRAPEZOID = 'polygon'
+  TRAPEZOID = 'polygon',
+  MALI = 'mali'
 }
 
 export class Table {
@@ -81,6 +84,10 @@ export class Table {
         this.type = TableType.TRAPEZOID;
         break;
       }
+      case TableType.MALI.valueOf(): {
+        this.type = TableType.MALI;
+        break;
+      }
       default: {
         this.type = TableType.CIRCLE;
       }
@@ -106,6 +113,8 @@ export class Table {
         return TableShape.CIRCLE
       case TableType.TRAPEZOID:
         return TableShape.TRAPEZOID
+      case TableType.MALI:
+        return TableShape.MALI
     }
   }
 }
