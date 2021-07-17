@@ -128,9 +128,11 @@ interface TableReferenceInterface {
 export class TableReference {
   g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
   table: Table;
+  originalTable: string;
 
   constructor(table: TableReferenceInterface) {
     this.g = table.g;
     this.table = table.table;
+    this.originalTable = JSON.stringify(this.table)
   }
 }
