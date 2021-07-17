@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
-import {Table, TableEventHolder, TableReference, TableShape, TableStatus} from "@app/_models/table";
+import {Table, TableEventHolder, TableReference, TableShape, TableStatus, TableType} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
 import {Dogadaj} from "@app/_models/dogadaj";
@@ -166,8 +166,8 @@ export class TablesComponent implements OnInit {
     // Crtanje stola zavisno od oblika
     const g = this.tablesHolder!.append("g");
     let tableHolder: any;
-    switch (table.shape) {
-      case TableShape.CIRCLE:
+    switch (table.type) {
+      case TableType.CIRCLE:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append(table.shape)
           .attr('r', 21)
@@ -179,7 +179,7 @@ export class TablesComponent implements OnInit {
           .attr('y', 5)
           .attr("text-anchor", "middle");
         break;
-      case TableShape.RECT:
+      case TableType.RECT:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append(table.shape)
           .attr('x', -30)
@@ -194,9 +194,9 @@ export class TablesComponent implements OnInit {
           .attr('y', 5)
           .attr("text-anchor", "middle");
         break;
-      case TableShape.TRAPEZOID:
+      case TableType.TRAPEZOID:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
-          .append('polygon')
+          .append(table.shape)
           .attr('points', this.trapezoidPoints)
           .attr('fill', table.color);
 
@@ -206,9 +206,9 @@ export class TablesComponent implements OnInit {
           .attr('y', 5)
           .attr("text-anchor", "middle");
         break;
-      case TableShape.MALI:
+      case TableType.MALI:
         tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
-          .append('rect')
+          .append(table.shape)
           .attr('x', -12)
           .attr('y', -10)
           .attr('width', 35)

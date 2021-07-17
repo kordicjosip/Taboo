@@ -34,7 +34,7 @@ export enum TableShape {
   RECT = 'rect',
   CIRCLE = 'circle',
   TRAPEZOID = 'polygon',
-  MALI = 'mali'
+  MALI = 'rect'
 }
 
 export class Table {
