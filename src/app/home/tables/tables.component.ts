@@ -293,20 +293,19 @@ export class TablesComponent implements OnInit {
   }
 
   saveLayout() {
-    for (const tableReference of this.tableReferences.values()) {
-      this.tableService.updateTable(tableReference.table).subscribe(
-        () => {
-
-        },
-        error => {
-          this.logger.debug(JSON.stringify(error));
-          this.alertError();
-        }
-      );
+    for (const table of this.tableService.tablesSubject.getValue().tables) {
+      if (this.tableReferences.get(table.id)!.originalTable != JSON.stringify(this.tableReferences.get(table.id)!.table)) {
+        this.tableService.updateTable(this.tableReferences.get(table.id)!.table).subscribe(
+          () => {
+            this.alertSuccess("Uspješno spašen raspored stolova. ")
+          },
+          error => {
+            this.logger.debug(JSON.stringify(error));
+            this.alertError();
+          }
+        );
+      }
     }
-    // TODO updateTable().subscribe se izvršava asinhrono tako da će uvijek odgovoriti uspješno spašeno
-    //  potrebno preraditi nakon optimizacije spašavanja (sada svaki stol pošalje na server, slat ćse samo izmjenjeni stolovi)
-    this.alertSuccess("Uspješno ste sačuvali raspored stolova. ")
   }
 
   deleteSelected() {
