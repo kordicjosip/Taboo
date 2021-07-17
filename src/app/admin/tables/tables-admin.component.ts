@@ -3,7 +3,7 @@ import {Dogadaj} from "@app/_models/dogadaj";
 import {DogadajiService} from "@app/_services/dogadaji.service";
 import {RezervacijeService} from "@app/_services/rezervacije.service";
 import {TablesComponent} from "@app/home/tables/tables.component";
-import {Table} from "@app/_models/table";
+import {Table, TableType, TableTypeMapping} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
@@ -19,6 +19,8 @@ export class TablesAdminComponent implements OnInit {
 
   dogadaji: Dogadaj[] = [];
   rezervacijeService: RezervacijeService;
+  tableTypes;
+  selectedTableTypeValue:any;
 
   defaultniDogadaj = new Dogadaj({
     id: "",
@@ -28,7 +30,7 @@ export class TablesAdminComponent implements OnInit {
   })
   addTableVisible = false;
   newTableNumber: string = "";
-  newTableType: string = "";
+  rotation: string = "0";
 
   constructor(
     private dogadajiService: DogadajiService,
@@ -37,6 +39,8 @@ export class TablesAdminComponent implements OnInit {
     private messageService: MessageService,
     private logger: NGXLogger) {
     this.rezervacijeService = rezervacijeService;
+    this.tableTypes = TableTypeMapping;
+    this.selectedTableTypeValue = this.tableTypes[1];
   }
 
   ngOnInit(): void {
@@ -45,6 +49,10 @@ export class TablesAdminComponent implements OnInit {
       for (const dogadaj of dogadaji)
         this.dogadaji.push(dogadaj);
     });
+  }
+
+  public get selectedTableType(): TableType {
+    return this.selectedTableTypeValue ? this.selectedTableTypeValue.value: null;
   }
 
   showAddTable() {
@@ -56,15 +64,14 @@ export class TablesAdminComponent implements OnInit {
     if (this.rezervacijeService.selectedEvent.getValue() != null) {
       eventId = this.rezervacijeService.selectedEvent.getValue()!.uid
     }
-    // TODO unos rotacije stola
     const newTable = new Table({
       id: 0,
       number: parseInt(this.newTableNumber),
       position_left: 100,
       position_top: 100,
-      rotation: 0,
+      rotation: parseInt(this.rotation),
       status: 0,
-      type: parseInt(this.newTableType)
+      type: this.selectedTableTypeValue.value
     })
     this.tableService.createTable(newTable, eventId).subscribe(
       ()=>{
