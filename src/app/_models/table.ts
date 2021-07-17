@@ -24,6 +24,13 @@ export enum TableType {
   MALI= 4
 }
 
+export const TableTypeMapping = [
+  { value: TableType.CIRCLE, type: 'Circle'},
+  { value: TableType.RECT, type: 'Rectangle'},
+  { value: TableType.TRAPEZOID, type: 'Trapezoid'},
+  { value: TableType.MALI, type: 'Smaller Rectangle'},
+]
+
 export enum TableColor {
   OPEN = 'rgba(105,163,178,1)',
   RESERVED = 'rgba(255,113,0,1)',
