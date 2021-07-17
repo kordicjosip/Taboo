@@ -207,7 +207,7 @@ export class TablesComponent implements OnInit {
           .attr("text-anchor", "middle");
         break;
       case TableShape.MALI:
-        tableHolder = g.attr('transform', `translate(${table.x},${table.y})`)
+        tableHolder = g.attr('transform', `translate(${table.x},${table.y}) rotate(${table.rotation})`)
           .append('rect')
           .attr('x', -12)
           .attr('y', -10)
