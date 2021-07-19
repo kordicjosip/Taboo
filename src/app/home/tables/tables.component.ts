@@ -50,6 +50,8 @@ export class TablesComponent implements OnInit {
     this.rezervacijeService.selectedEvent.subscribe(
       event => {
         this.event = event;
+        if (event?.uid != undefined && this.admin)
+          this.rezervacijeService.getRezervacijeByEvent(event?.uid!).subscribe();
         logger.debug("Selected event: " + event?.uid)
       }
     )
@@ -162,6 +164,7 @@ export class TablesComponent implements OnInit {
 
     const selectedTableSubject = this.selectedTableSubject;
     const tableReferences = this.tableReferences;
+    const rezervacijeService = this.rezervacijeService;
 
     // Crtanje stola zavisno od oblika
     const g = this.tablesHolder!.append("g");
@@ -247,26 +250,31 @@ export class TablesComponent implements OnInit {
           .duration(200)
           .attr('fill', 'rgb(24,255,0)');
       });
-      /*
+
       let div = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0)
         .style('position', 'absolute');
 
       g.on("mouseover", function (d, _) {
-        div.transition()
-          .duration(1000)
-          .style("opacity", .9);
-        div.html("TODO informacije o stolu, i izgled")
-          .style("left", (d.pageX) + "px")
-          .style("top", (d.pageY - 28) + "px");
+        const rezervacije = rezervacijeService.rezervacijeEvent.get(rezervacijeService.selectedEvent.getValue()!.uid)!.getValue();
+        for (const rezervacija of rezervacije) {
+          if (rezervacija.table_number == table.number) {
+            div.transition()
+              .duration(300)
+              .style("opacity", 1);
+            div.html(`${rezervacija.customer?.ime + " " + rezervacija.customer?.prezime}<br>${rezervacija.napomena}`)
+              .style("left", (d.pageX) + "px")
+              .style("top", (d.pageY - 28) + "px");
+          }
+        }
       })
         .on("mouseout", function (d) {
           div.transition()
             .duration(500)
             .style("opacity", 0);
         });
-       */
+
     } else {
       g.on('click', function () {
         if (table.status == TableStatus.OPEN) {
