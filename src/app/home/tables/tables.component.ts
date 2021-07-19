@@ -277,7 +277,7 @@ export class TablesComponent implements OnInit {
 
     } else {
       g.on('click', function () {
-        if (table.status == TableStatus.OPEN) {
+        if (table.status == TableStatus.OPEN || table.status == TableStatus.OPEN_REJECTED) {
           const selectedTable = selectedTableSubject.getValue();
           if (selectedTable != null) {
             tableReferences.get(selectedTable.id)?.g.select(selectedTable.shape).attr('fill', selectedTable.color);
