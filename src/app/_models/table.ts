@@ -33,8 +33,8 @@ export const TableTypeMapping = [
 
 export enum TableColor {
   OPEN = 'rgba(105,163,178,1)',
-  RESERVED = 'rgba(255,113,0,1)',
-  PENDING = 'rgba(255,236,53,1)'
+  RESERVED = 'rgba(255,50,0,1)',
+  PENDING = 'rgba(255,113,0,1)'
 }
 
 export enum TableShape {
