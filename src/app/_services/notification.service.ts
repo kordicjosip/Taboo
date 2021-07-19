@@ -47,7 +47,9 @@ export class NotificationService implements OnDestroy {
           }
           case 'table_reservation': {
             this.tableService.loadTables(message.message.event_id).subscribe();
-            this.rezervacijeService.getRezervacijeByEvent(message.message.event_id).subscribe();
+            if (this.authService.korisnikSubject.getValue()?.admin) {
+              this.rezervacijeService.getRezervacijeByEvent(message.message.event_id).subscribe();
+            }
             break;
           }
           case 'table_new_layout': {

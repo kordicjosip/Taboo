@@ -288,8 +288,7 @@ export class TablesComponent implements OnInit {
 
   removeTable(table: Table) {
     this.logger.debug("Uklanjanje stola: " + JSON.stringify(table));
-    const reference = this.tableReferences.get(table.id)!;
-    reference.g.remove();
+    this.tableReferences.get(table.id)!.g.remove();
   }
 
   saveLayout() {
