@@ -21,7 +21,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-rezervacija>
     <tr>
-      <td>{{rezervacija.customer.ime + " " + rezervacija.customer.prezime}}</td>
+      <td>{{rezervacija.customer?.ime + " " + rezervacija.customer?.prezime}}</td>
       <td>{{rezervacija.table_number}}</td>
       <td>{{rezervacija.napomena}}</td>
       <td>{{rezervacija.status.naziv}}</td>

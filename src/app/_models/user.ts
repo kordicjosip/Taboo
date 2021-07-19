@@ -20,6 +20,7 @@ export class User{
   admin: boolean;
 
   constructor(res: UserInterface) {
+    console.log(JSON.stringify(res));
     this.id = res.id;
     this.email = res.email;
     this.enabled = res.enabled;

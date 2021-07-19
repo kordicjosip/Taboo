@@ -121,7 +121,7 @@ export class RezervacijaComponent implements OnInit {
       this.rezervacije = this.rezervacijeForEvent;
     } else {
       for (const rezervacija of this.rezervacijeForEvent) {
-        const word = `${JSON.stringify(rezervacija.customer.ime + " " + rezervacija.customer.prezime).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
+        const word = `${JSON.stringify(rezervacija.customer?.ime + " " + rezervacija.customer?.prezime).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
         const filteri = filter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ');
         let includesAll = true;
         for (const i of filteri) {

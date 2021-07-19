@@ -54,7 +54,7 @@ export class RezervacijaStatus {
 export class Rezervacija {
   uid: string;
   table_number: number;
-  customer: Customer;
+  customer: Customer | null;
   date: Date;
   event: Dogadaj;
   status: RezervacijaStatus;
@@ -63,7 +63,9 @@ export class Rezervacija {
   constructor(res: RezervacijaInterface) {
     this.uid = res.id;
     this.table_number = res.table_number;
-    this.customer = new Customer(res.customer);
+    if (res.customer != null)
+      this.customer = new Customer(res.customer);
+    else this.customer = null;
     this.date = new Date(res.date);
     this.event = new Dogadaj(res.event);
     this.status = new RezervacijaStatus(res.status);
