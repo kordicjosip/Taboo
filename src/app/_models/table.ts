@@ -14,7 +14,10 @@ export interface TableInterface {
 export enum TableStatus {
   OPEN = 0,
   RESERVED = 1,
-  PENDING = 2
+  PENDING = 2,
+  OPEN_REJECTED = 10,
+  RESERVED_USER = 11,
+  PENDING_USER = 12
 }
 
 export enum TableType {
@@ -34,7 +37,10 @@ export const TableTypeMapping = [
 export enum TableColor {
   OPEN = 'rgba(105,163,178,1)',
   RESERVED = 'rgba(255,50,0,1)',
-  PENDING = 'rgba(255,113,0,1)'
+  PENDING = 'rgba(255,113,0,1)',
+  OPEN_REJECTED = 'rgb(179,0,255)',
+  RESERVED_USER = 'rgb(0,94,255)',
+  PENDING_USER = 'rgb(106,255,83)'
 }
 
 export enum TableShape {
@@ -73,6 +79,18 @@ export class Table {
         this.status = TableStatus.PENDING;
         break;
       }
+      case 10: {
+        this.status = TableStatus.OPEN_REJECTED;
+        break;
+      }
+      case 11: {
+        this.status = TableStatus.RESERVED_USER;
+        break;
+      }
+      case 12: {
+        this.status = TableStatus.PENDING_USER;
+        break;
+      }
       default: {
         this.status = TableStatus.PENDING;
       }
@@ -109,6 +127,12 @@ export class Table {
         return TableColor.RESERVED
       case TableStatus.PENDING:
         return TableColor.PENDING
+      case TableStatus.OPEN_REJECTED:
+        return TableColor.OPEN_REJECTED
+      case TableStatus.RESERVED_USER:
+        return TableColor.RESERVED_USER
+      case TableStatus.PENDING_USER:
+        return TableColor.PENDING_USER
     }
   }
 
