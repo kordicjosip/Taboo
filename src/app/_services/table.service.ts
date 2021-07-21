@@ -78,6 +78,8 @@ export class TableService {
     return this.http.post<any>(`${environment.apiURL}tables`, req);
   }
 
+
+
   /** Brisanje stola */
   deleteTable(table: Table): Observable<any> {
     return this.http.delete<any>(`${environment.apiURL}tables/${table.id}`);

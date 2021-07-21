@@ -58,10 +58,10 @@
     <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
             label="<- Natrag" pButton
             pRipple></button>
-    <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+    <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && !isAlreadyReserved() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>
-    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull())" [disabled]="true"
+    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || isAlreadyReserved() || !isBrojFull())" [disabled]="true"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
             pRipple></button>
@@ -69,7 +69,7 @@
 
 
 
-<p-dialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+<p-dialog [closable]="false" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
 

@@ -90,7 +90,7 @@ export class FormaMobileComponent implements OnInit {
           this.alertSuccess();
         },
         error => {
-          this.alertError(error);
+          this.alertError(error.error.error);
           this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null, 2));
         }
       )
@@ -107,7 +107,7 @@ export class FormaMobileComponent implements OnInit {
           this.authService.smsAuthToken.next(token);
         },
         error => {
-          this.alertError(error);
+          this.alertError(error.error.error);
         }
       )
     }
@@ -122,7 +122,7 @@ export class FormaMobileComponent implements OnInit {
           this.alertSuccess();
         },
         (error: HttpErrorResponse) => {
-          this.alertError(error.error);
+          this.alertError(error.error.error);
         }
       )
     }
@@ -138,6 +138,10 @@ export class FormaMobileComponent implements OnInit {
 
   isPrezimeEmpty() {
     return this.prezime == "";
+  }
+
+  isAlreadyReserved(){
+    return this.rezervacijeService.selectedEvent.getValue()?.alreadyReserved;
   }
 
   isBrojFull() {
@@ -169,5 +173,6 @@ export class FormaMobileComponent implements OnInit {
 
   smsDeny() {
     this.authService.smsAuthToken.next(null);
+    this.alertError("Niste potvrdili SMS. Probajte ponovno za 5 minuta. ");
   }
 }

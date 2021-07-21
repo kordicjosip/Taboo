@@ -65,11 +65,11 @@
 
   <div class="tipka">
     <button (click)="rezerviraj()"
-            *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isStolEmpty())"
+            *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isAlreadyReserved() && !isStolEmpty())"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>
-    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isStolEmpty())"
+    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isAlreadyReserved() || isStolEmpty())"
             [disabled]="true"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
             label="Rezerviraj" pButton
@@ -77,12 +77,13 @@
   </div>
 </div>
 
-<p-dialog [focusTrap]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+<!-- TODO Lock user for 30 seconds on this dialog and edit button look (same for mobile) and implement validation so Confirm button is disabled untill user puts 6 characters into input field -->
+<p-dialog [closable]="false" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
 
 
-    <input class="p-inputtext-confirmdialog" #sms [(ngModel)]="smskey" pInputText>
+    <input class="p-inputtext-confirmdialog" #sms [(ngModel)]="smskey" pInputText [autofocus]="true">
   <div style="float: right">
     <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-times"
             label="Nisam dobio/dobila poruku"

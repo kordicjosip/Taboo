@@ -73,7 +73,7 @@ export class RezervacijaComponent implements OnInit {
           this.alertSuccess();
         },
         error => {
-          this.alertError(error);
+          this.alertError(error.error.error);
           this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
         }
       )
@@ -89,8 +89,8 @@ export class RezervacijaComponent implements OnInit {
         token => {
           this.authService.smsAuthToken.next(token);
         },
-        error => {
-          this.alertError(error.error);
+        (error: HttpErrorResponse)  => {
+          this.alertError(error.error.error);
         }
       )
     }
@@ -106,7 +106,7 @@ export class RezervacijaComponent implements OnInit {
           this.alertSuccess();
         },
         (error: HttpErrorResponse) => {
-          this.alertError(error.error);
+          this.alertError(error.error.error);
         }
       )
     }
@@ -125,6 +125,9 @@ export class RezervacijaComponent implements OnInit {
   }
   isDogadajEmpty(){
     return this.rezervacijeService.selectedEvent.getValue() == null;
+  }
+  isAlreadyReserved(){
+    return this.rezervacijeService.selectedEvent.getValue()?.alreadyReserved;
   }
   isStolEmpty(){
     return this.rezervacijeService.selectedTable.getValue() == null;
@@ -157,5 +160,6 @@ export class RezervacijaComponent implements OnInit {
 
   smsDeny() {
     this.authService.smsAuthToken.next(null);
+    this.alertError("Niste potvrdili SMS. Probajte ponovno za 5 minuta. ");
   }
 }

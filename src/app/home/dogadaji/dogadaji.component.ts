@@ -53,6 +53,7 @@ export class DogadajiComponent implements OnInit {
     );
   }
 
+
   setReservedDogadaji() {
     for (let dogadaj of this.dogadaji) {
       if (this.isAlreadyReserved(dogadaj)) {

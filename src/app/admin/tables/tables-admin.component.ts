@@ -21,6 +21,8 @@ export class TablesAdminComponent implements OnInit {
   rezervacijeService: RezervacijeService;
   tableTypes;
   selectedTableTypeValue:any;
+  selectedEvent: string = "";
+  napomena: string = "";
 
   defaultniDogadaj = new Dogadaj({
     id: "",
@@ -29,8 +31,11 @@ export class TablesAdminComponent implements OnInit {
     description: ""
   })
   addTableVisible = false;
+  addReservationVisible = false;
   newTableNumber: string = "";
+  tableNumber: string = "";
   rotation: string = "0";
+
 
   constructor(
     private dogadajiService: DogadajiService,
@@ -58,6 +63,9 @@ export class TablesAdminComponent implements OnInit {
   showAddTable() {
     this.addTableVisible = true;
   }
+  showAddReservation(){
+    this.addReservationVisible = true;
+  }
 
   addTable() {
     let eventId = null;
@@ -83,6 +91,27 @@ export class TablesAdminComponent implements OnInit {
       }
     );
   }
+
+  addReservation() {
+    this.logger.debug(`Vrijednost tablenumbera je: ${this.tableNumber}`);
+    this.logger.debug(`Vrijednost eventa  je: ${this.selectedEvent}`);
+    this.logger.debug(`Vrijednost napomene je: ${this.napomena}`);
+    this.rezervacijeService.createReservacija({
+      table_number: parseInt(this.tableNumber),
+      event: this.selectedEvent,
+      message: this.napomena
+    }).subscribe(
+      rezervacij => {
+        this.logger.debug("Uspješno kreirana rezervacija " + rezervacij.uid);
+        this.alertSuccessMessage("Uspješno kreirana rezervacija");
+      },
+      error => {
+        this.alertError(error);
+        this.logger.error("Greška prilikom kreiranja rezervacije:" + JSON.stringify(error, null ,2));
+      }
+    )
+  }
+
   alertSuccess() {
     this.messageService.add({
       severity: 'success',
@@ -91,6 +120,16 @@ export class TablesAdminComponent implements OnInit {
       detail: `Uspješno ste dodali novi stol. `
     });
   }
+
+  alertSuccessMessage(message: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Uspješno',
+      key: "glavnitoast",
+      detail: message
+    });
+  }
+
   alertError(message: string = "Greška u dodavanju.") {
     this.messageService.add({
       severity: 'error',
@@ -99,4 +138,5 @@ export class TablesAdminComponent implements OnInit {
       detail: `${JSON.stringify(message)}`
     });
   }
+
 }
