@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {NGXLogger} from "ngx-logger";
-import {Table, TableEventHolder, TableReference, TableShape, TableStatus, TableType} from "@app/_models/table";
+import {Table, TableEventHolder, TableReference, TableStatus, TableType} from "@app/_models/table";
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject} from "rxjs";
 import {Dogadaj} from "@app/_models/dogadaj";
@@ -304,7 +304,7 @@ export class TablesComponent implements OnInit {
       if (this.tableReferences.get(table.id)!.originalTable != JSON.stringify(this.tableReferences.get(table.id)!.table)) {
         this.tableService.updateTable(this.tableReferences.get(table.id)!.table).subscribe(
           () => {
-            this.alertSuccess("Uspješno spašen raspored stolova. ")
+            this.alertSuccess("Uspješno spašen raspored stolova.")
           },
           error => {
             this.logger.debug(JSON.stringify(error));

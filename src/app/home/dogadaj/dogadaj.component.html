@@ -1,9 +1,9 @@
 <div class="dogadaj">
-  <button #button (click)="click()" *ngIf="dogadaj!=undefined" [ngClass]="{'selected' : selected, 'alreadyReserved' : alreadyReserved}"
-          [disabled]="alreadyReserved" pButton
+  <button #button (click)="click()" *ngIf="dogadaj!=undefined"
+          [ngClass]="{'selected' : selected, 'alreadyReserved' : alreadyReserved}" pButton
           type="button">
     <span class="datum">{{dogadaj.datum | date:"dd.MM."}}</span>
     <span class="naziv">{{dogadaj.naziv}}</span>
-    <span *ngIf="alreadyReserved" class="vecrezervirano">Već imate rezervaciju za događaj</span>
+    <span *ngIf="alreadyReserved" class="vecrezervirano">Imate rezervaciju za događaj</span>
   </button>
 </div>
