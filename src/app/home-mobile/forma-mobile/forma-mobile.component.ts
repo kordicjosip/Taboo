@@ -29,6 +29,7 @@ export class FormaMobileComponent implements OnInit {
 
   rezervacijeService: RezervacijeService;
   smsToken: Token | null = null;
+  disableSMSDeny = true;
 
   constructor(
     private userService: UserService,
@@ -173,6 +174,13 @@ export class FormaMobileComponent implements OnInit {
 
   smsDeny() {
     this.authService.smsAuthToken.next(null);
-    this.alertError("Niste potvrdili SMS. Probajte ponovno za 5 minuta. ");
+    this.alertError("Probajte ponovno kreirati rezervaciju za 5 minuta. ");
+  }
+
+  smsDenyTimoutStart() {
+    this.disableSMSDeny = true;
+    setTimeout(() => {
+      this.disableSMSDeny = false;
+    }, 30000)
   }
 }

@@ -21,6 +21,7 @@ export class RezervacijaComponent implements OnInit {
   napomena: string = "";
   smskey: any
   smsToken: Token | null = null;
+  disableSMSDeny: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -160,6 +161,13 @@ export class RezervacijaComponent implements OnInit {
 
   smsDeny() {
     this.authService.smsAuthToken.next(null);
-    this.alertError("Niste potvrdili SMS. Probajte ponovno za 5 minuta. ");
+    this.alertError("Probajte ponovno kreirati rezervaciju za 5 minuta. ");
+  }
+
+  smsDenyTimoutStart() {
+    this.disableSMSDeny = true;
+    setTimeout(() => {
+      this.disableSMSDeny = false;
+    }, 30000)
   }
 }

@@ -69,25 +69,25 @@
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>
-    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isAlreadyReserved() || isStolEmpty())"
-            [disabled]="true"
-            class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
-            label="Rezerviraj" pButton
-            pRipple></button>
+    <button
+      *ngIf="(isImeEmpty() || isPrezimeEmpty() || !isBrojFull() || isDogadajEmpty() || isAlreadyReserved() || isStolEmpty())"
+      [disabled]="true"
+      class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
+      label="Rezerviraj" pButton
+      pRipple></button>
   </div>
 </div>
 
-<!-- TODO Lock user for 30 seconds on this dialog and edit button look (same for mobile) and implement validation so Confirm button is disabled untill user puts 6 characters into input field -->
-<p-dialog [closable]="false" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+<!-- TODO Implement validation so Confirm button is disabled untill user puts 6 characters into input field -->
+<p-dialog (onShow)="smsDenyTimoutStart()" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [closable]="false"
+          [modal]="true" [style]="{width: '50vw'}" [visible]="showSmsDialog">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
-
-
-    <input class="p-inputtext-confirmdialog" #sms [(ngModel)]="smskey" pInputText [autofocus]="true">
+  <input #sms [(ngModel)]="smskey" [autofocus]="true" class="p-inputtext-confirmdialog" pInputText>
   <div style="float: right">
-    <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-times"
-            label="Nisam dobio/dobila poruku"
-            pButton
+    <button (click)="smsDeny()" [disabled]="disableSMSDeny" class="p-button-warning p-button-text"
+            icon="pi pi-times"
+            label="Nisam dobio/dobila poruku" pButton
             type="button"></button>
     <button (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton
             type="button"></button>

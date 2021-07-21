@@ -1,5 +1,5 @@
 <div id="forma">
-  <div  class=drugikorak>3. UNESITE VAŠE PODATKE</div>
+  <div class=drugikorak>3. UNESITE VAŠE PODATKE</div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
       <input #name="ngModel" (ngModelChange)="rezervacijeService.ime.next(ime)" [(ngModel)]="ime" class="form-control"
@@ -14,7 +14,7 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input [(ngModel)]="ime" id="firstname2" pInputText value="{{ime}}" [disabled]="true">
+      <input [(ngModel)]="ime" [disabled]="true" id="firstname2" pInputText value="{{ime}}">
     </div>
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
@@ -32,7 +32,7 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input [(ngModel)]="prezime" id="lastname2" pInputText value="{{prezime}}" [disabled]="true">
+      <input [(ngModel)]="prezime" [disabled]="true" id="lastname2" pInputText value="{{prezime}}">
     </div>
   </div>
   <div *ngIf="!isLoggedIn()" class="p-field p-grid">
@@ -44,40 +44,41 @@
   </div>
   <div *ngIf="isLoggedIn()" class="p-field p-grid">
     <div class="p-col">
-      <input [(ngModel)]="brojtelefona" id="phonenumber2" pInputText value="{{brojtelefona}}" [disabled]="true">
+      <input [(ngModel)]="brojtelefona" [disabled]="true" id="phonenumber2" pInputText value="{{brojtelefona}}">
     </div>
   </div>
-  </div>
-  <div class="p-field p-grid" id="napomena">
-      <textarea id="napomena1" (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" pInputTextarea
+</div>
+<div class="p-field p-grid" id="napomena">
+      <textarea (ngModelChange)="rezervacijeService.napomena.next(napomena)" [(ngModel)]="napomena" id="napomena1"
+                pInputTextarea
                 placeholder="Napomena (opcionalno)"
                 style="resize: none; width: 240px; color: white; "></textarea>
-  </div>
+</div>
 
-  <div class="tipka">
-    <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
-            label="<- Natrag" pButton
-            pRipple></button>
-    <button *ngIf="!isImeEmpty() && !isPrezimeEmpty() && !isAlreadyReserved() && isBrojFull()" (click)="rezerviraj()" class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
-            label="Rezerviraj" pButton
-            pRipple></button>
-    <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || isAlreadyReserved() || !isBrojFull())" [disabled]="true"
-            class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
-            label="Rezerviraj" pButton
-            pRipple></button>
-  </div>
+<div class="tipka">
+  <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
+          label="<- Natrag" pButton
+          pRipple></button>
+  <button (click)="rezerviraj()" *ngIf="!isImeEmpty() && !isPrezimeEmpty() && !isAlreadyReserved() && isBrojFull()"
+          class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
+          label="Rezerviraj" pButton
+          pRipple></button>
+  <button *ngIf="(isImeEmpty() || isPrezimeEmpty() || isAlreadyReserved() || !isBrojFull())" [disabled]="true"
+          class="p-button-raised p-button-success p-button-text" id="rezervirajtipkaDisabled"
+          label="Rezerviraj" pButton
+          pRipple></button>
+</div>
 
 
-
-<p-dialog [closable]="false" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+<p-dialog (onShow)="smsDenyTimoutStart()" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [closable]="false"
+          [style]="{width: '50vw'}" [visible]="showSmsDialog">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
-
-  <input class="p-inputtext-confirmdialog" #sms [(ngModel)]="smskey" pInputText>
+  <input #sms [(ngModel)]="smskey" class="p-inputtext-confirmdialog" pInputText>
   <div style="float: right">
-    <button (click)="smsDeny()" class="p-button-warning p-button-text" icon="pi pi-times"
-            label="Nisam dobio/dobila poruku"
-            pButton
+    <button (click)="smsDeny()" [disabled]="disableSMSDeny" class="p-button-warning p-button-text"
+            icon="pi pi-times"
+            label="Nisam dobio/dobila poruku" pButton
             type="button"></button>
     <button (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton
             type="button"></button>
