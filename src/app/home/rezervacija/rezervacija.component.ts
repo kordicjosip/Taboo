@@ -136,6 +136,9 @@ export class RezervacijaComponent implements OnInit {
   isLoggedIn() {
     return this.authService.jwtSubject.getValue() != null;
   }
+  isSmsKeyEmpty(){
+    return this.smskey != undefined && this.smskey.length == 6;
+  }
 
   alertSuccess() {
     this.messageService.add({

@@ -148,6 +148,9 @@ export class FormaMobileComponent implements OnInit {
   isBrojFull() {
     return this.brojtelefona.length >= 9;
   }
+  isSmsKeyEmpty(){
+    return this.smskey != undefined && this.smskey.length == 6;
+  }
 
 
   back() {

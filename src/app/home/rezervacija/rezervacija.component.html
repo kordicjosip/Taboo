@@ -78,18 +78,17 @@
   </div>
 </div>
 
-<!-- TODO Implement validation so Confirm button is disabled untill user puts 6 characters into input field -->
 <p-dialog (onShow)="smsDenyTimoutStart()" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [closable]="false"
-          [modal]="true" [style]="{width: '50vw'}" [visible]="showSmsDialog">
+          [modal]="true" [style]="{width: '50vw'}" [visible]="true">
   <h3>Unesite ključ koji ste dobili putem SMS poruke:</h3>
 
   <input #sms [(ngModel)]="smskey" [autofocus]="true" class="p-inputtext-confirmdialog" pInputText>
   <div style="float: right">
-    <button (click)="smsDeny()" [disabled]="disableSMSDeny" class="p-button-warning p-button-text"
+    <button (click)="smsDeny()" [disabled]="disableSMSDeny"
             icon="pi pi-times"
             label="Nisam dobio/dobila poruku" pButton
             type="button"></button>
-    <button (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton
+    <button id="potvrdi" (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton [disabled]="!isSmsKeyEmpty()"
             type="button"></button>
   </div>
 </p-dialog>

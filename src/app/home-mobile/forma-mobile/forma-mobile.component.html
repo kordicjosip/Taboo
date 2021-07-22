@@ -76,11 +76,11 @@
 
   <input #sms [(ngModel)]="smskey" class="p-inputtext-confirmdialog" pInputText>
   <div style="float: right">
-    <button (click)="smsDeny()" [disabled]="disableSMSDeny" class="p-button-warning p-button-text"
+    <button class="smsbutton" (click)="smsDeny()" [disabled]="disableSMSDeny"
             icon="pi pi-times"
             label="Nisam dobio/dobila poruku" pButton
             type="button"></button>
-    <button (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton
+    <button class="smsbutton" (click)="smsConfirm()" icon="pi pi-check" label="Potvrdi" pButton [disabled]="!isSmsKeyEmpty()"
             type="button"></button>
   </div>
 </p-dialog>
