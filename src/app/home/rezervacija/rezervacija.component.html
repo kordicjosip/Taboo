@@ -65,7 +65,7 @@
 
   <div class="tipka">
     <button (click)="rezerviraj()"
-            *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isAlreadyReserved() && !isStolEmpty())"
+            *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && isBrojFull() && !isDogadajEmpty() && !isAlreadyReserved() && !isStolEmpty()) || isAdmin()"
             class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
             label="Rezerviraj" pButton
             pRipple></button>

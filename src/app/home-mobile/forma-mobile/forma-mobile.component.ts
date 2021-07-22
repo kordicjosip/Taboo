@@ -9,6 +9,8 @@ import {NGXLogger} from "ngx-logger";
 import {Location} from "@angular/common";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Token} from "@app/_models/auth";
+import {User} from "@app/_models/user";
+import {K} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'app-forma-mobile',
@@ -30,6 +32,7 @@ export class FormaMobileComponent implements OnInit {
   rezervacijeService: RezervacijeService;
   smsToken: Token | null = null;
   disableSMSDeny = true;
+  korisnik: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -61,6 +64,7 @@ export class FormaMobileComponent implements OnInit {
     this.authService.korisnikSubject.subscribe(
       korisnik => {
         if (korisnik != null && korisnik.customer != null) {
+          this.korisnik = korisnik;
           this.CustomerToValues(korisnik.customer.ime, korisnik.customer.prezime, korisnik.customer.phone_number);
         }
       }
@@ -150,6 +154,9 @@ export class FormaMobileComponent implements OnInit {
   }
   isSmsKeyEmpty(){
     return this.smskey != undefined && this.smskey.length == 6;
+  }
+  isAdmin(){
+    return this.korisnik?.admin;
   }
 
 

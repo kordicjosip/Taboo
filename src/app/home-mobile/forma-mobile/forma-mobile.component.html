@@ -59,7 +59,7 @@
   <button (click)="back()" class="p-button-raised p-button-success p-button-text" id="backtipka"
           label="<- Natrag" pButton
           pRipple></button>
-  <button (click)="rezerviraj()" *ngIf="!isImeEmpty() && !isPrezimeEmpty() && !isAlreadyReserved() && isBrojFull()"
+  <button (click)="rezerviraj()" *ngIf="(!isImeEmpty() && !isPrezimeEmpty() && !isAlreadyReserved() && isBrojFull()) || isAdmin()"
           class="p-button-raised p-button-success p-button-text" id="rezervirajtipka"
           label="Rezerviraj" pButton
           pRipple></button>

@@ -7,6 +7,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {NGXLogger} from "ngx-logger";
 import {Token} from "@app/_models/auth";
 import {HttpErrorResponse} from "@angular/common/http";
+import {User} from "@app/_models/user";
 
 @Component({
   selector: 'app-rezervacija',
@@ -22,6 +23,7 @@ export class RezervacijaComponent implements OnInit {
   smskey: any
   smsToken: Token | null = null;
   disableSMSDeny: boolean = true;
+  korisnik: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -44,6 +46,7 @@ export class RezervacijaComponent implements OnInit {
     this.authService.korisnikSubject.subscribe(
       korisnik => {
         if (korisnik != null && korisnik.customer != null) {
+          this.korisnik=korisnik;
           this.CustomerToValues(korisnik.customer.ime, korisnik.customer.prezime, korisnik.customer.phone_number);
         }
       }
@@ -138,6 +141,9 @@ export class RezervacijaComponent implements OnInit {
   }
   isSmsKeyEmpty(){
     return this.smskey != undefined && this.smskey.length == 6;
+  }
+  isAdmin(){
+    return this.korisnik?.admin;
   }
 
   alertSuccess() {
