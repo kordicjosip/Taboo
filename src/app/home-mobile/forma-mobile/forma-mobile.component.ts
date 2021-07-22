@@ -127,7 +127,7 @@ export class FormaMobileComponent implements OnInit {
           this.alertSuccess();
         },
         (error: HttpErrorResponse) => {
-          this.alertError(error.error.error);
+          this.alertSmsError("Neispravan SMS kod. Pokušajte ponovno.");
         }
       )
     }
@@ -181,6 +181,16 @@ export class FormaMobileComponent implements OnInit {
       detail: `${JSON.stringify(message)}`
     });
   }
+
+  alertSmsError(message: string){
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Greška',
+      key: "glavnitoast",
+      detail: message,
+    });
+  }
+
 
   smsDeny() {
     this.authService.smsAuthToken.next(null);
