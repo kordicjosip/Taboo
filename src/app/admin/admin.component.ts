@@ -28,7 +28,6 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [
-      {label: 'Home', routerLink: '/admin/dogadaji', icon: 'pi pi-fw pi-home',},
       {label: 'Rezervacije', routerLink: '/admin/dogadaji', icon: 'pi pi-fw pi-pencil'},
       {label: 'Otkazani', routerLink: '/admin/dogadajiOtkazani', icon: 'pi pi-fw pi-trash'},
       {label: 'Stolovi', routerLink: '/admin/tables', icon: 'pi pi-fw pi-map'},
