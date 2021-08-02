@@ -1,11 +1,11 @@
 ﻿import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
 import {environment} from "@environments/environment";
-import {catchError, map} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {Rezervacija, RezervacijaCreateInterface} from "@app/_models/rezervacija";
-import {Table, TableReference} from "@app/_models/table";
+import {Table} from "@app/_models/table";
 import {Dogadaj} from "@app/_models/dogadaj";
 
 

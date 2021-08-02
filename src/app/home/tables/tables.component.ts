@@ -50,7 +50,7 @@ export class TablesComponent implements OnInit {
     this.rezervacijeService.selectedEvent.subscribe(
       event => {
         this.event = event;
-        if (event?.uid != undefined && this.admin)
+        if (event?.uid != undefined && event?.uid != '' && this.admin)
           this.rezervacijeService.getRezervacijeByEvent(event?.uid!).subscribe();
         logger.debug("Selected event: " + event?.uid)
       }
