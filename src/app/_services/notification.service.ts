@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {webSocket} from 'rxjs/webSocket'
+import {webSocket, WebSocketSubject} from 'rxjs/webSocket'
 import {environment} from "@environments/environment";
 import {NGXLogger} from "ngx-logger";
 import {AuthService} from "@app/_services/auth.service";
@@ -14,7 +14,7 @@ import {RezervacijeService} from "@app/_services/rezervacije.service";
 export class NotificationService implements OnDestroy {
   private wsURL = `${environment.wsURL}notifications`;
 
-  private socket$ = webSocket(this.wsURL);
+  private socket$: WebSocketSubject<any> | null = null;
 
   constructor(
     private logger: NGXLogger,
@@ -22,16 +22,24 @@ export class NotificationService implements OnDestroy {
     private tableService: TableService,
     private rezervacijeService: RezervacijeService) {
 
-    if (authService.korisnikSubject.getValue()?.admin) {
-      this.wsURL = this.wsURL + '-admin'
-      this.socket$ = webSocket(this.wsURL);
-    }
-
-    this.connect();
+    this.authService.korisnikSubject.subscribe(
+      user => {
+        logger.debug(user);
+        if (user?.admin) {
+          this.socket$?.complete();
+          this.wsURL = this.wsURL + '-admin'
+          this.socket$ = webSocket(this.wsURL);
+        } else {
+          this.socket$ = webSocket(this.wsURL);
+        }
+        this.connect();
+      }
+    )
   }
 
   connect() {
-    this.socket$.subscribe((dataFromServer: any) => {
+    this.logger.debug("Connecting websocket");
+    this.socket$!.subscribe((dataFromServer: any) => {
         const message = new Notification(dataFromServer);
         this.logger.debug(JSON.stringify(message, null, 2));
         switch (message.message_type) {
@@ -70,17 +78,11 @@ export class NotificationService implements OnDestroy {
   authenticate() {
     const token: AuthJWTToken | null = this.authService.jwtSubject.getValue();
     if (token != null && token.accessTokenIsValid()) {
-      this.socket$.next({access_token: token.access_token});
-    } else {
-      this.authService.jwtSubject.subscribe(
-        () => {
-          this.authenticate();
-        }
-      )
+      this.socket$!.next({access_token: token.access_token});
     }
   }
 
   ngOnDestroy(): void {
-    this.socket$.complete();
+    this.socket$?.complete();
   }
 }
