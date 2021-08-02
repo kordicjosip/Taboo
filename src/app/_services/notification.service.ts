@@ -28,12 +28,6 @@ export class NotificationService implements OnDestroy {
     }
 
     this.connect();
-
-    authService.jwtSubject.subscribe(
-      () => {
-        this.authenticate();
-      }
-    )
   }
 
   connect() {
@@ -77,6 +71,12 @@ export class NotificationService implements OnDestroy {
     const token: AuthJWTToken | null = this.authService.jwtSubject.getValue();
     if (token != null && token.accessTokenIsValid()) {
       this.socket$.next({access_token: token.access_token});
+    } else {
+      this.authService.jwtSubject.subscribe(
+        () => {
+          this.authenticate();
+        }
+      )
     }
   }
 
