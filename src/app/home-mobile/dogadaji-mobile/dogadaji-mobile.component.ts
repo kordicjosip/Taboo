@@ -46,6 +46,9 @@ export class DogadajiMobileComponent implements OnInit {
           this.setReservedDogadaji();
         } else
           this.korisnikRezervacije = []
+
+        this.logger.debug(`Provjera je li događaj rezerviran`)
+        this.logger.debug(`Provjera vrijednosti korisnikRezervacija: ${this.korisnikRezervacije}`)
       }
     );
   }
@@ -63,8 +66,10 @@ export class DogadajiMobileComponent implements OnInit {
   isAlreadyReserved(dogadaj: Dogadaj): boolean {
     if (this.korisnikRezervacije != null) {
       for (let rez of this.korisnikRezervacije) {
-        if (rez.event.uid == dogadaj.uid)
+        if (rez.event.uid == dogadaj.uid) {
+          dogadaj.tableNumber = rez.table_number;
           return true;
+        }
       }
     }
     return false;

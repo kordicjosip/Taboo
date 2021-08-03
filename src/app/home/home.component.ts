@@ -25,7 +25,6 @@ export class HomeComponent {
               private authService: AuthService,
               rezervacijeService: RezervacijeService) {
     this.rezervacijeService = rezervacijeService;
-    this.logger.debug("Debug konstruktora");
   }
 
   addSingle() {

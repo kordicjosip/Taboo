@@ -58,6 +58,7 @@ export class DogadajiComponent implements OnInit {
     for (let dogadaj of this.dogadaji) {
       if (this.isAlreadyReserved(dogadaj)) {
         dogadaj.alreadyReserved = true;
+
       }
     }
   }
@@ -65,8 +66,10 @@ export class DogadajiComponent implements OnInit {
   isAlreadyReserved(dogadaj: Dogadaj): boolean {
     if (this.korisnikRezervacije != null) {
       for (let rez of this.korisnikRezervacije) {
-        if (rez.event.uid == dogadaj.uid)
+        if (rez.event.uid == dogadaj.uid) {
+          dogadaj.tableNumber = rez.table_number;
           return true;
+        }
       }
     }
     return false;

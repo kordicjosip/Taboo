@@ -12,6 +12,7 @@ export class Dogadaj {
   opis: string;
   selected: boolean=false;
   alreadyReserved: boolean=false;
+  tableNumber: number = 0;
 
   constructor(res: DogadajInterface) {
     this.uid = res.id;

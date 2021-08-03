@@ -4,6 +4,6 @@
           pButton type="button">
     <span class="datum">{{dogadaj.datum | date:"dd.MM."}}</span>
     <span class="naziv">{{dogadaj.naziv}}</span>
-    <span *ngIf="alreadyReserved" class="vecrezervirano">Vec imate rezervaciju za događaj</span>
+    <span *ngIf="alreadyReserved" class="vecrezervirano">Rezervirali ste stol {{dogadaj.tableNumber}}</span>
   </button>
 </div>
