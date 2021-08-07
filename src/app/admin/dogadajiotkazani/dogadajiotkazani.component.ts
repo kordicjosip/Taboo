@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Dogadaj} from "@app/_models/dogadaj";
 import {DogadajiService} from "@app/_services/dogadaji.service";
 import {Router} from "@angular/router";
@@ -15,8 +15,8 @@ export class DogadajiotkazaniComponent implements OnInit {
   constructor(private dogadajiService: DogadajiService, private router: Router, private logger: NGXLogger) { }
 
   ngOnInit(): void {
-    this.dogadajiService.getDogadaji(true).subscribe(dogadaji=> {
-      this.dogadaji=dogadaji;
+    this.dogadajiService.getDogadaji(false, true).subscribe(dogadaji => {
+      this.dogadaji = dogadaji;
       this.logger.debug(this.dogadaji);
     });
   }
