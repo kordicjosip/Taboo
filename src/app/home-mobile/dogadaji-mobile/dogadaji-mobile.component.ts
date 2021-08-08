@@ -89,4 +89,8 @@ export class DogadajiMobileComponent implements OnInit {
     this.messageService.add({severity: 'danger', summary: 'Nemoguće nastaviti', detail: 'Niste odabrali događaj.'});
     this.logger.debug("Alert je trebao biti tu.")
   }
+
+  eventsExist(): boolean{
+    return this.dogadaji!=null;
+  }
 }

@@ -80,4 +80,8 @@ export class DogadajiComponent implements OnInit {
       i.selected = i.uid == dogadaj.uid;
     }
   }
+
+  eventsExist(): boolean{
+    return this.dogadaji!=null;
+  }
 }
