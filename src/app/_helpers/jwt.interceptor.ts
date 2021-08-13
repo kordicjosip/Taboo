@@ -22,7 +22,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
     const isLoggedIn = authToken != null;
     const isApiUrl = request.url.startsWith(environment.apiURL);
-    if (isLoggedIn && isApiUrl && authToken != null && authToken.getExpiration(authToken.access_token) > new Date()) {
+    if (isLoggedIn && isApiUrl && authToken != null && authToken.accessTokenIsValid()) {
 
       request = request.clone({
         setHeaders: {Authorization: `Bearer ${authToken.access_token}`},
