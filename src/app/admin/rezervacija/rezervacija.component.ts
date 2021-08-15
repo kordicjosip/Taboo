@@ -40,7 +40,7 @@ export class RezervacijaComponent implements OnInit {
         }
       );
     });
-    this.dogadajiService.getDogadaji(true).subscribe(dogadaji => {
+    this.dogadajiService.getDogadaji(false, true).subscribe(dogadaji => {
       this.dogadaji = dogadaji;
       this.logger.debug(this.dogadaji);
       if (this.eventid != null) {
