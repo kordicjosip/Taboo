@@ -82,6 +82,6 @@ export class DogadajiComponent implements OnInit {
   }
 
   eventsExist(): boolean{
-    return this.dogadaji!=null;
+    return this.dogadaji.length>0;
   }
 }

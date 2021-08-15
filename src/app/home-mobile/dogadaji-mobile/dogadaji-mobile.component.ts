@@ -91,6 +91,6 @@ export class DogadajiMobileComponent implements OnInit {
   }
 
   eventsExist(): boolean{
-    return this.dogadaji!=null;
+    return this.dogadaji.length>0;
   }
 }
