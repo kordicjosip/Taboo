@@ -1,52 +1,16 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {JwtInterceptor} from "@app/_helpers/jwt.interceptor";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {LoggerModule, NGXLogger, NgxLoggerLevel} from "ngx-logger";
-import {environment} from "@environments/environment";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {appInitializer} from "@app/_helpers/app.initializer";
-import {ErrorInterceptor} from "@app/_helpers/error.interceptor";
-import {NotFoundComponent} from './not-found/not-found.component';
-import {HomeMobileComponent} from './home-mobile/home-mobile.component';
-import {ToastModule} from "primeng/toast";
-import {MessageService} from "primeng/api";
-import {AuthService} from "@app/_services/auth.service";
-import {UserService} from "@app/_services/user.service";
-import {ServiceWorkerModule} from '@angular/service-worker';
-
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NotFoundComponent,
-    HomeMobileComponent,
+    AppComponent
   ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    LoggerModule.forRoot({
-      level: environment.logLevel,
-      serverLogLevel: NgxLoggerLevel.ERROR,
-    }),
-    ToastModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      registrationStrategy: 'registerWhenStable:5000'
-    }),
+    BrowserModule
   ],
-  providers: [
-    {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [NGXLogger, AuthService, UserService]},
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    MessageService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
