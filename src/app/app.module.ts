@@ -15,6 +15,7 @@ import { ReservationsViewComponent } from './reservations/components/reservation
 import { ReservationsListComponent } from './reservations/components/reservations-list/reservations-list.component';
 import { ReservationItemComponent } from './reservations/components/reservation-item/reservation-item.component';
 import { UserCredentialsViewComponent } from './user-credentials/components/user-credentials-view/user-credentials-view.component';
+import { AdminLoginComponent } from './views/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserCredentialsViewComponent } from './user-credentials/components/user
     ReservationsViewComponent,
     ReservationsListComponent,
     ReservationItemComponent,
-    UserCredentialsViewComponent
+    UserCredentialsViewComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,
