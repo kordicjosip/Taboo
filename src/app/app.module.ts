@@ -7,8 +7,8 @@ import { AppComponent } from './app.component';
 import { EventListComponent } from './events/components/event-list/event-list.component';
 import { EventItemComponent } from './events/components/event-item/event-item.component';
 import { EventViewComponent } from './events/components/event-view/event-view.component';
-import { AdminViewComponent } from './views/admin-view/admin-view.component';
-import { UserViewComponent } from './views/user-view/user-view.component';
+import { AdminAppComponent } from './views/admin-app/admin-app.component';
+import { UserAppComponent } from './views/user-app/user-app.component';
 import { MapViewComponent } from './map/components/map-view/map-view.component';
 import { MapTableComponent } from './map/components/map-table/map-table.component';
 import { ReservationsViewComponent } from './reservations/components/reservations-view/reservations-view.component';
@@ -23,15 +23,15 @@ import { AdminLoginComponent } from './views/admin-login/admin-login.component';
     EventListComponent,
     EventItemComponent,
     EventViewComponent,
-    AdminViewComponent,
-    UserViewComponent,
     MapViewComponent,
     MapTableComponent,
     ReservationsViewComponent,
     ReservationsListComponent,
     ReservationItemComponent,
     UserCredentialsViewComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    AdminAppComponent,
+    UserAppComponent
   ],
   imports: [
     BrowserModule,

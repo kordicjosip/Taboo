@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminViewComponent } from './views/admin-view/admin-view.component';
-import { UserViewComponent } from './views/user-view/user-view.component';
+import { AdminAppComponent } from './views/admin-app/admin-app.component';
+import { AdminLoginComponent } from './views/admin-login/admin-login.component';
+import { UserAppComponent } from './views/user-app/user-app.component';
 
 const routes: Routes = [
   {
     path: 'app',
-    component: UserViewComponent,
+    component: AdminAppComponent,
   },
   {
     path: 'admin-app',
-    component: AdminViewComponent,
+    component: UserAppComponent,
+  },
+  {
+    path: 'admin-login',
+    component: AdminLoginComponent,
   },
   {
     path: '',
