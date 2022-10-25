@@ -7,11 +7,11 @@ import { UserAppComponent } from './views/user-app/user-app.component';
 const routes: Routes = [
   {
     path: 'app',
-    component: AdminAppComponent,
+    component: UserAppComponent,
   },
   {
     path: 'admin-app',
-    component: UserAppComponent,
+    component: AdminAppComponent,
   },
   {
     path: 'admin-login',
