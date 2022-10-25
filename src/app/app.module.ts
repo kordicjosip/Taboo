@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { EventListComponent } from './events/components/event-list/event-list.component';
 import { EventItemComponent } from './events/components/event-item/event-item.component';
